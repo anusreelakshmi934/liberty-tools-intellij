@@ -18,12 +18,18 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import io.openliberty.tools.intellij.lsp4jakarta.lsp4ij.Messages;
 import io.openliberty.tools.intellij.lsp4jakarta.lsp4ij.codeAction.proposal.AddConstructorProposal;
+import io.openliberty.tools.intellij.lsp4mp4ij.psi.core.java.codeaction.ExtendedCodeAction;
+import io.openliberty.tools.intellij.lsp4mp4ij.psi.core.java.codeaction.IJavaCodeActionParticipant;
 import io.openliberty.tools.intellij.lsp4mp4ij.psi.core.java.codeaction.JavaCodeActionContext;
+import io.openliberty.tools.intellij.lsp4mp4ij.psi.core.java.codeaction.JavaCodeActionResolveContext;
 import io.openliberty.tools.intellij.lsp4mp4ij.psi.core.java.corrections.proposal.ChangeCorrectionProposal;
 import org.eclipse.lsp4j.CodeAction;
+import org.eclipse.lsp4j.CodeActionKind;
 import org.eclipse.lsp4j.Diagnostic;
+import org.eclipse.lsp4mp.commons.CodeActionResolveData;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -54,7 +60,12 @@ import java.util.List;
  * @author Leslie Dawson (lamminade)
  *
  */
-public class PersistenceEntityQuickFix {
+public class PersistenceEntityQuickFix implements IJavaCodeActionParticipant {
+    @Override
+    public String getParticipantId() {
+        return PersistenceEntityQuickFix.class.getName();
+    }
+
     public List<? extends CodeAction> getCodeActions(JavaCodeActionContext context, Diagnostic diagnostic) {
         List<CodeAction> codeActions = new ArrayList<>();
         PsiElement node = context.getCoveredNode();
@@ -70,6 +81,22 @@ public class PersistenceEntityQuickFix {
         return codeActions;
     }
 
+    @Override
+    public CodeAction resolveCodeAction(JavaCodeActionResolveContext context) {
+        // Call the addConstructor method to generate code actions
+        List<CodeAction> codeActions = addConstructor(null, context, null);
+
+        // Check if code actions were generated
+        if (!codeActions.isEmpty()) {
+            // Return the first code action from the list (you can customize this logic as needed)
+            return codeActions.get(0);
+        }
+
+        // If no code actions were generated, return null
+        return null;
+    }
+
+
     protected PsiClass getBinding(PsiElement node) {
         return PsiTreeUtil.getParentOfType(node, PsiClass.class);
     }
@@ -80,33 +107,34 @@ public class PersistenceEntityQuickFix {
         PsiElement node = null;
         PsiClass parentType = null;
 
-        // option for protected constructor
-        targetContext = context.copy();
-        node = targetContext.getCoveredNode();
-        parentType = getBinding(node);
-        String name = Messages.getMessage("AddNoArgProtectedConstructor");
-        ChangeCorrectionProposal proposal = new AddConstructorProposal(name,
-                targetContext.getSource().getCompilationUnit(), targetContext.getASTRoot(), parentType, 0);
-        CodeAction codeAction = targetContext.convertToCodeAction(proposal, diagnostic);
+        String[] constructorNames = {"AddNoArgProtectedConstructor", "AddNoArgPublicConstructor"};
 
-        if (codeAction != null) {
-            codeActions.add(codeAction);
-        }
-
-        // option for public constructor
-        targetContext = context.copy();
-        node = targetContext.getCoveredNode();
-        parentType = getBinding(node);
-        name = Messages.getMessage("AddNoArgPublicConstructor");
-        proposal = new AddConstructorProposal(name,
-                targetContext.getSource().getCompilationUnit(), targetContext.getASTRoot(), parentType, 0, "public");
-        codeAction = targetContext.convertToCodeAction(proposal, diagnostic);
-
-        if (codeAction != null) {
+        for (String name : constructorNames) {
+            // option for protected and public constructors
+            targetContext = context.copy();
+            node = targetContext.getCoveredNode();
+            parentType = getBinding(node);
+            String accessModifier = name.equals("AddNoArgProtectedConstructor") ? "protected" : "public";
+            ChangeCorrectionProposal proposal = new AddConstructorProposal(name,
+                    targetContext.getSource().getCompilationUnit(), targetContext.getASTRoot(), parentType, 0, accessModifier);
+            CodeAction codeAction = createCodeAction(targetContext, diagnostic);
+            codeAction.setTitle(Messages.getMessage(name));
+            codeAction.setEdit(targetContext.convertToWorkspaceEdit(proposal));
             codeActions.add(codeAction);
         }
 
         return codeActions;
+    }
+    private CodeAction createCodeAction(JavaCodeActionContext context, Diagnostic diagnostic) {
+        ExtendedCodeAction codeAction = new ExtendedCodeAction("");
+        codeAction.setRelevance(0);
+        codeAction.setDiagnostics(Collections.singletonList(diagnostic));
+        codeAction.setKind(CodeActionKind.QuickFix);
+        codeAction.setData(new CodeActionResolveData(context.getUri(), getParticipantId(),
+                context.getParams().getRange(), Collections.emptyMap(),
+                context.getParams().isResourceOperationSupported(),
+                context.getParams().isCommandConfigurationUpdateSupported()));
+        return codeAction;
     }
 
 }
