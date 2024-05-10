@@ -38,15 +38,16 @@ jobs:
         run: |
           BRANCHES=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/redhat-developer/lsp4ij/pulls?state=open" | jq -r '.[].head.ref')
-          echo "Source branch names of open pull requests: $BRANCHES"
-          echo "::set-output name=BRANCHES::$BRANCHES"
+            "https://api.github.com/repos/redhat-developer/lsp4ij/pulls?state=open&sort=created&direction=desc&per_page=1" | jq -r '.[0].head.ref')
+            BRANCH_NAME=$(echo $BRANCHES | cut -d':' -f2)
+          echo "Source branch names of open pull requests: $BRANCH_NAME"
+          echo "::set-output name=BRANCH_NAME::$BRANCH_NAME"
       - name: 'Checkout lsp4ij'
         uses: actions/checkout@v3
         with:
           repository: redhat-developer/lsp4ij
           path: lsp4ij
-          ref: ${{ steps.fetch_branch_names.outputs.BRANCHES }}
+          ref: ${{ steps.fetch_branch_names.outputs.BRANCH_NAME }}
       - name: 'Checkout liberty-tools-intellij'
         uses: actions/checkout@v3
         with:
