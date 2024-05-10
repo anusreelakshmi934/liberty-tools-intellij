@@ -32,12 +32,21 @@ jobs:
           minimum-size: 8GB
           maximum-size: 10GB
           disk-root: "C:"
+      - name: Fetch source branch names of open pull requests
+        id: fetch_branch_names
+        shell: bash
+        run: |
+          BRANCHES=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/redhat-developer/lsp4ij/pulls?state=open" | jq -r '.[].head.ref')
+          echo "Source branch names of open pull requests: $BRANCHES"
+          echo "::set-output name=BRANCHES::$BRANCHES"
       - name: 'Checkout lsp4ij'
         uses: actions/checkout@v3
         with:
-          repository: MicroShed/lsp4ij
+          repository: redhat-developer/lsp4ij
           path: lsp4ij
-          ref: refs/tags/0.0.4
+          ref: ${{ steps.fetch_branch_names.outputs.BRANCHES }}
       - name: 'Checkout liberty-tools-intellij'
         uses: actions/checkout@v3
         with:
