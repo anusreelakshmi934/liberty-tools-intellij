@@ -1,4 +1,4 @@
-name: Cron Job
+name: Build
 
 on:
   schedule:
@@ -7,9 +7,12 @@ on:
     inputs:
       useLocalPlugin:
         description: 'Use lsp4ij locally'
-        required: false
-        default: 'true'
+        required: true
+        default: 'false'
   push:
+    branches: '**'
+  pull_request:
+    branches: [ main, contIntegrationLsp4ij ]
 
 jobs:
   build:
@@ -29,7 +32,7 @@ jobs:
             os: windows-latest
             reportName: windows-test-report
     env:
-      USE_LOCAL_PLUGIN: ${{ github.event.inputs.useLocalPlugin || (github.event_name == 'schedule' && 'false') || 'true' }}
+      USE_LOCAL_PLUGIN: ${{ github.event_name == 'schedule' && 'true' || github.event.inputs.useLocalPlugin == 'true' && 'true' || 'false' }}
     steps:
       - name: Configure pagefile
         if: contains(matrix.os, 'windows')
