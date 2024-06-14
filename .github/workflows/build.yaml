@@ -7,7 +7,7 @@ on:
         description: 'Use lsp4ij locally'
         required: true
         type: boolean
-        default: 'false'
+        default: false
   workflow_dispatch:
     inputs:
       useLocalPlugin:

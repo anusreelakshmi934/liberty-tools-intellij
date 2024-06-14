@@ -4,10 +4,11 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 */2 * * *'
+  push:
+    branches: '**'
 
 jobs:
-
   call-build-workflow:
     uses: ./.github/workflows/build.yaml
     with:
-      useLocalPlugin: 'true'
+      useLocalPlugin: true
