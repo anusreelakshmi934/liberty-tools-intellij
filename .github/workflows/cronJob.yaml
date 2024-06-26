@@ -44,7 +44,7 @@ jobs:
     with:
       useLocalPlugin: true
       refLsp4ij: ${{ matrix.pr_sha.sha }}
-    name: Run LTI Tests for PR #${{ matrix.pr_sha.number }}
+    name: Run LTI tests for PR #${{ matrix.pr_sha.number }}
 
   # Run the LTI Tests against lsp4ij main branch
   call-build-workflow-for-lsp4ij-main-branch:
@@ -52,3 +52,4 @@ jobs:
     with:
       useLocalPlugin: true
       refLsp4ij: main
+    name: Run LTI tests for Lsp4ij Main branch
