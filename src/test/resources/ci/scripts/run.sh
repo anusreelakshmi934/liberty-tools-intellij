@@ -172,7 +172,7 @@ main() {
 
     # Run the tests
     echo -e "\n$(${currentTime[@]}): INFO: Running tests..."
-    ./gradlew test 
+    ./gradlew test -PuseLocal=$USE_LOCAL_PLUGIN
 
     # If there were any errors, gather some debug data before exiting.
     rc=$?
