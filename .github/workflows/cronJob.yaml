@@ -1,7 +1,6 @@
 name: Cron Job
 
 on:
-  push: 
   workflow_dispatch:
   schedule:
     # The job runs every midnight (UTC time). Ref - https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onschedule
