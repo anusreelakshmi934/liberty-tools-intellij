@@ -8,41 +8,67 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       pr_details: ${{ steps.extract.outputs.pr_details }}
+      is_empty: ${{ steps.extract.outputs.is_empty }}
     env:
       API_URL: https://api.github.com/repos/redhat-developer/lsp4ij/pulls
+    name: PR Details
     steps:
       - name: Extract PR numbers and merge_commit_shas
         shell: bash
         id: extract
         run: |
-          pr_infos=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "${{ env.API_URL }}")
+          # Fetch PR details from the GitHub API
+          pr_infos=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          "${{ env.API_URL }}")
 
           # Extract PR numbers and merge_commit_sha values, excluding draft pull requests
-          pr_details=$(echo "$pr_infos" | jq -r '.[] | select(.draft == false) | {number: .number, sha: .merge_commit_sha}')
-
-          # Print the PR number and corresponding merge commit sha
-          echo "PR number and merge commit sha:"
-          echo "$pr_details" | jq -r '. | "PR #\(.number): \(.sha)"'
-
-          # Check mergeable state of PRs
-          echo "Checking mergeable state of PRs..."
-          while IFS= read -r pr_detail; do
-            pr_number=$(jq -r '.number' <<< "$pr_detail")
-            pr_url="${{ env.API_URL }}/$pr_number"
-            pr_detail=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$pr_url")
+          pr_numbers=$(echo "$pr_infos" | jq -r '.[] | select(.draft == false) | {number: .number, sha: .merge_commit_sha} | @base64')          
+          
+          for pr in $pr_numbers; do
+            # Decode the base64 encoded JSON string
+            pr=$(echo "$pr" | base64 --decode)
+          
+            # Extract PR number and SHA
+            number=$(echo "$pr" | jq -r '.number')
+            sha=$(echo "$pr" | jq -r '.sha')
+          
+            url="${{ env.API_URL }}/$number"
+            pr_detail=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$url")
+          
+            # Extract mergeable_state
             mergeable_state=$(jq -r '.mergeable_state' <<< "$pr_detail")
-            if [ "$mergeable_state" == "dirty" ]; then
-              echo "##[warning] PR #$pr_number has a merge conflict."
+            if [ "$mergeable_state" == "clean" ]; then
+              sha_without_conflict+=("$sha")
+              pr_sha_map["$number"]="$sha"
+            elif [ "$mergeable_state" == "dirty" ]; then
+              # Add a warning annotation for PRs with merge conflicts
+              echo "::warning file=::PR #$number has merge conflicts."
             fi
-          done <<< "$pr_details"
-
-          # Create a JSON array string of PR numbers and SHAs
-          pr_details_array=$(jq -nc '[inputs | select(.draft == false) | {number: .number, sha: .merge_commit_sha}]' <<< "$pr_infos")
-          echo "pr_details=$pr_details_array" >> $GITHUB_OUTPUT
-  
+            # Store SHA for all PRs (clean and dirty)
+             pr_sha_map["$number"]="$sha"    
+          done
+          
+          # Print the PR number and corresponding merge commit SHA for all PRs
+          echo "PR numbers and their corresponding merge commit SHAs:"
+          for pr_number in "${!pr_sha_map[@]}"; do
+            echo "PR #$pr_number: ${pr_sha_map[$pr_number]}"
+          done
+          
+          # Convert the array to a JSON array
+          pr_without_conflict=$(printf '%s\n' "${sha_without_conflict[@]}" | jq -R -s -c 'split("\n") | map(select(. != ""))')
+          # Set the output for further steps
+          echo "pr_details=$pr_without_conflict" >> $GITHUB_OUTPUT
+          
+          # Check if pr_details_array is empty
+          if [ $(echo "$pr_without_conflict" | jq length) -eq 0 ]; then
+            echo "is_empty=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_empty=false" >> $GITHUB_OUTPUT
+          fi
 
   # Run the LTI Tests against each open lsp4ij PRs
   call-build-workflow-for-each-merge-commit-sha:
+    if: ${{ needs.fetch_all_pull_request_shas.outputs.is_empty == 'false' }}
     needs: fetch_all_pull_request_shas
     uses: ./.github/workflows/build.yaml
     strategy:
