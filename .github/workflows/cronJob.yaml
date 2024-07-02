@@ -20,7 +20,6 @@ jobs:
           # Fetch PR details from the GitHub API
           pr_infos=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
           "${{ env.API_URL }}")
-
           # Extract PR numbers and merge_commit_sha values, excluding draft pull requests
           pr_numbers=$(echo "$pr_infos" | jq -r '.[] | select(.draft == false) | {number: .number, sha: .merge_commit_sha} | @base64')          
           
@@ -51,11 +50,8 @@ jobs:
           # Print the PR number and corresponding merge commit SHA for all PRs
           echo "PR numbers and their corresponding merge commit SHAs:"
           for pr_number in "${!pr_sha_map[@]}"; do
-            pr_numbers_array+=("$pr_number")
             echo "PR #$pr_number: ${pr_sha_map[$pr_number]}"
           done
-          
-          pr_number=$(IFS=,; echo "${pr_numbers_array[*]}")
           
           # Convert the array to a JSON array
           pr_without_conflict=$(printf '%s\n' "${sha_without_conflict[@]}" | jq -R -s -c 'split("\n") | map(select(. != ""))')
@@ -68,7 +64,6 @@ jobs:
           else
             echo "is_empty=false" >> $GITHUB_OUTPUT
           fi
-
   # Run the LTI Tests against each open lsp4ij PRs
   call-build-workflow-for-each-merge-commit-sha:
     if: ${{ needs.fetch_all_pull_request_shas.outputs.is_empty == 'false' }}
@@ -80,8 +75,8 @@ jobs:
         pr_details: ${{ fromJson(needs.fetch_all_pull_request_shas.outputs.pr_details) }}
     with:
       useLocalPlugin: true
-      refLsp4ij: ${{ matrix.pr_details.sha }}
-    name: "Run LTI tests for PR #$pr_numbers"
+      refLsp4ij: ${{ matrix.pr_details }}
+    name: Run LTI tests for PR #${{ matrix.pr_details.number }}
 
   # Run the LTI Tests against lsp4ij main branch
   call-build-workflow-for-lsp4ij-main-branch:
