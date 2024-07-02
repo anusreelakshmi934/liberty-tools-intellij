@@ -1,10 +1,7 @@
 name: Cron Job
 
 on:
-  workflow_dispatch:
-  schedule:
-    # The job runs every midnight (UTC time). Ref - https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onschedule
-    - cron: '0 0 * * *'
+  push:
 
 jobs:
   fetch_all_pull_request_shas:
@@ -28,9 +25,21 @@ jobs:
           echo "PR number and merge commit sha:"
           echo "$pr_details" | jq -r '. | "PR #\(.number): \(.sha)"'
 
+          # Check if any of the PR contain merge conflicts
+          echo "Checking mergeable state of PRs..."
+          pr_urls=$(echo "$pr_details" | jq -r '. | "${{ env.API_URL }}/\(.number)"')
+          for url in $pr_urls; do
+            pr_detail=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$url")
+            mergeable_state=$(echo "$pr_detail" | jq -r '.mergeable_state')
+            if [ "$mergeable_state" == "dirty" ]; then
+              pr_number=$(echo "$pr_detail" | jq -r '.number')
+              echo "##[warning] PR #$pr_number has a merge conflict."
+            fi
+          done
+          
           # Create a JSON array string of PR numbers and SHAs
-          pr_details=$(echo "$pr_details" | jq -nc '[inputs | {number: .number, sha: .sha}]')
-          echo "pr_details=$pr_details" >> $GITHUB_OUTPUT
+          pr_details_array=$(echo "$pr_infos" | jq -nc '[inputs | .[] | select(.draft == false) | {number: .number, sha: .merge_commit_sha}]')
+          echo "pr_details=$pr_details_array" >> $GITHUB_OUTPUT
 
   # Run the LTI Tests against each open lsp4ij PRs
   call-build-workflow-for-each-merge-commit-sha:
