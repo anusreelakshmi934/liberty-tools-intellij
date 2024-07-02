@@ -15,8 +15,7 @@ jobs:
         shell: bash
         id: extract
         run: |
-          pr_infos=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          "${{ env.API_URL }}")
+          pr_infos=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "${{ env.API_URL }}")
 
           # Extract PR numbers and merge_commit_sha values, excluding draft pull requests
           pr_details=$(echo "$pr_infos" | jq -r '.[] | select(.draft == false) | {number: .number, sha: .merge_commit_sha}')
@@ -25,21 +24,22 @@ jobs:
           echo "PR number and merge commit sha:"
           echo "$pr_details" | jq -r '. | "PR #\(.number): \(.sha)"'
 
-          # Check if any of the PR contain merge conflicts
+          # Check mergeable state of PRs
           echo "Checking mergeable state of PRs..."
-          pr_urls=$(echo "$pr_details" | jq -r '. | "${{ env.API_URL }}/\(.number)"')
-          for url in $pr_urls; do
-            pr_detail=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$url")
-            mergeable_state=$(echo "$pr_detail" | jq -r '.mergeable_state')
+          while IFS= read -r pr_detail; do
+            pr_number=$(jq -r '.number' <<< "$pr_detail")
+            pr_url="${{ env.API_URL }}/$pr_number"
+            pr_detail=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$pr_url")
+            mergeable_state=$(jq -r '.mergeable_state' <<< "$pr_detail")
             if [ "$mergeable_state" == "dirty" ]; then
-              pr_number=$(echo "$pr_detail" | jq -r '.number')
               echo "##[warning] PR #$pr_number has a merge conflict."
             fi
-          done
-          
+          done <<< "$pr_details"
+
           # Create a JSON array string of PR numbers and SHAs
-          pr_details_array=$(echo "$pr_infos" | jq -nc '[inputs | .[] | select(.draft == false) | {number: .number, sha: .merge_commit_sha}]')
+          pr_details_array=$(jq -nc '[inputs | select(.draft == false) | {number: .number, sha: .merge_commit_sha}]' <<< "$pr_infos")
           echo "pr_details=$pr_details_array" >> $GITHUB_OUTPUT
+  
 
   # Run the LTI Tests against each open lsp4ij PRs
   call-build-workflow-for-each-merge-commit-sha:
