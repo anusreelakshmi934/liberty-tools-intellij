@@ -1,7 +1,7 @@
 name: Cron Job
 
 on:
-  push:
+  push: 
 
 jobs:
   fetch_all_pull_request_shas:
@@ -37,9 +37,8 @@ jobs:
             pr_detail=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "$url")
           
             mergeable_state=$(jq -r '.mergeable_state' <<< "$pr_detail")
-            draft=$(jq -r '.draft' <<< "$pr_detail")
           
-            if [[ "$mergeable_state" != "dirty" && "$draft" == "false" ]]; then
+            if [[ "$mergeable_state" != "dirty" ]]; then
             pr_number=$(jq -r '.number' <<< "$pr_detail")
             pr_sha=$(jq -r '.merge_commit_sha' <<< "$pr_detail")
             valid_prs+=("{\"number\": \"$pr_number\", \"sha\": \"$pr_sha\"}")
