@@ -56,7 +56,7 @@ jobs:
           
           # Check if pr_details_array is empty
           if [ $(echo "$pr_details_array" | jq length) -eq 0 ]; then
-            echo "::warning file=::All the PRs have Merge Conflicts. So Run LTI tests for PR is Skipped."
+            echo "::warning file=::All the PRs are either drafts or have merge conflicts. Skipping further actions."
             echo "is_empty=true" >> $GITHUB_OUTPUT
           else
             echo "is_empty=false" >> $GITHUB_OUTPUT
@@ -64,8 +64,8 @@ jobs:
 
   # Run the LTI Tests against each open lsp4ij PRs
   call-build-workflow-for-each-merge-commit-sha:
-    if: ${{ needs.fetch_all_pull_request_shas.outputs.is_empty == 'false' }}
     needs: fetch_all_pull_request_shas
+    if: ${{ needs.fetch_all_pull_request_shas.outputs.is_empty == 'false' }}
     uses: ./.github/workflows/build.yaml
     strategy:
       fail-fast: false
