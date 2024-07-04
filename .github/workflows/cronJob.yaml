@@ -1,7 +1,7 @@
 name: Cron Job
 
 on:
-  push:
+  push: 
 
 jobs:
   fetch_all_pull_request_shas:
