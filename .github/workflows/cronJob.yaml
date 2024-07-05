@@ -1,7 +1,7 @@
 name: Cron Job
 
 on:
-  push: 
+  push:
 
 jobs:
   fetch_all_pull_request_shas:
@@ -43,9 +43,7 @@ jobs:
             pr_sha=$(jq -r '.merge_commit_sha' <<< "$pr_detail")
             valid_prs+=("{\"number\": \"$pr_number\", \"sha\": \"$pr_sha\"}")
           else
-              pr_url=$(jq -r '.html_url' <<< "$pr_detail")
-              echo "::warning file=::PR #$number has merge conflicts. See $pr_url"
-#              echo "::warning file=::PR #$(jq -r '.number' <<< "$pr_detail") has conflicts."
+              echo "::warning file=::PR #$(jq -r '.number' <<< "$pr_detail") has conflicts. See: $(jq -r '.html_url' <<< "$pr_detail")"
           fi
           done
           
