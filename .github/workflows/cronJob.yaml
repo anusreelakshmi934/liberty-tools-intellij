@@ -43,7 +43,9 @@ jobs:
             pr_sha=$(jq -r '.merge_commit_sha' <<< "$pr_detail")
             valid_prs+=("{\"number\": \"$pr_number\", \"sha\": \"$pr_sha\"}")
           else
-              echo "::warning file=::PR #$(jq -r '.number' <<< "$pr_detail") has conflicts."
+              pr_url=$(jq -r '.html_url' <<< "$pr_detail")
+              echo "::warning file=::PR #$number has merge conflicts. See $pr_url"
+#              echo "::warning file=::PR #$(jq -r '.number' <<< "$pr_detail") has conflicts."
           fi
           done
           
