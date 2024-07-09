@@ -84,3 +84,4 @@ jobs:
       useLocalPlugin: true
       refLsp4ij: main
     name: Run LTI tests for Lsp4ij Main branch
+    
