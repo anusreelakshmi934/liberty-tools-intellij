@@ -14,7 +14,7 @@ jobs:
       pr_details: ${{ steps.extract.outputs.pr_details }}
       is_empty: ${{ steps.extract.outputs.is_empty }}
     env:
-      API_URL: https://api.github.com/repos/vaisakhkannan/liberty-tools-intellij/pulls
+      API_URL: https://api.github.com/repos/anusreelakshmi934/liberty-tools-intellij/pulls
     name: PR Details
     steps:
       - name: Extract PR numbers and merge_commit_shas
