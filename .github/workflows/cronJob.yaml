@@ -1,7 +1,7 @@
 name: Cron Job
 
 on:
-  push: 
+  push:
   workflow_dispatch:
   schedule:
     # The job runs every midnight (UTC time). Ref - https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onschedule
@@ -14,7 +14,7 @@ jobs:
       pr_details: ${{ steps.extract.outputs.pr_details }}
       is_empty: ${{ steps.extract.outputs.is_empty }}
     env:
-      API_URL: https://api.github.com/repos/vaisakhkannan/liberty-tools-intellij/pulls
+      API_URL: https://api.github.com/repos/OpenLiberty/liberty-tools-vscode/pulls
     name: PR Details
     steps:
       - name: Extract PR numbers and merge_commit_shas
