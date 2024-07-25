@@ -76,7 +76,7 @@ jobs:
         if: ${{ inputs.useLocalPlugin == true }}
         uses: actions/checkout@v3
         with:
-          repository: redhat-developer/lsp4ij
+          repository: vaisakhkannan/liberty-tools-intellij
           path: lsp4ij
           ref: ${{ env.REF_LSP4IJ }}
       - name: 'Build Lsp4ij'
