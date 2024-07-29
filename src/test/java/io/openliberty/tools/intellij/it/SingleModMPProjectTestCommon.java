@@ -773,7 +773,7 @@ public abstract class SingleModMPProjectTestCommon {
      */
     @Test
     @Video
-    @EnabledOnOs({OS.LINUX})
+    @EnabledOnOs({OS.LINUX}) 
     public void testStartInContainerActionUsingDropDownMenu() {
         String testName = "testStartInContainerActionUsingDropDownMenu";
         String absoluteWLPPath = Paths.get(getProjectsDirPath(), getSmMPProjectName(), getWLPInstallPath()).toString();
