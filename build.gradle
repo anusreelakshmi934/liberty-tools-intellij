@@ -162,6 +162,7 @@ runIdeForUiTests {
 
 test {
     useJUnitPlatform()
+    systemProperty 'video.mode', 'ALL'
 
     testLogging {
         showStandardStreams = true
