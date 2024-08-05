@@ -773,7 +773,7 @@ public abstract class SingleModMPProjectTestCommon {
      */
     @Test
     @Video
-    @EnabledOnOs({OS.LINUX}) 
+    @EnabledOnOs({OS.LINUX})
     public void testStartInContainerActionUsingDropDownMenu() {
         String testName = "testStartInContainerActionUsingDropDownMenu";
         String absoluteWLPPath = Paths.get(getProjectsDirPath(), getSmMPProjectName(), getWLPInstallPath()).toString();
@@ -786,7 +786,7 @@ public abstract class SingleModMPProjectTestCommon {
         } finally {
             if (TestUtils.isServerStopNeeded(absoluteWLPPath)) {
                 // Stop dev mode.
-                UIBotTestUtils.runStopAction(remoteRobot, testName, UIBotTestUtils.ActionExecType.LTWDROPDOWN, absoluteWLPPath, getSmMPProjectName(), 3);
+                UIBotTestUtils.runLibertyActionFromLTWDropDownMenu(remoteRobot, "Stop", false, 3);
 
                 // Validate that the server stopped.
                 TestUtils.validateLibertyServerStopped(testName, absoluteWLPPath);
@@ -818,7 +818,7 @@ public abstract class SingleModMPProjectTestCommon {
         } finally {
             if (TestUtils.isServerStopNeeded(absoluteWLPPath)) {
                 // Stop dev mode.
-                UIBotTestUtils.runStopAction(remoteRobot, testName, UIBotTestUtils.ActionExecType.LTWPLAY, absoluteWLPPath, getSmMPProjectName(), 3);
+                UIBotTestUtils.runLibertyActionFromLTWDropDownMenu(remoteRobot, "Stop", true, 3);
 
                 // Validate that the server stopped.
                 TestUtils.validateLibertyServerStopped(testName, absoluteWLPPath);
@@ -850,7 +850,7 @@ public abstract class SingleModMPProjectTestCommon {
         } finally {
             if (TestUtils.isServerStopNeeded(absoluteWLPPath)) {
                 // Stop dev mode.
-                UIBotTestUtils.runStopAction(remoteRobot, testName, UIBotTestUtils.ActionExecType.LTWPOPUP, absoluteWLPPath, getSmMPProjectName(), 3);
+                UIBotTestUtils.runActionLTWPopupMenu(remoteRobot, getSmMPProjectName(), "Liberty: Stop", 3);
 
                 // Validate that the server stopped.
                 TestUtils.validateLibertyServerStopped(testName, absoluteWLPPath);
@@ -882,7 +882,7 @@ public abstract class SingleModMPProjectTestCommon {
         } finally {
             if (TestUtils.isServerStopNeeded(absoluteWLPPath)) {
                 // Stop dev mode.
-                UIBotTestUtils.runStopAction(remoteRobot, testName, UIBotTestUtils.ActionExecType.SEARCH, absoluteWLPPath, getSmMPProjectName(), 3);
+                UIBotTestUtils.runActionFromSearchEverywherePanel(remoteRobot, "Liberty: Stop", 3);
 
                 // Validate that the server stopped.
                 TestUtils.validateLibertyServerStopped(testName, absoluteWLPPath);
