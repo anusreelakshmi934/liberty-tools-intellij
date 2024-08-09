@@ -29,8 +29,6 @@ on:
         type: string
         required: true
         default: main
-  schedule:
-    - cron: '0 */2 * * *'
   push:
     branches: '**'
   pull_request:
