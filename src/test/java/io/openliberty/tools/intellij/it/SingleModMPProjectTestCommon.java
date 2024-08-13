@@ -476,36 +476,52 @@ public abstract class SingleModMPProjectTestCommon {
         String absoluteWLPPath = Paths.get(getProjectsDirPath(), getSmMPProjectName(), getWLPInstallPath()).toString();
 
         // Remove all other configurations first.
+        TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":deleteLibertyRunConfigurations: Entry.");
         UIBotTestUtils.deleteLibertyRunConfigurations(remoteRobot);
+        TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":deleteLibertyRunConfigurations: Entry.");
 
         // Add a new Liberty config.
         String configName = "toolBarDebug-" + getSmMPProjectName();
+        TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":createLibertyConfiguration: Entry.");
         UIBotTestUtils.createLibertyConfiguration(remoteRobot, configName);
+        TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":createLibertyConfiguration: Exit.");
 
         // Find the newly created config in the config selection box on the project frame.
+        TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":selectConfigUsingToolbar: Entry.");
         UIBotTestUtils.selectConfigUsingToolbar(remoteRobot, configName);
+        TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":selectConfigUsingToolbar: Exit.");
 
         // Click on the debug icon for the selected configuration.
+        TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":runConfigUsingIconOnToolbar: Entry.");
         UIBotTestUtils.runConfigUsingIconOnToolbar(remoteRobot, UIBotTestUtils.ExecMode.DEBUG);
+        TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":runConfigUsingIconOnToolbar: Exit.");
 
         try {
             // Validate that the project started.
+            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":validateProjectStarted: Entry.");
             TestUtils.validateProjectStarted(testName, getSmMpProjResURI(), getSmMpProjPort(), getSmMPProjOutput(), absoluteWLPPath, false);
+            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":validateProjectStarted: Exit.");
 
             // Stop the debugger.
             // When the debugger is attached, the debugger window should open automatically.
             // If the debugger was not attached or if the debugger window was not opened,
             // the stop request will time out.
+            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":stopDebugger: Entry.");
             UIBotTestUtils.stopDebugger(remoteRobot);
+            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":stopDebugger: Exit.");
         } finally {
             try {
                 // Open the terminal window.
+                TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":openTerminalWindow: Entry.");
                 UIBotTestUtils.openTerminalWindow(remoteRobot);
+                TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":openTerminalWindow: Exit.");
             } finally {
                 try {
                     // If the debugger did not attach, there might be an error dialog. Close it.
                     try {
+                        TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":closeErrorDialog: Entry.");
                         UIBotTestUtils.closeErrorDialog(remoteRobot);
+                        TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":closeErrorDialog: Exit.");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -513,11 +529,15 @@ public abstract class SingleModMPProjectTestCommon {
                     try {
                         // Stop the server.
                         if (TestUtils.isServerStopNeeded(absoluteWLPPath)) {
+                            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":runStopAction: Entry.");
                             UIBotTestUtils.runStopAction(remoteRobot, testName, UIBotTestUtils.ActionExecType.LTWDROPDOWN, absoluteWLPPath, getSmMPProjectName(), 3);
+                            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":runStopAction: Exit.");
                         }
                     } finally {
                         // Cleanup configurations.
+                        TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":deleteLibertyRunConfigurations: Entry.");
                         UIBotTestUtils.deleteLibertyRunConfigurations(remoteRobot);
+                        TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":deleteLibertyRunConfigurations: Exit.");
                     }
                 }
             }
