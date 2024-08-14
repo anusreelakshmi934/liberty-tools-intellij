@@ -143,7 +143,7 @@ runIde {
 
 intellij {
     // For a full list of IntelliJ IDEA releases please see https://www.jetbrains.com/intellij-repository/releases
-    version = '2024.1.3'
+    version = '2024.1.6'
 
     def lsp4ij = project.hasProperty('useLocal') && project.property('useLocal') == 'true' ?
             file("../lsp4ij/build/distributions/LSP4IJ/") :
