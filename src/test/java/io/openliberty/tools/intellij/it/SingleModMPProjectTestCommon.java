@@ -1024,6 +1024,9 @@ public abstract class SingleModMPProjectTestCommon {
             TestUtils.validateProjectStarted(testName, getSmMpProjResURI(), getSmMpProjPort(), getSmMPProjOutput(), absoluteWLPPath, false);
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":validateProjectStarted: Exit.");
 
+            // Delay added
+            TestUtils.sleepAndIgnoreException(60);
+            
             // To check if debug port is set to a custom value (e.g., 9876)
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":checkDebugPort: Entry.");
             TestUtils.checkDebugPort(absoluteWLPPath, 9876);
@@ -1057,6 +1060,9 @@ public abstract class SingleModMPProjectTestCommon {
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":validateProjectStarted: Entry.");
             TestUtils.validateProjectStarted(testName, getSmMpProjResURI(), getSmMpProjPort(), getSmMPProjOutput(), absoluteWLPPath, false);
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":validateProjectStarted: Exit.");
+
+            // Delay added
+            TestUtils.sleepAndIgnoreException(60);
 
             // To check if debug port is set to the default value (7777)
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":checkDebugPort: Entry.");
