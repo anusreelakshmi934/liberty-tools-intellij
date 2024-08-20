@@ -1026,22 +1026,10 @@ public abstract class SingleModMPProjectTestCommon {
 
             // To check if debug port is set to a custom value (e.g., 9876)
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":checkDebugPort: Entry.");
-
-            // Retry mechanism for checking the debug port
-            boolean isDebugPortSet = false;
-            int retries = 5;
-            int delayMillis = 2000; // 2 seconds
-            for (int i = 0; i < retries; i++) {
-                if (TestUtils.checkDebugPort(absoluteWLPPath, 9876)) {
-                    isDebugPortSet = true;
-                    break;
-                }
-                Thread.sleep(delayMillis);
-            }
-            Assertions.assertTrue(isDebugPortSet, "Debug Port is not set to 9876");
+            TestUtils.checkDebugPort(absoluteWLPPath, 9876);
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":checkDebugPort: Exit.");
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             Assertions.fail("Error reading the server.env file: " + e.getMessage());
 
         } finally {
@@ -1072,21 +1060,10 @@ public abstract class SingleModMPProjectTestCommon {
 
             // To check if debug port is set to the default value (7777)
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":checkDebugPort: Entry.");
-            // Retry mechanism for checking the debug port
-            boolean isDebugPortSet = false;
-            int retries = 5;
-            int delayMillis = 2000; // 2 seconds
-            for (int i = 0; i < retries; i++) {
-                if (TestUtils.checkDebugPort(absoluteWLPPath, 7777)) {
-                    isDebugPortSet = true;
-                    break;
-                }
-                Thread.sleep(delayMillis);
-            }
-            Assertions.assertTrue(isDebugPortSet, "Debug Port is not set to 7777");
+            TestUtils.checkDebugPort(absoluteWLPPath, 7777);
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":checkDebugPort: Exit.");
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             Assertions.fail("Error reading the server.env file: " + e.getMessage());
 
         } finally {
