@@ -1025,6 +1025,7 @@ public abstract class SingleModMPProjectTestCommon {
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":validateProjectStarted: Exit.");
 
             // To check if debug port is set to a custom value (e.g., 9876)
+            UIBotTestUtils.openLibertyToolWindow(remoteRobot);
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":checkDebugPort: Entry.");
             TestUtils.checkDebugPort(absoluteWLPPath, 9876);
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":checkDebugPort: Exit.");
@@ -1059,6 +1060,7 @@ public abstract class SingleModMPProjectTestCommon {
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":validateProjectStarted: Exit.");
 
             // To check if debug port is set to the default value (7777)
+            UIBotTestUtils.openLibertyToolWindow(remoteRobot);
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":checkDebugPort: Entry.");
             TestUtils.checkDebugPort(absoluteWLPPath, 7777);
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, testName + ":checkDebugPort: Exit.");
