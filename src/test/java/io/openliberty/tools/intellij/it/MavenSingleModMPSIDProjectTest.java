@@ -72,12 +72,12 @@ public class MavenSingleModMPSIDProjectTest extends SingleModMPProjectTestCommon
     /**
      * The path to the integration test reports.
      */
-    private final Path pathToITReport = Paths.get(PROJECTS_PATH_NEW, SM_MP_PROJECT_NAME, "target", "site", "failsafe-report.html");
+    private final Path pathToITReport = Paths.get(PROJECTS_PATH_NEW, SM_MP_PROJECT_NAME, "target", "reports", "failsafe.html");
 
     /**
      * The path to the unit test reports.
      */
-    private final Path pathToUTReport = Paths.get(PROJECTS_PATH_NEW, SM_MP_PROJECT_NAME, "target", "site", "surefire-report.html");
+    private final Path pathToUTReport = Paths.get(PROJECTS_PATH_NEW, SM_MP_PROJECT_NAME, "target", "reports", "surefire.html");
 
     /**
      * Dev mode configuration start parameters.
