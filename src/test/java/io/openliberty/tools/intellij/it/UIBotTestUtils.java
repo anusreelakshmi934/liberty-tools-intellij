@@ -759,6 +759,19 @@ public class UIBotTestUtils {
         }
     }
 
+    public static void killTerminalProcess(RemoteRobot remoteRobot, String projectName) {
+        ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
+
+        try {
+            ProjectFrameFixture.rightClickOnTerminalTab(projectFrame,projectName);
+            ProjectFrameFixture.clickCloseAllOption(projectFrame);
+            ProjectFrameFixture.clickTerminateProcess(projectFrame);
+
+        } catch (WaitForConditionTimeoutException e) {
+            // The Terminal tab is most likely closed.
+        }
+    }
+
 
     /**
      * Moves the mouse cursor to a specific string target in a liberty config file
