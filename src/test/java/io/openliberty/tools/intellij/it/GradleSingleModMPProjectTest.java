@@ -68,12 +68,12 @@ public class GradleSingleModMPProjectTest extends SingleModMPProjectTestCommon {
     /**
      * Dev mode configuration start parameters.
      */
-    private final String DEV_MODE_START_PARAMS = "--hotTests";
+    private final String DEV_MODE_START_PARAMS = "--hotTests --serverStartTimeout=120";
 
     /**
      * Dev mode configuration custom start parameters for debugging.
      */
-    private final String DEV_MODE_START_PARAMS_DEBUG = "--libertyDebugPort=9876";
+    private final String DEV_MODE_START_PARAMS_DEBUG = "--libertyDebugPort=9876 --serverStartTimeout=120";
 
     /**
      * Prepares the environment for test execution.
