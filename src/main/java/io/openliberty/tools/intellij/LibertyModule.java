@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 IBM Corporation.
+ * Copyright (c) 2022, 2024 IBM Corporation.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v. 2.0 which is available at
@@ -27,7 +27,6 @@ public class LibertyModule {
     private boolean validContainerVersion;
 
     private String customStartParams;
-    // FIXME not currently being used, need to enable runInContainer checkbox in LibertyRunConfiguration see https://github.com/OpenLiberty/liberty-tools-intellij/issues/160
     private boolean runInContainer;
 
     private boolean debugMode;
@@ -51,7 +50,7 @@ public class LibertyModule {
 
     public LibertyModule(Project project, BuildFile buildFile) {
         this(project);
-        this.buildFile = buildFile.getBuildFile().getVirtualFile();
+        this.buildFile = buildFile.getBuildFile();
         this.name = buildFile.getProjectName();
         this.projectType = buildFile.getProjectType();
         this.validContainerVersion = buildFile.isValidContainerVersion();
@@ -98,18 +97,14 @@ public class LibertyModule {
     }
 
     public String getCustomStartParams() {
-        if (customStartParams == null) {
-            clearCustomStartParams();
-        }
         return customStartParams;
     }
 
     public void setCustomStartParams(String customStartParams) {
+        if (customStartParams == null) {
+            customStartParams = "";
+        }
         this.customStartParams = customStartParams;
-    }
-
-    public void clearCustomStartParams() {
-        customStartParams = "";
     }
 
     public boolean runInContainer() {
