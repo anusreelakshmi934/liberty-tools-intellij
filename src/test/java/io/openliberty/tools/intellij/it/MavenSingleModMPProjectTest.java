@@ -77,12 +77,12 @@ public class MavenSingleModMPProjectTest extends SingleModMPProjectTestCommon {
     /**
      * Dev mode configuration start parameters.
      */
-    private final String DEV_MODE_START_PARAMS = "-DhotTests=true";
+    private final String DEV_MODE_START_PARAMS = "-DhotTests=true -DserverStartTimeout=120";
 
     /**
      * Dev mode configuration custom start parameters for debugging.
      */
-    private final String DEV_MODE_START_PARAMS_DEBUG = "-DdebugPort=9876";
+    private final String DEV_MODE_START_PARAMS_DEBUG = "-DdebugPort=9876 -DserverStartTimeout=120";
 
     /**
      * Prepares the environment for test execution.
