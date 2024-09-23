@@ -76,6 +76,11 @@ public class GradleSingleModMPProjectTest extends SingleModMPProjectTestCommon {
     private final String DEV_MODE_START_PARAMS_DEBUG = "--libertyDebugPort=9876 --serverStartTimeout=120";
 
     /**
+     * Dev mode configuration start parameters to delay timeout.
+     */
+    private final String DEV_MODE_PARAM = "--serverStartTimeout=120";
+
+    /**
      * Prepares the environment for test execution.
      */
     @BeforeAll
@@ -173,6 +178,16 @@ public class GradleSingleModMPProjectTest extends SingleModMPProjectTestCommon {
     @Override
     public String getStartParams() {
         return DEV_MODE_START_PARAMS;
+    }
+
+    /**
+     * Returns the custom start parameters to be used to start dev mode to delay server timeout.
+     *
+     * @return The custom start parameters to be used to start dev mode to delay server timeout.
+     */
+    @Override
+    public String getStartParam() {
+        return DEV_MODE_PARAM;
     }
 
     /**

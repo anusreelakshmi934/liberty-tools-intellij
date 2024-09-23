@@ -330,8 +330,11 @@ public abstract class SingleModMPProjectTestCommon {
         // Delete any existing test report files.
         deleteTestReports();
 
-        // Start dev mode.
-        UIBotTestUtils.runLibertyActionFromLTWDropDownMenu(remoteRobot, "Start", false, 3);
+        // Trigger the start with parameters configuration dialog.
+        UIBotTestUtils.runActionLTWPopupMenu(remoteRobot, getSmMPProjectName(), "Liberty: Start...", 3);
+
+        // Run the configuration dialog.
+        UIBotTestUtils.runStartParamsConfigDialog(remoteRobot, getStartParam());
 
         // Validate that the project started.
         TestUtils.validateProjectStarted(testName, getSmMpProjResURI(), getSmMpProjPort(), getSmMPProjOutput(), absoluteWLPPath, false);
@@ -369,8 +372,11 @@ public abstract class SingleModMPProjectTestCommon {
         // Delete any existing test report files.
         deleteTestReports();
 
-        // Start dev mode.
-        UIBotTestUtils.runLibertyActionFromLTWDropDownMenu(remoteRobot, "Start", true, 3);
+        // Trigger the start with parameters configuration dialog.
+        UIBotTestUtils.runActionLTWPopupMenu(remoteRobot, getSmMPProjectName(), "Liberty: Start...", 3);
+
+        // Run the configuration dialog.
+        UIBotTestUtils.runStartParamsConfigDialog(remoteRobot, getStartParam());
 
         try {
             // Validate that the application started.
@@ -407,8 +413,11 @@ public abstract class SingleModMPProjectTestCommon {
         // Delete any existing test report files.
         deleteTestReports();
 
-        // Start dev mode.
-        UIBotTestUtils.runActionLTWPopupMenu(remoteRobot, getSmMPProjectName(), "Liberty: Start", 3);
+        // Trigger the start with parameters configuration dialog.
+        UIBotTestUtils.runActionLTWPopupMenu(remoteRobot, getSmMPProjectName(), "Liberty: Start...", 3);
+
+        // Run the configuration dialog.
+        UIBotTestUtils.runStartParamsConfigDialog(remoteRobot, getStartParam());
 
         try {
             // Validate that the application started.
@@ -445,8 +454,11 @@ public abstract class SingleModMPProjectTestCommon {
         // Delete any existing test report files.
         deleteTestReports();
 
-        // Start dev mode.
-        UIBotTestUtils.runActionFromSearchEverywherePanel(remoteRobot, "Liberty: Start", 3);
+        // Trigger the start with parameters configuration dialog.
+        UIBotTestUtils.runActionLTWPopupMenu(remoteRobot, getSmMPProjectName(), "Liberty: Start...", 3);
+
+        // Run the configuration dialog.
+        UIBotTestUtils.runStartParamsConfigDialog(remoteRobot, getStartParam());
 
         try {
             // Validate that the application started.
@@ -488,7 +500,7 @@ public abstract class SingleModMPProjectTestCommon {
 
         // Add a new Liberty config.
         String configName = "toolBarDebug-" + getSmMPProjectName();
-        UIBotTestUtils.createLibertyConfiguration(remoteRobot, configName);
+        UIBotTestUtils.editLibertyConfigUsingEditConfigDialog(remoteRobot, configName, getStartParam());
 
         // Find the newly created config in the config selection box on the project frame.
         UIBotTestUtils.selectConfigUsingToolbar(remoteRobot, configName);
@@ -548,7 +560,7 @@ public abstract class SingleModMPProjectTestCommon {
 
         // Add a new Liberty config.
         String configName = "menuDebug-" + getSmMPProjectName();
-        UIBotTestUtils.createLibertyConfiguration(remoteRobot, configName);
+        UIBotTestUtils.editLibertyConfigUsingEditConfigDialog(remoteRobot, configName, getStartParam());
 
         // Find the newly created config in the config selection box on the project frame.
         UIBotTestUtils.selectConfigUsingMenu(remoteRobot, configName, UIBotTestUtils.ExecMode.DEBUG);
@@ -605,7 +617,7 @@ public abstract class SingleModMPProjectTestCommon {
 
         // Add a new Liberty config.
         String configName = "toolBarRun-" + getSmMPProjectName();
-        UIBotTestUtils.createLibertyConfiguration(remoteRobot, configName);
+        UIBotTestUtils.editLibertyConfigUsingEditConfigDialog(remoteRobot, configName, getStartParam());
 
         // Find the newly created config in the config selection box on the project frame.
         UIBotTestUtils.selectConfigUsingToolbar(remoteRobot, configName);
@@ -644,7 +656,7 @@ public abstract class SingleModMPProjectTestCommon {
 
         // Add a new Liberty config.
         String configName = "menuRun-" + getSmMPProjectName();
-        UIBotTestUtils.createLibertyConfiguration(remoteRobot, configName);
+        UIBotTestUtils.editLibertyConfigUsingEditConfigDialog(remoteRobot, configName, getStartParam());
 
         // Find the newly created config in the config selection box on the project frame.
         UIBotTestUtils.selectConfigUsingMenu(remoteRobot, configName, UIBotTestUtils.ExecMode.RUN);
@@ -1070,6 +1082,13 @@ public abstract class SingleModMPProjectTestCommon {
      * @return The custom start parameters to be used to start dev mode.
      */
     public abstract String getStartParams();
+
+    /**
+     * Returns the custom start parameters to be used to start dev mode to delay server timeout.
+     *
+     * @return The custom start parameters to be used to start dev mode to delay server timeout.
+     */
+    public abstract String getStartParam();
 
     /**
      * Returns the custom start parameters to be used to start dev mode.

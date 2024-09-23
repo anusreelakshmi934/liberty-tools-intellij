@@ -80,6 +80,11 @@ public class MavenSingleModMPProjectTest extends SingleModMPProjectTestCommon {
     private final String DEV_MODE_START_PARAMS = "-DhotTests=true -DserverStartTimeout=120";
 
     /**
+     * Dev mode configuration start parameters to delay timeout.
+     */
+    private final String DEV_MODE_PARAM = "-DserverStartTimeout=120";
+
+    /**
      * Dev mode configuration custom start parameters for debugging.
      */
     private final String DEV_MODE_START_PARAMS_DEBUG = "-DdebugPort=9876 -DserverStartTimeout=120";
@@ -183,6 +188,16 @@ public class MavenSingleModMPProjectTest extends SingleModMPProjectTestCommon {
     @Override
     public String getStartParams() {
         return DEV_MODE_START_PARAMS;
+    }
+
+    /**
+     * Returns the custom start parameters to be used to start dev mode to delay server timeout.
+     *
+     * @return The custom start parameters to be used to start dev mode to delay server timeout.
+     */
+    @Override
+    public String getStartParam() {
+        return DEV_MODE_PARAM;
     }
 
     /**
