@@ -508,6 +508,9 @@ public abstract class SingleModMPProjectTestCommon {
         // Click on the debug icon for the selected configuration.
         UIBotTestUtils.runConfigUsingIconOnToolbar(remoteRobot, UIBotTestUtils.ExecMode.DEBUG);
 
+        // Click on Debug
+        UIBotTestUtils.clickOnDebug(remoteRobot);
+
         try {
             // Validate that the project started.
             TestUtils.validateProjectStarted(testName, getSmMpProjResURI(), getSmMpProjPort(), getSmMPProjOutput(), absoluteWLPPath, false);
@@ -564,6 +567,9 @@ public abstract class SingleModMPProjectTestCommon {
 
         // Find the newly created config in the config selection box on the project frame.
         UIBotTestUtils.selectConfigUsingMenu(remoteRobot, configName, UIBotTestUtils.ExecMode.DEBUG);
+
+        // Click on Debug
+        UIBotTestUtils.clickOnDebug(remoteRobot);
 
         try {
             // Validate that the project started.
@@ -625,6 +631,9 @@ public abstract class SingleModMPProjectTestCommon {
         // Click on the debug icon for the selected configuration.
         UIBotTestUtils.runConfigUsingIconOnToolbar(remoteRobot, UIBotTestUtils.ExecMode.RUN);
 
+        // Click on Run
+        UIBotTestUtils.clickOnRun(remoteRobot);
+
         try {
             // Validate that the project started.
             TestUtils.validateProjectStarted(testName, getSmMpProjResURI(), getSmMpProjPort(), getSmMPProjOutput(), absoluteWLPPath, false);
@@ -660,6 +669,9 @@ public abstract class SingleModMPProjectTestCommon {
 
         // Find the newly created config in the config selection box on the project frame.
         UIBotTestUtils.selectConfigUsingMenu(remoteRobot, configName, UIBotTestUtils.ExecMode.RUN);
+
+        // Click on Run
+        UIBotTestUtils.clickOnRun(remoteRobot);
 
         try {
             // Validate that the project started.

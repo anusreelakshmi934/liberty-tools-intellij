@@ -2154,6 +2154,9 @@ public class UIBotTestUtils {
 
         iconButton.click();
 
+    }
+
+    public static void clickOnDebug(RemoteRobot remoteRobot) {
         DialogFixture dialog = remoteRobot.find(DialogFixture.class, Duration.ofSeconds(10));
         // Run the configuration.
         JButtonFixture runButton = dialog.getButton("Debug");
@@ -2163,6 +2166,20 @@ public class UIBotTestUtils {
                 "The run button on the open project dialog to be enabled",
                 runButton::isEnabled);
         runButton.click();
+
+    }
+
+    public static void clickOnRun(RemoteRobot remoteRobot) {
+        DialogFixture dialog = remoteRobot.find(DialogFixture.class, Duration.ofSeconds(10));
+        // Run the configuration.
+        JButtonFixture runButton = dialog.getButton("Run");
+        RepeatUtilsKt.waitFor(Duration.ofSeconds(10),
+                Duration.ofSeconds(1),
+                "Waiting for the Run button on the open project dialog to be enabled",
+                "The run button on the open project dialog to be enabled",
+                runButton::isEnabled);
+        runButton.click();
+
     }
 
     /**
