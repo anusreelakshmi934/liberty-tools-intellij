@@ -106,29 +106,15 @@ jobs:
         run: bash ./src/test/resources/ci/scripts/run.sh
 
   # Upload artifacts
-      - name: Upload Maven output file
+      - name: Upload Maven and Gradle output files
         uses: actions/upload-artifact@v3
         with:
-          name: maven-output
-          path: ~/mavenoutputfile.txt
-
-      - name: Upload Maven Dev Container output file
-        uses: actions/upload-artifact@v3
-        with:
-          name: maven-devc-output
-          path: ~/devcoutputfile.txt
-
-      - name: Upload Gradle output file
-        uses: actions/upload-artifact@v3
-        with:
-         name: gradle-output
-         path: ~/gradleoutputfile.txt
-
-      - name: Upload Gradle Dev Container output file
-        uses: actions/upload-artifact@v3
-        with:
-          name: gradle-devc-output
-          path: ~/gradledevcoutputfile.txt
+          name: test-output-logs
+          path: |
+            ~/mavenoutputfile.txt
+            ~/devcoutputfile.txt
+            ~/gradleoutputfile.txt
+            ~/gradledevcoutputfile.txt
 
       - name: 'Archive Test logs and reports'
         if: ${{ failure() && steps.run_tests.conclusion == 'failure' }}
