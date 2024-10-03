@@ -8,6 +8,8 @@
     - [Debugging LemMinX langauge server with the Liberty LemMinX extension](#debugging-lemminx-language-server-with-the-liberty-lemminx-extension)
   - [Build Eclipse LSP4Jakarta locally](#build-eclipse-lsp4jakarta-locally)
   - [Build Eclipse LSP4MP locally](#build-eclipse-lsp4mp-locally)
+  - [Monitoring language server messages](#monitoring-language-server-messages)
+  - [Continuous Integration of LSP4IJ](#continuous-integration-of-lsp4ij)
 - [Localization](#localization)
   - [LibertyBundles.properties](#libertybundlesproperties)
   - [Source code](#source-code)
@@ -60,6 +62,10 @@ To debug the LemMinX Language Server in IntelliJ, complete the following steps.
 3. Messages to and from the language server will appear in the console, so you can verify the messages sent in response to user actions in the IDE.
 
 For more information, see the [LSP console user guide](https://github.com/redhat-developer/lsp4ij/blob/main/docs/UserGuide.md#lsp-console)
+
+### Continuous Integration of LSP4IJ
+
+For details on the Continuous Integration (CI) setup for LSP4IJ integration, refer to the [LSP4IJ Continuous Integration documentation.](docs/LSP4IJ-Continuous-Integration.md) 
 
 ## Localization
 
