@@ -109,9 +109,16 @@ jobs:
       - name: Upload Maven and Gradle output files
         uses: actions/upload-artifact@v4.3.4
         with:
-          name: test-output-logs
+          name: Maven-output-logs-${{ matrix.iteration }}
           path: |
-            liberty-tools-intellij/src/test/resources/projects/maven/singleModMavenMP/
+            liberty-tools-intellij/src/test/resources/projects/maven/singleModMavenMP/*.txt
+
+      - name: Upload Maven and Gradle output files
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: Gradle-output-logs-${{ matrix.iteration }}
+          path: |
+            liberty-tools-intellij/src/test/resources/projects/maven/singleModGradleMP/*.txt
 
       - name: 'Archive Test logs and reports'
         if: ${{ failure() && steps.run_tests.conclusion == 'failure' }}
