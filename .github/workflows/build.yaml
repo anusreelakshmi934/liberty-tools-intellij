@@ -111,10 +111,7 @@ jobs:
         with:
           name: test-output-logs
           path: |
-            ~/mavenoutputfile.txt
-            ~/devcoutputfile.txt
-            ~/gradleoutputfile.txt
-            ~/gradledevcoutputfile.txt
+            liberty-tools-intellij/src/test/resources/projects/gradle/singleModMavenMP/mavenoutputfile.txt
 
       - name: 'Archive Test logs and reports'
         if: ${{ failure() && steps.run_tests.conclusion == 'failure' }}
