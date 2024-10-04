@@ -11,17 +11,24 @@ package io.openliberty.tools.intellij.it;
 
 import com.automation.remarks.junit5.Video;
 import com.intellij.remoterobot.RemoteRobot;
+import com.intellij.remoterobot.fixtures.ActionButtonFixture;
+import com.intellij.remoterobot.fixtures.ComponentFixture;
+import com.intellij.remoterobot.utils.Keyboard;
+import com.intellij.remoterobot.utils.WaitForConditionTimeoutException;
+import io.openliberty.tools.intellij.it.fixtures.ProjectFrameFixture;
 import io.openliberty.tools.intellij.it.fixtures.WelcomeFrameFixture;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
 
+import static com.intellij.remoterobot.search.locators.Locators.byXpath;
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitForIgnoringError;
 
 /**
@@ -72,6 +79,49 @@ public abstract class SingleModMPProjectTestCommon {
      * Close project.
      */
     protected static void closeProjectView() {
+        Keyboard keyboard = new Keyboard(remoteRobot);
+//        keyboard.enterText("gradle clean");
+//        keyboard.enter();
+//        TestUtils.sleepAndIgnoreException(5);
+//        keyboard.enterText("mvn clean");
+//        keyboard.enter();
+//        TestUtils.sleepAndIgnoreException(5);
+
+        ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
+        ComponentFixture terminal = remoteRobot.find(ComponentFixture.class, byXpath("//div[@class='JBTerminalPanel']"), Duration.ofSeconds(10));
+        terminal.rightClick();
+        ComponentFixture openFixture = projectFrame.getActionMenuItem("Select All");
+        openFixture.click(new Point());
+        terminal.rightClick();
+        ComponentFixture openFixtureCopy = projectFrame.getActionMenuItem("Copy");
+        openFixtureCopy.click(new Point());
+        terminal.rightClick();
+        ComponentFixture openFixtureNewTab = projectFrame.getActionMenuItem("New Tab");
+        openFixtureNewTab.click(new Point());
+
+        if (remoteRobot.isWin()) {
+
+            TestUtils.sleepAndIgnoreException(5);
+            keyboard.enterText("mkdir log");
+            keyboard.enter();
+            TestUtils.sleepAndIgnoreException(5);
+            keyboard.enterText("cd log");
+            keyboard.enter();
+            TestUtils.sleepAndIgnoreException(5);
+            keyboard.enterText("powershell Get-Clipboard | Out-File -FilePath file.txt -Append");
+            keyboard.enter();
+            TestUtils.sleepAndIgnoreException(5);
+
+        } else if (remoteRobot.isMac()) {
+
+            keyboard.enterText("mkdir log");
+            keyboard.enter();
+            keyboard.enterText("pbpaste >> log/filename.txt");
+            keyboard.enter();
+        }
+
+
+        TestUtils.sleepAndIgnoreException(5);
         UIBotTestUtils.closeLibertyToolWindow(remoteRobot);
         UIBotTestUtils.closeProjectView(remoteRobot);
         UIBotTestUtils.closeProjectFrame(remoteRobot);

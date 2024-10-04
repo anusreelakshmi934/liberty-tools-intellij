@@ -133,7 +133,7 @@ public class GradleSingleModMPSIDProjectTest extends SingleModMPProjectTestCommo
         try {
             closeProjectView();
         } finally {
-            deleteDirectoryIfExists(PROJECTS_PATH_NEW);
+//            deleteDirectoryIfExists(PROJECTS_PATH_NEW);
         }
     }
 

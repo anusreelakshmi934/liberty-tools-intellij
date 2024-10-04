@@ -17,9 +17,9 @@ public final class Constants {
     public static final String LIBERTY_GRADLE_PROJECT = "Liberty Gradle Project";
     public static final String LIBERTY_MAVEN_PROJECT = "Liberty Maven Project";
 
-    public static final String LIBERTY_MAVEN_START_CMD = " io.openliberty.tools:liberty-maven-plugin:dev ";
+    public static final String LIBERTY_MAVEN_START_CMD = " io.openliberty.tools:liberty-maven-plugin:dev -X ";
     public static final String LIBERTY_MAVEN_START_CONTAINER_CMD = " io.openliberty.tools:liberty-maven-plugin:devc ";
-    public static final String LIBERTY_GRADLE_START_CMD = " libertyDev ";
+    public static final String LIBERTY_GRADLE_START_CMD = " libertyDev --debug ";
     public static final String LIBERTY_GRADLE_START_CONTAINER_CMD = " libertyDevc ";
     public static final String LIBERTY_DEV_START = LocalizedResourceUtil.getMessage("start.dev");
     public static final String LIBERTY_DEV_CUSTOM_START = LocalizedResourceUtil.getMessage("start.dev.custom.params");

@@ -115,7 +115,7 @@ public class MavenSingleModMPSIDProjectTest extends SingleModMPProjectTestCommon
         try {
             closeProjectView();
         } finally {
-            deleteDirectoryIfExists(PROJECTS_PATH_NEW);
+//            deleteDirectoryIfExists(PROJECTS_PATH_NEW);
         }
     }
 

@@ -111,3 +111,31 @@ jobs:
           name: ${{ matrix.reportName }}
           path: |
             liberty-tools-intellij/build/reports/
+      - name: 'Archive Terminal log singleModMavenMP'
+        if: ${{ failure() && steps.run_tests.conclusion == 'failure' }}
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: ${{ matrix.reportName }}-singleModMavenMP
+          path: |
+            liberty-tools-intellij/src/test/resources/projects/maven/singleModMavenMP/log/
+      - name: 'Archive Terminal logs singleModMavenMP -SID'
+        if: ${{ failure() && steps.run_tests.conclusion == 'failure' }}
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: ${{ matrix.reportName }}-singleModMavenMP-SID
+          path: |
+            liberty-tools-intellij/src/test/resources/projects/maven sample/singleModMavenMP/log/
+      - name: 'Archive Terminal log singleModGradleMP'
+        if: ${{ failure() && steps.run_tests.conclusion == 'failure' }}
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: ${{ matrix.reportName }}-singleModGradleMP
+          path: |
+            liberty-tools-intellij/src/test/resources/projects/gradle/singleModGradleMP/log/
+      - name: 'Archive Terminal log singleModGradleMP -SID'
+        if: ${{ failure() && steps.run_tests.conclusion == 'failure' }}
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: ${{ matrix.reportName }}-singleModGradleMP-SID
+          path: |
+            liberty-tools-intellij/src/test/resources/projects/gradle sample/singleMod GradleMP/log/
