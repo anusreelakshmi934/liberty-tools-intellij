@@ -113,11 +113,11 @@ public abstract class SingleModMPProjectTestCommon {
 
         } else if (remoteRobot.isLinux()) {
             // Check and install xclip
-            keyboard.enterText("if ! command -v xclip &> /dev/null");
+            keyboard.enterText("if ! command -v xsel &> /dev/null");
             keyboard.enter();
             keyboard.enterText("then");
             keyboard.enter();
-            keyboard.enterText("sudo apt-get install -y xclip || sudo dnf install -y xclip || sudo yum install -y xclip || sudo pacman -S xclip");
+            keyboard.enterText("sudo apt-get install -y xsel || sudo dnf install -y xsel || sudo yum install -y xsel || sudo pacman -S xsel");
             keyboard.enter();
             keyboard.enterText("fi");
             keyboard.enter();
@@ -125,7 +125,8 @@ public abstract class SingleModMPProjectTestCommon {
             // Create log directory and append clipboard content
             keyboard.enterText("mkdir -p log");
             keyboard.enter();
-            keyboard.enterText("xclip -o >> log/filename.txt");
+            TestUtils.sleepAndIgnoreException(5);
+            keyboard.enterText("xsel --clipboard --output >> log/filename.txt");
             keyboard.enter();
         }
 
