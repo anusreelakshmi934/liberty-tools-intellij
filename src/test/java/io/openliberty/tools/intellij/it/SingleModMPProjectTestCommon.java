@@ -80,12 +80,6 @@ public abstract class SingleModMPProjectTestCommon {
      */
     protected static void closeProjectView() {
         Keyboard keyboard = new Keyboard(remoteRobot);
-//        keyboard.enterText("gradle clean");
-//        keyboard.enter();
-//        TestUtils.sleepAndIgnoreException(5);
-//        keyboard.enterText("mvn clean");
-//        keyboard.enter();
-//        TestUtils.sleepAndIgnoreException(5);
 
         ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
         ComponentFixture terminal = remoteRobot.find(ComponentFixture.class, byXpath("//div[@class='JBTerminalPanel']"), Duration.ofSeconds(10));
@@ -100,7 +94,6 @@ public abstract class SingleModMPProjectTestCommon {
         openFixtureNewTab.click(new Point());
 
         if (remoteRobot.isWin()) {
-
             TestUtils.sleepAndIgnoreException(5);
             keyboard.enterText("mkdir log");
             keyboard.enter();
@@ -113,13 +106,28 @@ public abstract class SingleModMPProjectTestCommon {
             TestUtils.sleepAndIgnoreException(5);
 
         } else if (remoteRobot.isMac()) {
-
             keyboard.enterText("mkdir log");
             keyboard.enter();
             keyboard.enterText("pbpaste >> log/filename.txt");
             keyboard.enter();
-        }
 
+        } else if (remoteRobot.isLinux()) {
+            // Check and install xclip
+            keyboard.enterText("if ! command -v xclip &> /dev/null");
+            keyboard.enter();
+            keyboard.enterText("then");
+            keyboard.enter();
+            keyboard.enterText("sudo apt-get install -y xclip || sudo dnf install -y xclip || sudo yum install -y xclip || sudo pacman -S xclip");
+            keyboard.enter();
+            keyboard.enterText("fi");
+            keyboard.enter();
+
+            // Create log directory and append clipboard content
+            keyboard.enterText("mkdir -p log");
+            keyboard.enter();
+            keyboard.enterText("xclip -o >> log/filename.txt");
+            keyboard.enter();
+        }
 
         TestUtils.sleepAndIgnoreException(5);
         UIBotTestUtils.closeLibertyToolWindow(remoteRobot);
