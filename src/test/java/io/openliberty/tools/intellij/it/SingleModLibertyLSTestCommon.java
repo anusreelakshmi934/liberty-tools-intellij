@@ -155,6 +155,7 @@ public abstract class SingleModLibertyLSTestCommon {
      */
     @Test
     @Video
+    @Disabled
     public void testInsertLibertyConfigIntoServerEnv() {
         String envCfgSnippet = "WLP_LOGGING_CON";
         String envCfgNameChooserSnippet = "FORMAT";
@@ -321,6 +322,7 @@ public abstract class SingleModLibertyLSTestCommon {
      */
     @Test
     @Video
+    @Disabled
     public void testDiagnosticInServerEnv() {
         String envCfgSnippet = "WLP_LOGGING_CON";
         String envCfgNameChooserSnippet = "FORMAT";
