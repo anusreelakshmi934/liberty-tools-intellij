@@ -218,6 +218,33 @@ public class ProjectFrameFixture extends CommonContainerFixture {
     }
 
     /**
+     * Right-clicks on the terminal tab.
+     */
+    public static void rightClickOnTerminalTab(ProjectFrameFixture projectFrame, String fileName ) {
+        String terminalTabXPath = String.format("//div[@class='TabPanel'][.//div[@text='%s']]", fileName);
+        ComponentFixture terminalTab = projectFrame.getActionButton(terminalTabXPath, "10");
+        terminalTab.rightClick();
+    }
+
+    /**
+     * Clicks on the 'Close All' option in the context menu.
+     */
+    public static void clickCloseAllOption(ProjectFrameFixture projectFrame) {
+        String closeAllXPath = "//div[contains(@text.key, 'action.CloseContent.text')]";
+        ComponentFixture closeAllOption = projectFrame.getActionButton(closeAllXPath, "10");
+        closeAllOption.click();
+    }
+
+    /**
+     * Clicks on the 'Terminate Process' button if needed.
+     */
+    public static void clickTerminateProcess(ProjectFrameFixture projectFrame) {
+        String terminateXPath = "//div[@text.key='button.terminate']";
+        ComponentFixture terminateProcess = projectFrame.getActionButton(terminateXPath, "10");
+        terminateProcess.click();
+    }
+
+    /**
      * Return the ComponentFixture object associated with the InplaceButton class.
      *
      * @param xpathVars The Locator custom variables: name, waitTime(seconds)
