@@ -83,17 +83,17 @@ public class MavenSingleModMPSIDProjectTest extends SingleModMPProjectTestCommon
     /**
      * Dev mode configuration start parameters.
      */
-    private final String DEV_MODE_START_PARAMS = "-DhotTests=true -DserverStartTimeout=200";
+    private final String DEV_MODE_START_PARAMS = "-DhotTests=true -DserverStartTimeout=600";
 
     /**
      * Dev mode configuration start parameters to delay timeout.
      */
-    private final String DEV_MODE_PARAM = "-DserverStartTimeout=200";
+    private final String DEV_MODE_PARAM = "-DserverStartTimeout=600";
 
     /**
      * Dev mode configuration custom start parameters for debugging.
      */
-    private final String DEV_MODE_START_PARAMS_DEBUG = "-DdebugPort=9876 -DserverStartTimeout=200";
+    private final String DEV_MODE_START_PARAMS_DEBUG = "-DdebugPort=9876 -DserverStartTimeout=600";
 
     /**
      * Prepares the environment for test execution.
