@@ -17,10 +17,10 @@ public final class Constants {
     public static final String LIBERTY_GRADLE_PROJECT = "Liberty Gradle Project";
     public static final String LIBERTY_MAVEN_PROJECT = "Liberty Maven Project";
 
-    public static final String LIBERTY_MAVEN_START_CMD = " io.openliberty.tools:liberty-maven-plugin:dev -DserverStartTimeout=200";
-    public static final String LIBERTY_MAVEN_START_CONTAINER_CMD = " io.openliberty.tools:liberty-maven-plugin:devc -DserverStartTimeout=200";
-    public static final String LIBERTY_GRADLE_START_CMD = " libertyDev --serverStartTimeout=200";
-    public static final String LIBERTY_GRADLE_START_CONTAINER_CMD = " libertyDevc --serverStartTimeout=200";
+    public static final String LIBERTY_MAVEN_START_CMD = " io.openliberty.tools:liberty-maven-plugin:dev -DserverStartTimeout=600";
+    public static final String LIBERTY_MAVEN_START_CONTAINER_CMD = " io.openliberty.tools:liberty-maven-plugin:devc -DserverStartTimeout=600";
+    public static final String LIBERTY_GRADLE_START_CMD = " libertyDev --serverStartTimeout=600";
+    public static final String LIBERTY_GRADLE_START_CONTAINER_CMD = " libertyDevc --serverStartTimeout=600";
     public static final String LIBERTY_DEV_START = LocalizedResourceUtil.getMessage("start.dev");
     public static final String LIBERTY_DEV_CUSTOM_START = LocalizedResourceUtil.getMessage("start.dev.custom.params");
     public static final String LIBERTY_DEV_START_CONTAINER = LocalizedResourceUtil.getMessage("start.dev.container");
