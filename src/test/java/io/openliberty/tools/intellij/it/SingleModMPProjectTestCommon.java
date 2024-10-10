@@ -20,8 +20,10 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
@@ -63,7 +65,7 @@ public abstract class SingleModMPProjectTestCommon {
     @AfterEach
     public void afterEach(TestInfo info) {
         TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, this.getClass().getSimpleName() + "." + info.getDisplayName() + ". Exit");
-        cleanupTerminal();
+        killPort9080(remoteRobot);
     }
 
     /**
@@ -85,26 +87,39 @@ public abstract class SingleModMPProjectTestCommon {
     }
 
     /**
-     * Close project.
+     * Kill Running port.
      */
-    public void cleanupTerminal() {
-        Keyboard keyboard = new Keyboard(remoteRobot);
+    public static void killPort9080(RemoteRobot remoteRobot) {
+        try {
+            Keyboard keyboard = new Keyboard(remoteRobot);
 
-        ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
-        ComponentFixture terminal = remoteRobot.find(ComponentFixture.class, byXpath("//div[@class='JBTerminalPanel']"), Duration.ofSeconds(10));
-        terminal.rightClick();
-        ComponentFixture openFixtureNewTab = projectFrame.getActionMenuItem("New Tab");
-        openFixtureNewTab.click(new Point());
+            // Open terminal and new tab if necessary
+            ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
+            ComponentFixture terminal = remoteRobot.find(ComponentFixture.class, byXpath("//div[@class='JBTerminalPanel']"), Duration.ofSeconds(10));
+            terminal.rightClick();
+            ComponentFixture openFixtureNewTab = projectFrame.getActionMenuItem("New Tab");
+            openFixtureNewTab.click(new Point());
 
-        // Perform clean
-        if ("singleModMavenMP".equalsIgnoreCase(getSmMPProjectName())) {
-            keyboard.enterText("mvn clean");
+            String command;
+            if (remoteRobot.isWin()) {
+                // Windows command to find and kill the process on port 9080
+                command = "for /f \"tokens=5\" %a in ('netstat -ano ^| findstr :9080') do taskkill /PID %a /F";
+            } else if (remoteRobot.isMac() || remoteRobot.isLinux()) {
+                // macOS/Linux command to find and kill the process on port 9080
+                command = "kill -9 $(lsof -t -i:9080)";
+            } else {
+                System.out.println("Unsupported operating system.");
+                return;
+            }
+
+            // Type the command in the terminal and execute it
+            keyboard.enterText(command);
             keyboard.enter();
-        } else if ("singleModGradleMP".equalsIgnoreCase(getSmMPProjectName())) {
-            keyboard.enterText("gradle clean");
-            keyboard.enter();
+
+            System.out.println("Executed kill command for port 9080 on " + (remoteRobot.isWin() ? "Windows" : "Unix-based system"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        TestUtils.sleepAndIgnoreException(5);
     }
 
     /**
