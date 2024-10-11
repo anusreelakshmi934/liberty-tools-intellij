@@ -65,6 +65,7 @@ public abstract class SingleModMPProjectTestCommon {
         TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, this.getClass().getSimpleName() + "." + info.getDisplayName() + ". Exit");
         cleanupTerminal();
         UIBotTestUtils.killTerminalProcess(remoteRobot, getSmMPProjectName() );
+        UIBotTestUtils.killTerminalProcess(remoteRobot, "Local" );
     }
 
     /**
@@ -102,6 +103,9 @@ public abstract class SingleModMPProjectTestCommon {
             keyboard.enterText("mvn liberty:stop");
             keyboard.enter();
         } else if ("singleModGradleMP".equalsIgnoreCase(getSmMPProjectName())) {
+            keyboard.enterText("gradle libertyStop");
+            keyboard.enter();
+        } else if ("singleMod GradleMP".equalsIgnoreCase(getSmMPProjectName())) {
             keyboard.enterText("gradle libertyStop");
             keyboard.enter();
         }
