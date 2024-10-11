@@ -63,8 +63,8 @@ public abstract class SingleModMPProjectTestCommon {
     @AfterEach
     public void afterEach(TestInfo info) {
         TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, this.getClass().getSimpleName() + "." + info.getDisplayName() + ". Exit");
-        UIBotTestUtils.killTerminalProcess(remoteRobot, getSmMPProjectName() );
         cleanupTerminal();
+        UIBotTestUtils.killTerminalProcess(remoteRobot, getSmMPProjectName() );
     }
 
     /**
