@@ -106,6 +106,12 @@ public abstract class SingleModMPProjectTestCommon {
             keyboard.enter();
         }
         TestUtils.sleepAndIgnoreException(5);
+
+        // Locate and close the newly opened tab
+        ComponentFixture newTerminalTab = remoteRobot.find(ComponentFixture.class, byXpath("//div[@class='JBTerminalPanel']"), Duration.ofSeconds(10));
+        newTerminalTab.rightClick();
+        ComponentFixture closeTabOption = projectFrame.getActionMenuItem("Close Tab");
+        closeTabOption.click(new Point());
     }
 
     /**
