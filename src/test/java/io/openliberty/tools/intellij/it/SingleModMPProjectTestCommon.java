@@ -91,11 +91,8 @@ public abstract class SingleModMPProjectTestCommon {
     public void cleanupTerminal() {
         Keyboard keyboard = new Keyboard(remoteRobot);
 
-        ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
-        ComponentFixture terminal = remoteRobot.find(ComponentFixture.class, byXpath("//div[@class='JBTerminalPanel']"), Duration.ofSeconds(10));
-        terminal.rightClick();
-        ComponentFixture openFixtureNewTab = projectFrame.getActionMenuItem("New Tab");
-        openFixtureNewTab.click(new Point());
+        // Open Terminal
+        UIBotTestUtils.runActionFromSearchEverywherePanel(remoteRobot, "Terminal", 3);
 
         // Perform clean
         if ("singleModMavenMP".equalsIgnoreCase(getSmMPProjectName())) {
