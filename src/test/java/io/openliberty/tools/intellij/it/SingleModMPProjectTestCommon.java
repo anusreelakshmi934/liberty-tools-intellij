@@ -41,6 +41,11 @@ public abstract class SingleModMPProjectTestCommon {
     public static final String REMOTE_BOT_URL = "http://localhost:8082";
 
     /**
+     * To clean the terminal.
+     */
+    private boolean shouldCleanupTerminal = true;
+
+    /**
      * The remote robot object.
      */
     public static final RemoteRobot remoteRobot = new RemoteRobot(REMOTE_BOT_URL);
@@ -89,25 +94,26 @@ public abstract class SingleModMPProjectTestCommon {
      * Close project.
      */
     public void cleanupTerminal() {
-        Keyboard keyboard = new Keyboard(remoteRobot);
+        if (!shouldCleanupTerminal) {
+            return;
+        }
 
+        Keyboard keyboard = new Keyboard(remoteRobot);
         ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
         ComponentFixture terminal = remoteRobot.find(ComponentFixture.class, byXpath("//div[@class='JBTerminalPanel']"), Duration.ofSeconds(10));
+
         terminal.rightClick();
         ComponentFixture openFixtureNewTab = projectFrame.getActionMenuItem("New Tab");
         openFixtureNewTab.click(new Point());
 
         // Perform clean
-        if ("singleModMavenMP".equalsIgnoreCase(getSmMPProjectName())) {
+        String projectName = getSmMPProjectName();
+        if ("singleModMavenMP".equalsIgnoreCase(projectName)) {
             keyboard.enterText("mvn liberty:stop");
-            keyboard.enter();
-        } else if ("singleModGradleMP".equalsIgnoreCase(getSmMPProjectName())) {
+        } else if ("singleModGradleMP".equalsIgnoreCase(projectName) || "singleMod GradleMP".equalsIgnoreCase(projectName)) {
             keyboard.enterText("gradle libertyStop");
-            keyboard.enter();
-        } else if ("singleMod GradleMP".equalsIgnoreCase(getSmMPProjectName())) {
-            keyboard.enterText("gradle libertyStop");
-            keyboard.enter();
         }
+        keyboard.enter();
         TestUtils.sleepAndIgnoreException(5);
     }
 
@@ -117,6 +123,7 @@ public abstract class SingleModMPProjectTestCommon {
     @Test
     @Video
     public void testOpenBuildFileActionUsingPopUpMenu() {
+        shouldCleanupTerminal = false;
         String editorTabName = getBuildFileName() + " (" + getSmMPProjectName() + ")";
 
         // Close the editor tab if it was previously opened.
@@ -705,6 +712,7 @@ public abstract class SingleModMPProjectTestCommon {
     @Test
     @Video
     public void testMultipleConfigEditHistory() {
+        shouldCleanupTerminal = false;
         String testName = "testMultipleConfigEditHistory";
 
         // The path of the project build file expected in the configuration. This path constant for this test.
