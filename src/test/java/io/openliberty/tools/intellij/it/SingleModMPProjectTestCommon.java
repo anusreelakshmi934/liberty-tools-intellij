@@ -109,7 +109,7 @@ public abstract class SingleModMPProjectTestCommon {
             keyboard.enterText("gradle libertyStop");
             keyboard.enter();
         }
-        TestUtils.sleepAndIgnoreException(5);
+        TestUtils.sleepAndIgnoreException(10);
     }
 
     /**
