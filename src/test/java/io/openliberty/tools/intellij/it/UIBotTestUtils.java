@@ -728,14 +728,12 @@ public class UIBotTestUtils {
     /**
      * Closes Terminal.
      */
-    public static void killTerminalProcess(RemoteRobot remoteRobot, String projectName) {
+    public static void killTerminalProcess(RemoteRobot remoteRobot) {
         ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
-
         try {
-            ProjectFrameFixture.rightClickOnTerminalTab(projectFrame,projectName);
-            ProjectFrameFixture.clickCloseAllOption(projectFrame);
-            ProjectFrameFixture.clickTerminateProcess(projectFrame);
-
+            ProjectFrameFixture.rightClickOnTerminalTab(projectFrame);
+            ProjectFrameFixture.clickMenuOption(projectFrame, "action.CloseAllNotifications.text");
+            ProjectFrameFixture.clickMenuOption(projectFrame, "button.terminate");
         } catch (WaitForConditionTimeoutException e) {
             // The Terminal tab is most likely closed.
         }

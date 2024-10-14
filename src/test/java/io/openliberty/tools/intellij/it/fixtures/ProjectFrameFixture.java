@@ -14,7 +14,6 @@ import com.intellij.remoterobot.data.RemoteComponent;
 import com.intellij.remoterobot.fixtures.*;
 import com.intellij.remoterobot.search.locators.Locator;
 import com.intellij.remoterobot.utils.RepeatUtilsKt;
-import com.intellij.ui.HyperlinkLabel;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
@@ -220,28 +219,19 @@ public class ProjectFrameFixture extends CommonContainerFixture {
     /**
      * Right-clicks on the terminal tab.
      */
-    public static void rightClickOnTerminalTab(ProjectFrameFixture projectFrame, String fileName ) {
-        String terminalTabXPath = String.format("//div[@class='TabPanel'][.//div[@text='%s']]", fileName);
-        ComponentFixture terminalTab = projectFrame.getActionButton(terminalTabXPath, "10");
-        terminalTab.rightClick();
+    public static void rightClickOnTerminalTab(ProjectFrameFixture projectFrame) {
+        String terminalLabelXPath = "//div[@class='TabPanel'][.//div[@class='BaseLabel']]//div[@text='Terminal:']";
+        ComponentFixture terminalLabel = projectFrame.getActionButton(terminalLabelXPath, "10");
+        terminalLabel.rightClick();
     }
 
     /**
-     * Clicks on the 'Close All' option in the context menu.
+     * Clicks on a menu option based on the text key provided.
      */
-    public static void clickCloseAllOption(ProjectFrameFixture projectFrame) {
-        String closeAllXPath = "//div[contains(@text.key, 'action.CloseContent.text')]";
-        ComponentFixture closeAllOption = projectFrame.getActionButton(closeAllXPath, "10");
-        closeAllOption.click();
-    }
-
-    /**
-     * Clicks on the 'Terminate Process' button if needed.
-     */
-    public static void clickTerminateProcess(ProjectFrameFixture projectFrame) {
-        String terminateXPath = "//div[@text.key='button.terminate']";
-        ComponentFixture terminateProcess = projectFrame.getActionButton(terminateXPath, "10");
-        terminateProcess.click();
+    public static void clickMenuOption(ProjectFrameFixture projectFrame, String textKey) {
+        String optionXPath = String.format("//div[contains(@text.key, '%s')]", textKey);
+        ComponentFixture option = projectFrame.getActionButton(optionXPath, "10");
+        option.click();
     }
 
     /**

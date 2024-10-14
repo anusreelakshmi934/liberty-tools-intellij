@@ -64,8 +64,7 @@ public abstract class SingleModMPProjectTestCommon {
     public void afterEach(TestInfo info) {
         TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, this.getClass().getSimpleName() + "." + info.getDisplayName() + ". Exit");
         cleanupTerminal();
-        UIBotTestUtils.killTerminalProcess(remoteRobot, getSmMPProjectName() );
-        UIBotTestUtils.killTerminalProcess(remoteRobot, "Local" );
+        UIBotTestUtils.killTerminalProcess(remoteRobot);
     }
 
     /**
@@ -109,7 +108,7 @@ public abstract class SingleModMPProjectTestCommon {
             keyboard.enterText("gradle libertyStop");
             keyboard.enter();
         }
-        TestUtils.sleepAndIgnoreException(10);
+        TestUtils.sleepAndIgnoreException(5);
     }
 
     /**
