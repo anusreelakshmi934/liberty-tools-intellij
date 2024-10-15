@@ -111,11 +111,13 @@ public abstract class SingleModMPProjectTestCommon {
         if ("singleModMavenMP".equalsIgnoreCase(projectName)) {
             keyboard.enterText("mvn liberty:stop");
             keyboard.enter();
+            TestUtils.sleepAndIgnoreException(5);
             keyboard.enterText("mvn clean");
 
         } else if ("singleModGradleMP".equalsIgnoreCase(projectName) || "singleMod GradleMP".equalsIgnoreCase(projectName)) {
             keyboard.enterText("gradle libertyStop");
             keyboard.enter();
+            TestUtils.sleepAndIgnoreException(5);
             keyboard.enterText("gradle clean");
         }
         keyboard.enter();
