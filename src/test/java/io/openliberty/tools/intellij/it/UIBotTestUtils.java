@@ -732,7 +732,9 @@ public class UIBotTestUtils {
         ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
         try {
             ProjectFrameFixture.rightClickOnTerminalTab(projectFrame);
+            TestUtils.sleepAndIgnoreException(5);
             ProjectFrameFixture.clickMenuOption(projectFrame, "action.CloseAllNotifications.text");
+            TestUtils.sleepAndIgnoreException(5);
             ProjectFrameFixture.clickMenuOption(projectFrame, "button.terminate");
         } catch (WaitForConditionTimeoutException e) {
             // The Terminal tab is most likely closed.
