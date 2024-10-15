@@ -110,8 +110,10 @@ public abstract class SingleModMPProjectTestCommon {
         String projectName = getSmMPProjectName();
         if ("singleModMavenMP".equalsIgnoreCase(projectName)) {
             keyboard.enterText("mvn liberty:stop");
+            keyboard.enterText("mvn clean");
         } else if ("singleModGradleMP".equalsIgnoreCase(projectName) || "singleMod GradleMP".equalsIgnoreCase(projectName)) {
             keyboard.enterText("gradle libertyStop");
+            keyboard.enterText("gradle clean");
         }
         keyboard.enter();
         TestUtils.sleepAndIgnoreException(5);
