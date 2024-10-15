@@ -734,10 +734,14 @@ public class UIBotTestUtils {
             ProjectFrameFixture.rightClickOnTerminalTab(projectFrame);
             ProjectFrameFixture.clickMenuOption(projectFrame, "action.CloseAllNotifications.text");
 
-            // Find the terminate button using its action command or another unique identifier
-            ComponentFixture terminateButton = projectFrame.find(ComponentFixture.class, byXpath("//div[@accessiblename='Terminate']"));
-            if (terminateButton.callJs("component.isEnabled();", false)) {
-                terminateButton.click();
+            while (true) {
+                ComponentFixture terminateButton = projectFrame.find(ComponentFixture.class, byXpath("//div[@accessiblename='Terminate']"));
+                if (terminateButton.callJs("component.isEnabled();", false)) {
+                    terminateButton.click();
+                    // Optionally add a small delay here if needed
+                } else {
+                    break; // Exit loop if no enabled "Terminate" button is found
+                }
             }
         } catch (WaitForConditionTimeoutException e) {
             // The Terminal tab is most likely closed.
