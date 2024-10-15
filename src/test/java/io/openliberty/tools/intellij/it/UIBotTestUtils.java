@@ -732,10 +732,13 @@ public class UIBotTestUtils {
         ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
         try {
             ProjectFrameFixture.rightClickOnTerminalTab(projectFrame);
-            TestUtils.sleepAndIgnoreException(5);
             ProjectFrameFixture.clickMenuOption(projectFrame, "action.CloseAllNotifications.text");
-            TestUtils.sleepAndIgnoreException(5);
-            ProjectFrameFixture.clickMenuOption(projectFrame, "button.terminate");
+
+            // Find the terminate button using its action command or another unique identifier
+            ComponentFixture terminateButton = projectFrame.find(ComponentFixture.class, byXpath("//div[@accessiblename='Terminate']"));
+            if (terminateButton.callJs("component.isEnabled();", false)) {
+                terminateButton.click();
+            }
         } catch (WaitForConditionTimeoutException e) {
             // The Terminal tab is most likely closed.
         }
