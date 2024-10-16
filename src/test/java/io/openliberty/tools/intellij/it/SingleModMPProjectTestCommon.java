@@ -68,8 +68,10 @@ public abstract class SingleModMPProjectTestCommon {
     @AfterEach
     public void afterEach(TestInfo info) {
         TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, this.getClass().getSimpleName() + "." + info.getDisplayName() + ". Exit");
-        cleanupTerminal();
+        cleanTerminal();
         UIBotTestUtils.killTerminalProcess(remoteRobot);
+        UIBotTestUtils.openTerminalWindow(remoteRobot);
+        stopTerminal();
     }
 
     /**
@@ -91,9 +93,9 @@ public abstract class SingleModMPProjectTestCommon {
     }
 
     /**
-     * Close project.
+     * Clean project.
      */
-    public void cleanupTerminal() {
+    public void cleanTerminal() {
         if (!shouldCleanupTerminal) {
             return;
         }
@@ -109,9 +111,32 @@ public abstract class SingleModMPProjectTestCommon {
         // Perform clean
         String projectName = getSmMPProjectName();
         if ("singleModMavenMP".equalsIgnoreCase(projectName)) {
+            keyboard.enterText("mvn clean");
+
+        } else if ("singleModGradleMP".equalsIgnoreCase(projectName) || "singleMod GradleMP".equalsIgnoreCase(projectName)) {
+            keyboard.enterText("gradle clean");
+        }
+        keyboard.enter();
+        TestUtils.sleepAndIgnoreException(5);
+    }
+
+    /**
+     * Stop the Server.
+     */
+    public void stopTerminal() {
+        if (!shouldCleanupTerminal) {
+            return;
+        }
+
+        Keyboard keyboard = new Keyboard(remoteRobot);
+        // Perform clean
+        String projectName = getSmMPProjectName();
+        if ("singleModMavenMP".equalsIgnoreCase(projectName)) {
             keyboard.enterText("mvn liberty:stop");
+            keyboard.enter();
         } else if ("singleModGradleMP".equalsIgnoreCase(projectName) || "singleMod GradleMP".equalsIgnoreCase(projectName)) {
             keyboard.enterText("gradle libertyStop");
+            keyboard.enter();
         }
         keyboard.enter();
         TestUtils.sleepAndIgnoreException(5);

@@ -649,7 +649,7 @@ public class UIBotTestUtils {
             throw new RuntimeException("Unable to open file " + fileName, error);
         }
     }
-    
+
     public static void hideTerminalWindow(RemoteRobot remoteRobot) {
         try {
             ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(2));
@@ -732,10 +732,17 @@ public class UIBotTestUtils {
         ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
         try {
             ProjectFrameFixture.rightClickOnTerminalTab(projectFrame);
-            TestUtils.sleepAndIgnoreException(5);
             ProjectFrameFixture.clickMenuOption(projectFrame, "action.CloseAllNotifications.text");
-            TestUtils.sleepAndIgnoreException(5);
-            ProjectFrameFixture.clickMenuOption(projectFrame, "button.terminate");
+
+            while (true) {
+                ComponentFixture terminateButton = projectFrame.find(ComponentFixture.class, byXpath("//div[@accessiblename='Terminate']"));
+                if (terminateButton.callJs("component.isEnabled();", false)) {
+                    terminateButton.click();
+                    // Optionally add a small delay here if needed
+                } else {
+                    break; // Exit loop if no enabled "Terminate" button is found
+                }
+            }
         } catch (WaitForConditionTimeoutException e) {
             // The Terminal tab is most likely closed.
         }
@@ -941,33 +948,33 @@ public class UIBotTestUtils {
         for (int i = 0; i < 10; i++) {
             error = null;
             try {
-        Keyboard keyboard = new Keyboard(remoteRobot);
-        // find the location in the file to begin the stanza insertion
-        // since we know this is a new empty file, go to position 1,1
-        goToLineAndColumn(remoteRobot, keyboard, 1, 1);
+                Keyboard keyboard = new Keyboard(remoteRobot);
+                // find the location in the file to begin the stanza insertion
+                // since we know this is a new empty file, go to position 1,1
+                goToLineAndColumn(remoteRobot, keyboard, 1, 1);
 
-        keyboard.enterText(snippetSubString);
+                keyboard.enterText(snippetSubString);
 
-        // Select the appropriate completion suggestion in the pop-up window that is automatically
-        // opened as text is typed. Avoid hitting ctrl + space as it has the side effect of selecting
-        // and entry automatically if the completion suggestion windows has one entry only.
-        ComponentFixture namePopupWindow = projectFrame.getLookupList();
-        RepeatUtilsKt.waitFor(Duration.ofSeconds(5),
-                Duration.ofSeconds(1),
-                "Waiting for text " + snippetSubString + " to appear in the completion suggestion pop-up window",
-                "Text " + snippetSubString + " did not appear in the completion suggestion pop-up window",
-                () -> namePopupWindow.hasText(snippetSubString));
+                // Select the appropriate completion suggestion in the pop-up window that is automatically
+                // opened as text is typed. Avoid hitting ctrl + space as it has the side effect of selecting
+                // and entry automatically if the completion suggestion windows has one entry only.
+                ComponentFixture namePopupWindow = projectFrame.getLookupList();
+                RepeatUtilsKt.waitFor(Duration.ofSeconds(5),
+                        Duration.ofSeconds(1),
+                        "Waiting for text " + snippetSubString + " to appear in the completion suggestion pop-up window",
+                        "Text " + snippetSubString + " did not appear in the completion suggestion pop-up window",
+                        () -> namePopupWindow.hasText(snippetSubString));
 
-        namePopupWindow.findText(contains(snippetChooserString)).doubleClick();
+                namePopupWindow.findText(contains(snippetChooserString)).doubleClick();
 
-        // let the auto-save function of intellij save the file before testing it
-        if (remoteRobot.isMac()) {
-            keyboard.hotKey(VK_META, VK_S);
-        } else {
-            // linux + windows
-            keyboard.hotKey(VK_CONTROL, VK_S);
-        }
-        break;
+                // let the auto-save function of intellij save the file before testing it
+                if (remoteRobot.isMac()) {
+                    keyboard.hotKey(VK_META, VK_S);
+                } else {
+                    // linux + windows
+                    keyboard.hotKey(VK_CONTROL, VK_S);
+                }
+                break;
             } catch (WaitForConditionTimeoutException wftoe) {
                 error = wftoe;
 
