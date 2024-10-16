@@ -68,11 +68,7 @@ public abstract class SingleModMPProjectTestCommon {
     @AfterEach
     public void afterEach(TestInfo info) {
         TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, this.getClass().getSimpleName() + "." + info.getDisplayName() + ". Exit");
-        cleanTerminal();
-        UIBotTestUtils.killTerminalProcess(remoteRobot);
-        UIBotTestUtils.openTerminalWindow(remoteRobot);
-        stopTerminal();
-        UIBotTestUtils.killTerminalProcess(remoteRobot);
+        cleanAndResetTerminal();
     }
 
     /**
@@ -93,55 +89,6 @@ public abstract class SingleModMPProjectTestCommon {
         UIBotTestUtils.validateProjectFrameClosed(remoteRobot);
     }
 
-    /**
-     * Clean project.
-     */
-    public void cleanTerminal() {
-        if (!shouldCleanupTerminal) {
-            return;
-        }
-
-        Keyboard keyboard = new Keyboard(remoteRobot);
-        ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
-        ComponentFixture terminal = remoteRobot.find(ComponentFixture.class, byXpath("//div[@class='JBTerminalPanel']"), Duration.ofSeconds(10));
-
-        terminal.rightClick();
-        ComponentFixture openFixtureNewTab = projectFrame.getActionMenuItem("New Tab");
-        openFixtureNewTab.click(new Point());
-
-        // Perform clean
-        String projectName = getSmMPProjectName();
-        if ("singleModMavenMP".equalsIgnoreCase(projectName)) {
-            keyboard.enterText("mvn clean");
-
-        } else if ("singleModGradleMP".equalsIgnoreCase(projectName) || "singleMod GradleMP".equalsIgnoreCase(projectName)) {
-            keyboard.enterText("gradle clean");
-        }
-        keyboard.enter();
-        TestUtils.sleepAndIgnoreException(5);
-    }
-
-    /**
-     * Stop the Server.
-     */
-    public void stopTerminal() {
-        if (!shouldCleanupTerminal) {
-            return;
-        }
-
-        Keyboard keyboard = new Keyboard(remoteRobot);
-        // Perform clean
-        String projectName = getSmMPProjectName();
-        if ("singleModMavenMP".equalsIgnoreCase(projectName)) {
-            keyboard.enterText("mvn liberty:stop");
-            keyboard.enter();
-        } else if ("singleModGradleMP".equalsIgnoreCase(projectName) || "singleMod GradleMP".equalsIgnoreCase(projectName)) {
-            keyboard.enterText("gradle libertyStop");
-            keyboard.enter();
-        }
-        keyboard.enter();
-        TestUtils.sleepAndIgnoreException(5);
-    }
 
     /**
      * Tests the liberty: View <project build file> action run from the project's pop-up action menu.
@@ -1071,6 +1018,67 @@ public abstract class SingleModMPProjectTestCommon {
         if (dir.exists()) {
             TestUtils.deleteDirectory(dir);
         }
+    }
+
+    /**
+     * Clean project.
+     */
+    public void cleanTerminal() {
+        if (!shouldCleanupTerminal) {
+            return;
+        }
+
+        Keyboard keyboard = new Keyboard(remoteRobot);
+        ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
+        ComponentFixture terminal = remoteRobot.find(ComponentFixture.class, byXpath("//div[@class='JBTerminalPanel']"), Duration.ofSeconds(10));
+
+        terminal.rightClick();
+        ComponentFixture openFixtureNewTab = projectFrame.getActionMenuItem("New Tab");
+        openFixtureNewTab.click(new Point());
+
+        // Perform clean
+        String projectName = getSmMPProjectName();
+        if ("singleModMavenMP".equalsIgnoreCase(projectName)) {
+            keyboard.enterText("mvn clean");
+
+        } else if ("singleModGradleMP".equalsIgnoreCase(projectName) || "singleMod GradleMP".equalsIgnoreCase(projectName)) {
+            keyboard.enterText("gradle clean");
+        }
+        keyboard.enter();
+        TestUtils.sleepAndIgnoreException(5);
+    }
+
+    /**
+     * Stop the Server.
+     */
+    public void stopTerminal() {
+        if (!shouldCleanupTerminal) {
+            return;
+        }
+
+        Keyboard keyboard = new Keyboard(remoteRobot);
+        // Perform clean
+        String projectName = getSmMPProjectName();
+        if ("singleModMavenMP".equalsIgnoreCase(projectName)) {
+            keyboard.enterText("mvn liberty:stop");
+            keyboard.enter();
+        } else if ("singleModGradleMP".equalsIgnoreCase(projectName) || "singleMod GradleMP".equalsIgnoreCase(projectName)) {
+            keyboard.enterText("gradle libertyStop");
+            keyboard.enter();
+        }
+        keyboard.enter();
+        TestUtils.sleepAndIgnoreException(5);
+    }
+
+    /**
+     * Cleans up and resets the terminal.
+     */
+    public void cleanAndResetTerminal() {
+        cleanTerminal();
+        UIBotTestUtils.killTerminalProcess(remoteRobot);
+        UIBotTestUtils.openTerminalWindow(remoteRobot);
+        stopTerminal();
+        UIBotTestUtils.killTerminalProcess(remoteRobot);
     }
 
     /**
