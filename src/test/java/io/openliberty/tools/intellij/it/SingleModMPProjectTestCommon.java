@@ -72,6 +72,7 @@ public abstract class SingleModMPProjectTestCommon {
         UIBotTestUtils.killTerminalProcess(remoteRobot);
         UIBotTestUtils.openTerminalWindow(remoteRobot);
         stopTerminal();
+        UIBotTestUtils.killTerminalProcess(remoteRobot);
     }
 
     /**
