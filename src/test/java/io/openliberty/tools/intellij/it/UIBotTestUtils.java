@@ -508,29 +508,6 @@ public class UIBotTestUtils {
     }
 
     /**
-     * Closes Terminal.
-     */
-    public static void killTerminalProcess(RemoteRobot remoteRobot) {
-        ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
-        try {
-            ProjectFrameFixture.rightClickOnTerminalTab(projectFrame);
-            ProjectFrameFixture.clickMenuOption(projectFrame, "action.CloseAllNotifications.text");
-
-            while (true) {
-                ComponentFixture terminateButton = projectFrame.find(ComponentFixture.class, byXpath("//div[@accessiblename='Terminate']"));
-                if (terminateButton.callJs("component.isEnabled();", false)) {
-                    terminateButton.click();
-                    // Optionally add a small delay here if needed
-                } else {
-                    break; // Exit loop if no enabled "Terminate" button is found
-                }
-            }
-        } catch (WaitForConditionTimeoutException e) {
-            // The Terminal tab is most likely closed.
-        }
-    }
-
-    /**
      * Clicks on the specified tool window pane stripe.
      *
      * @param remoteRobot      The RemoteRobot instance.
@@ -2494,6 +2471,29 @@ public class UIBotTestUtils {
                     "The OK button on the error dialog was not enabled",
                     okButton::isEnabled);
             okButton.click();
+        }
+    }
+
+    /**
+     * Closes Terminal.
+     */
+    public static void killTerminalProcess(RemoteRobot remoteRobot) {
+        ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
+        try {
+            ProjectFrameFixture.rightClickOnTerminalTab(projectFrame);
+            ProjectFrameFixture.clickMenuOption(projectFrame, "action.CloseAllNotifications.text");
+
+            while (true) {
+                ComponentFixture terminateButton = projectFrame.find(ComponentFixture.class, byXpath("//div[@accessiblename='Terminate']"));
+                if (terminateButton.callJs("component.isEnabled();", false)) {
+                    terminateButton.click();
+                    // Optionally add a small delay here if needed
+                } else {
+                    break; // Exit loop if no enabled "Terminate" button is found
+                }
+            }
+        } catch (WaitForConditionTimeoutException e) {
+            // The Terminal tab is most likely closed.
         }
     }
 }
