@@ -1,7 +1,7 @@
 # Liberty Tools for IntelliJ IDEA
 
 <!-- Make sure to also update the #Requirements section below, and in user-guide.md -->
-> Note: Version 24.0.6 requires **IntelliJ IDEA 2023.2.\***, **2023.3.\***, or **2024.1.\*** and a minimum of **Java 17**.
+> Note: Version 24.0.9 requires **IntelliJ IDEA 2024.1.\*** **ONLY** and a minimum of **Java 17**.
 >
 > This page provides an overview of Liberty Tools for IntelliJ IDEA.
 > For minimum requirements information and detailed instructions on how to use Liberty Tools, check the [user-guide](docs/user-guide.md).
@@ -11,6 +11,10 @@
 [![License](https://img.shields.io/badge/License-EPL%202.0-red.svg?style=for-the-badge&label=license&logo=eclipse)](https://www.eclipse.org/legal/epl-2.0/)
 
 Liberty Tools for IntelliJ IDEA is an IntelliJ IDEA plugin for developing cloud-native Java applications with [Open Liberty](https://openliberty.io/) and [WebSphere Liberty](https://www.ibm.com/products/websphere-liberty). Iterate fast with Liberty dev mode, code with assistance for MicroProfile and Jakarta EE APIs, and easily edit Liberty configuration files.
+
+Liberty Tools for IntelliJ includes LSP4IJ, an external plugin dependency that is automatically installed with Liberty Tools. LSP4IJ is a free and open-source Language Server Protocol (LSP) client developed by Red Hat, enabling seamless language server integration.
+
+If you wish to change the version of LSP4IJ installed along with Liberty Tools, you can refer to the documentation [here](docs/user-guide.md#manually-install-specific-release-of-the-lsp4ij-plugin-from-the-marketplace).
 
 ![Liberty Tools Extension](docs/images/liberty-tool-window-view.png)
 
@@ -101,7 +105,7 @@ If you experience a problem with this plugin you might be asked to collect langu
 
 ## Requirements
 <!-- Make sure to also update the note at the top of this file, and in user-guide.md -->
-Version 24.0.6 requires **IntelliJ IDEA 2023.2.\***, **2023.3.\***, or **2024.1.\*** and a minimum of **Java 17**.
+Version 24.0.9 requires **IntelliJ IDEA 2024.1.\*** **ONLY** and a minimum of **Java 17**.
 
 For more details, check the [user guide](docs/user-guide.md#software-requirements).
 

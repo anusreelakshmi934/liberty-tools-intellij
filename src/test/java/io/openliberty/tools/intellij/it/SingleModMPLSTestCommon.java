@@ -118,11 +118,20 @@ public abstract class SingleModMPLSTestCommon {
         try {
             // validate @Liveness no longer found in java part
             TestUtils.validateStringNotInFile(pathToSrc.toString(), livenessString);
+            TestUtils.sleepAndIgnoreException(1);
 
-            //there should be a diagnostic - move cursor to hover point
-            UIBotTestUtils.hoverInAppServerCfgFile(remoteRobot, flaggedString, "ServiceLiveHealthCheck.java", UIBotTestUtils.PopupType.DIAGNOSTIC);
+            String foundHoverData = null;
+            int maxWait = 60, delay = 5; // in some cases it can take 35s for the diagnostic to appear
+            for (int i = 0; i <= maxWait; i += delay) {
+                //there should be a diagnostic - move cursor to hover point
+                UIBotTestUtils.hoverInAppServerCfgFile(remoteRobot, flaggedString, "ServiceLiveHealthCheck.java", UIBotTestUtils.PopupType.DIAGNOSTIC);
 
-            String foundHoverData = UIBotTestUtils.getHoverStringData(remoteRobot, UIBotTestUtils.PopupType.DIAGNOSTIC);
+                foundHoverData = UIBotTestUtils.getHoverStringData(remoteRobot, UIBotTestUtils.PopupType.DIAGNOSTIC);
+                if (!foundHoverData.isBlank()) {
+                    break;
+                }
+                TestUtils.sleepAndIgnoreException(delay);
+            }
             TestUtils.validateHoverData(expectedHoverData, foundHoverData);
 
         } finally {
@@ -313,14 +322,14 @@ public abstract class SingleModMPLSTestCommon {
 
         UIBotTestUtils.importProject(remoteRobot, projectPath, projectName);
         UIBotTestUtils.openProjectView(remoteRobot);
-        UIBotTestUtils.openLibertyToolWindow(remoteRobot);
-        UIBotTestUtils.validateImportedProjectShowsInLTW(remoteRobot, projectName);
+        // IntelliJ does not start building and indexing until the project is open in the UI
+        UIBotTestUtils.waitForIndexing(remoteRobot);
+        UIBotTestUtils.openAndValidateLibertyToolWindow(remoteRobot, projectName);
         UIBotTestUtils.closeLibertyToolWindow(remoteRobot);
 
         // pre-open project tree before attempting to open files needed by testcases
         ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofMinutes(2));
         JTreeFixture projTree = projectFrame.getProjectViewJTree(projectName);
-        UIBotTestUtils.waitForIndexing(remoteRobot);
 
         UIBotTestUtils.openFile(remoteRobot, projectName, "ServiceLiveHealthCheck", projectName, "src", "main", "java", "io.openliberty.mp.sample", "health");
         UIBotTestUtils.openFile(remoteRobot, projectName, "microprofile-config.properties", projectName, "src", "main", "resources", "META-INF");

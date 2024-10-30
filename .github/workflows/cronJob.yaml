@@ -95,7 +95,7 @@ jobs:
       fail-fast: false
       matrix:
         # Existing LTI release tags and branches can be added to obtain build results.If the tag array is empty, it will default to 'main'. However, if there is at least one tag or branch in the tag array and you need to run on 'main' as well, make sure to add 'main' to the array.
-        tag: [ 'main' ] # Can specify tags or branches such as '24.0.6' and 'main'
+        tag: [ 'main', '24.0.9' ] # Can specify tags or branches such as '24.0.6' and 'main'
         pr_details: ${{ fromJson(needs.fetch_all_pull_request_shas.outputs.pr_details) }}
     with:
       useLocalPlugin: true
@@ -111,7 +111,7 @@ jobs:
       fail-fast: false
       matrix:
         # Existing LTI release tags and branches can be added to obtain build results.If the tag array is empty, it will default to 'main'. However, if there is at least one tag or branch in the tag array and you need to run on 'main' as well, make sure to add 'main' to the array.
-        tag: [ 'main' ]
+        tag: [ 'main', '24.0.9' ]
     with:
       useLocalPlugin: true
       refLsp4ij: main
@@ -127,17 +127,26 @@ jobs:
     steps:
       - name: Send Slack Notification
         run: |
-          STATUS="failure"
+          STATUS="Failure"
           JOB_STATUS_MAIN="${{ needs.call-build-workflow-for-lsp4ij-main-branch.result }}"
           JOB_STATUS_PR="${{ needs.call-build-workflow-for-each-merge-commit-sha.result }}"
-
-          if [[ "$JOB_STATUS_MAIN" == "success" ]] && [[ "$JOB_STATUS_PR" = "success" ]]; then
-            STATUS="success"
+          if [[ "$JOB_STATUS_MAIN" == "success" ]] && [[ "$JOB_STATUS_PR" == "success" ]]; then
+            STATUS="Success"
           fi
-
           echo "Final status: $STATUS"
+          payload=$(jq -n \
+            --arg status "$STATUS" \
+            --arg branch "${{ github.ref }}" \
+            --arg build_url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            '
+            {
+              "Status": $status,
+              "Branch": $branch,
+              "Build_url": $build_url
+            }')
+          
+          curl -X POST -H 'Content-type: application/json' --data "$payload" "$NOTIFY_BUILD_RESULT" || echo "Slack notification failed with status code: $?"
 
-          curl -X POST -H 'Content-type: application/json' --data "{\"text\": \"Workflow ${{ github.workflow }} triggered by branch *${{ github.ref }}*. Build results: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}. Status: *$STATUS*\"}" $SLACK_WEBHOOK_URL
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          NOTIFY_BUILD_RESULT: ${{ secrets.NOTIFY_BUILD_RESULT }}
     name: Run Slack Notification
