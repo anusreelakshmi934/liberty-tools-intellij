@@ -17,6 +17,7 @@ import com.intellij.remoterobot.utils.RepeatUtilsKt;
 import com.intellij.remoterobot.utils.WaitForConditionTimeoutException;
 import com.intellij.ui.HyperlinkLabel;
 import io.openliberty.tools.intellij.it.TestUtils;
+import io.openliberty.tools.intellij.it.UIBotTestUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
@@ -349,7 +350,6 @@ public class ProjectFrameFixture extends CommonContainerFixture {
         try {
             var menuButton = projectFrame.find(ComponentFixture.class, byXpath("//div[@tooltiptext='Main Menu']"), Duration.ofSeconds(30));
             menuButton.click();
-            TestUtils.sleepAndIgnoreException(8);
         } catch (WaitForConditionTimeoutException e) {
             System.err.println("ERROR: Main menu button not found within the given timeout.");
 
@@ -368,6 +368,7 @@ public class ProjectFrameFixture extends CommonContainerFixture {
      */
     public void clickOnMainMenuList(RemoteRobot remoteRobot, String firstAction , String secondAction) {
         ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
+        UIBotTestUtils.waitForIndexing(remoteRobot);
         try {
             clickOnMainMenu(remoteRobot);
             RepeatUtilsKt.waitFor(Duration.ofSeconds(50),
@@ -377,7 +378,6 @@ public class ProjectFrameFixture extends CommonContainerFixture {
                     () -> !(projectFrame.findAll(ContainerFixture.class, byXpath("//div[@class='HeavyWeightWindow']"))).isEmpty());
             List<ContainerFixture> firstMenuPopup = findAll(ContainerFixture.class, byXpath("//div[@class='HeavyWeightWindow']"));
             firstMenuPopup.get(0).findText(firstAction).moveMouse();
-            TestUtils.sleepAndIgnoreException(8);
             RepeatUtilsKt.waitFor(Duration.ofSeconds(50),
                     Duration.ofSeconds(1),
                     "Waiting for second menu to get displayed",
@@ -414,7 +414,6 @@ public class ProjectFrameFixture extends CommonContainerFixture {
                     () -> !(projectFrame.findAll(ContainerFixture.class, byXpath("//div[@class='HeavyWeightWindow']"))).isEmpty());
             List<ContainerFixture> firstMenuPopup = findAll(ContainerFixture.class, byXpath("//div[@class='HeavyWeightWindow']"));
            firstMenuPopup.get(0).findText(firstAction).moveMouse();
-            TestUtils.sleepAndIgnoreException(8);
           RepeatUtilsKt.waitFor(Duration.ofSeconds(30),
                     Duration.ofSeconds(1),
                     "Waiting for second menu to get displayed",
@@ -423,7 +422,6 @@ public class ProjectFrameFixture extends CommonContainerFixture {
                             byXpath("//div[@class='HeavyWeightWindow']")).isEmpty());
             List<ContainerFixture> secondMenuPopup =firstMenuPopup.get(0).findAll(ContainerFixture.class, byXpath("//div[@class='HeavyWeightWindow']"));
             secondMenuPopup.get(0).findText(secondAction).moveMouse();
-            TestUtils.sleepAndIgnoreException(8);
           RepeatUtilsKt.waitFor(Duration.ofSeconds(50),
                     Duration.ofSeconds(1),
                     "Waiting for third menu to get displayed",
