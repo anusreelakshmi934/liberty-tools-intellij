@@ -56,7 +56,7 @@ jobs:
             os: ubuntu-latest
             reportName: linux-test-report
           - runtime: mac
-            os: macos-13
+            os: macos-12
             reportName: mac-test-report
           - runtime: windows
             os: windows-latest
