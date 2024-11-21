@@ -368,7 +368,6 @@ public class ProjectFrameFixture extends CommonContainerFixture {
      */
     public void clickOnMainMenuList(RemoteRobot remoteRobot, String firstAction , String secondAction) {
         ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
-        TestUtils.sleepAndIgnoreException(60);
         try {
             clickOnMainMenu(remoteRobot);
             RepeatUtilsKt.waitFor(Duration.ofSeconds(50),
