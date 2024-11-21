@@ -175,18 +175,18 @@ intellijPlatformTesting.runIde {
 
 test {
     useJUnitPlatform()
+
     testLogging {
         showStandardStreams = true
         exceptionFormat = 'full'
     }
 }
-intellijPlatformTesting.runIde {
 
+intellijPlatformTesting.runIde {
     runIdeForUiTests {
         version = providers.gradleProperty("ideTargetVersion")
         type = IntelliJPlatformType.IntellijIdeaCommunity
         task {
-
             jvmArgumentProviders.add({
                 [
                         "-Drobot-server.port=8082",
