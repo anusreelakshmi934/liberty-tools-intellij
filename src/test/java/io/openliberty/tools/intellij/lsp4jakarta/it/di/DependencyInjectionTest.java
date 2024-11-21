@@ -39,7 +39,7 @@ import java.util.Arrays;
 @RunWith(JUnit4.class)
 public class DependencyInjectionTest extends BaseJakartaTest {
 
-    //@Test
+    @Test
     public void DependencyInjectionDiagnostics() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());

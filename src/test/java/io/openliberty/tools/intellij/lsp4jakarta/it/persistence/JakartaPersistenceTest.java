@@ -39,7 +39,7 @@ import static io.openliberty.tools.intellij.lsp4jakarta.it.core.JakartaForJavaAs
 @RunWith(JUnit4.class)
 public class JakartaPersistenceTest extends BaseJakartaTest {
 
-    //@Test
+    @Test
     public void deleteMapKeyOrMapKeyClass() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
@@ -113,7 +113,7 @@ public class JakartaPersistenceTest extends BaseJakartaTest {
             assertJavaCodeAction(codeActionParams2, utils, ca4, ca3);
     }
 
- //   @Test
+    @Test
     public void completeMapKeyJoinColumnAnnotation() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
@@ -185,7 +185,7 @@ public class JakartaPersistenceTest extends BaseJakartaTest {
         assertJavaCodeAction(codeActionParams3, utils, ca3);
     }
 
-   // @Test
+    @Test
     public void addEmptyConstructor() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
@@ -214,7 +214,7 @@ public class JakartaPersistenceTest extends BaseJakartaTest {
         assertJavaCodeAction(codeActionParams1, utils, ca1, ca2);
     }
 
-   // @Test
+    @Test
     public void removeFinalModifiers() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());

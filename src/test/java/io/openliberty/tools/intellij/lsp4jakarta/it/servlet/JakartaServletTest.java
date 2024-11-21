@@ -40,7 +40,7 @@ import java.util.Arrays;
 @RunWith(JUnit4.class)
 public class JakartaServletTest extends BaseJakartaTest {
 
-   // @Test
+    @Test
     public void ExtendWebServlet() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
@@ -73,7 +73,7 @@ public class JakartaServletTest extends BaseJakartaTest {
         // }
     }
 
-   // @Test
+    @Test
     public void CompleteWebServletAnnotation() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
@@ -114,7 +114,7 @@ public class JakartaServletTest extends BaseJakartaTest {
         JakartaForJavaAssert.assertJavaCodeAction(codeActionParams, utils, ca1, ca2);
     }
 
-   // @Test
+    @Test
     public void RemoveDuplicateAttribute() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
@@ -147,7 +147,7 @@ public class JakartaServletTest extends BaseJakartaTest {
         JakartaForJavaAssert.assertJavaCodeAction(codeActionParams, utils, ca1, ca2);
     }
 
-  //  @Test
+    @Test
     public void CompleteWebFilterAnnotation() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
@@ -187,7 +187,7 @@ public class JakartaServletTest extends BaseJakartaTest {
 
     }
 
-  //  @Test
+    @Test
     public void RemoveDuplicateWebFilterAttributes() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
@@ -221,7 +221,7 @@ public class JakartaServletTest extends BaseJakartaTest {
         JakartaForJavaAssert.assertJavaCodeAction(codeActionParams, utils, ca1, ca2);
     }
 
-  //  @Test
+    @Test
     public void implementFilter() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
@@ -253,7 +253,7 @@ public class JakartaServletTest extends BaseJakartaTest {
 //        }
     }
 
-  //  @Test
+    @Test
     public void implementListener() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());

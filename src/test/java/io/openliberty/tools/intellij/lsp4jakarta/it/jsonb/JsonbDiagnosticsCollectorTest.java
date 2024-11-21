@@ -40,7 +40,7 @@ import java.util.Arrays;
 @RunWith(JUnit4.class)
 public class JsonbDiagnosticsCollectorTest extends BaseJakartaTest {
 
-   // @Test
+    @Test
     public void deleteExtraJsonbCreatorAnnotation() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
@@ -106,7 +106,7 @@ public class JsonbDiagnosticsCollectorTest extends BaseJakartaTest {
             JakartaForJavaAssert.assertJavaCodeAction(codeActionParams2, utils, ca2);
     }
     
-  //  @Test
+    @Test
     public void JsonbTransientNotMutuallyExclusive() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());

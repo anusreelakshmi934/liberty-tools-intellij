@@ -38,7 +38,7 @@ import static io.openliberty.tools.intellij.lsp4jakarta.it.core.JakartaForJavaAs
 @RunWith(JUnit4.class)
 public class BeanValidationTest extends BaseJakartaTest {
 
-   // @Test
+    @Test
     public void validFieldConstraints() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
@@ -54,7 +54,7 @@ public class BeanValidationTest extends BaseJakartaTest {
         assertJavaDiagnostics(diagnosticsParams, utils);
     }
 
-   // @Test
+    @Test
     public void fieldConstraintValidation() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
@@ -276,7 +276,7 @@ public class BeanValidationTest extends BaseJakartaTest {
         assertJavaCodeAction(codeActionParams4, utils, ca5);
     }
 
-   // @Test
+    @Test
     public void methodConstraintValidation() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());

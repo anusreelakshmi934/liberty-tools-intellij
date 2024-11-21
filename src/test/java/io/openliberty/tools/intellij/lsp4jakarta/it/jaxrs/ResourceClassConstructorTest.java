@@ -40,7 +40,7 @@ import static io.openliberty.tools.intellij.lsp4jakarta.it.core.JakartaForJavaAs
 @RunWith(JUnit4.class)
 public class ResourceClassConstructorTest extends BaseJakartaTest {
 
-  //  @Test
+    @Test
     public void MultipleConstructorsWithEqualParams() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
@@ -64,7 +64,7 @@ public class ResourceClassConstructorTest extends BaseJakartaTest {
         JakartaForJavaAssert.assertJavaDiagnostics(diagnosticsParams, utils, d1, d2);
     }
 
-   // @Test
+    @Test
     public void MultipleConstructorsWithDifferentLength() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
@@ -84,7 +84,7 @@ public class ResourceClassConstructorTest extends BaseJakartaTest {
         JakartaForJavaAssert.assertJavaDiagnostics(diagnosticsParams, utils, d);
     }
 
-  //  @Test
+    @Test
     public void NoPublicConstructor() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
@@ -151,7 +151,7 @@ public class ResourceClassConstructorTest extends BaseJakartaTest {
         assertJavaCodeAction(codeActionParams2, utils, ca3, ca4);
     }
 
-  //  @Test
+    @Test
     public void NoPublicConstructorProviderClass() throws Exception {
         Module module = createMavenModule(new File("src/test/resources/projects/maven/jakarta-sample"));
         IPsiUtils utils = PsiUtilsLSImpl.getInstance(getProject());
