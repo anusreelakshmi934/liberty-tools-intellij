@@ -2432,7 +2432,7 @@ public class UIBotTestUtils {
     public static boolean inWelcomeFrame(RemoteRobot remoteRobot) {
         boolean inWelcomeFrame = false;
         try {
-            remoteRobot.find(WelcomeFrameFixture.class, Duration.ofSeconds(2));
+            remoteRobot.find(WelcomeFrameFixture.class, Duration.ofSeconds(5));
             inWelcomeFrame = true;
         } catch (Exception e) {
             // Not in welcome frame.
@@ -2450,7 +2450,7 @@ public class UIBotTestUtils {
     public static boolean inProjectFrame(RemoteRobot remoteRobot) {
         boolean inProjectFrame = false;
         try {
-            remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(2));
+            remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(5));
             inProjectFrame = true;
         } catch (Exception e) {
             // Not in project frame.
@@ -2508,6 +2508,43 @@ public class UIBotTestUtils {
                     "The OK button on the error dialog was not enabled",
                     okButton::isEnabled);
             okButton.click();
+        }
+    }
+
+    /**
+     * Closes Terminal.
+     */
+    public static void closeTerminalTabs(RemoteRobot remoteRobot) {
+        ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
+        try {
+            ProjectFrameFixture.rightClickOnTerminalTab(projectFrame);
+            ProjectFrameFixture.clickMenuOption(projectFrame, "action.CloseAllNotifications.text");
+
+            while (true) {
+                ComponentFixture terminateButton = projectFrame.find(ComponentFixture.class, byXpath("//div[@accessiblename='Terminate']"));
+                if (terminateButton.callJs("component.isEnabled();", false)) {
+                    terminateButton.click();
+                    TestUtils.sleepAndIgnoreException(10);
+                } else {
+                    break; // Exit loop if no enabled "Terminate" button is found
+                }
+            }
+        } catch (WaitForConditionTimeoutException e) {
+            // The Terminal tab is most likely closed.
+        }
+    }
+
+    public static void findWelcomeFrame(RemoteRobot remoteRobot) {
+        try {
+            remoteRobot.find(WelcomeFrameFixture.class, Duration.ofMinutes(2));
+        } catch (WaitForConditionTimeoutException e) {
+            // If the welcome frame is not found then there is a project loaded.
+            // Close the editor files and close the project to get back to the welcome frame.
+            UIBotTestUtils.closeAllEditorTabs(remoteRobot);
+            UIBotTestUtils.closeProjectView(remoteRobot);
+            UIBotTestUtils.closeProjectFrame(remoteRobot);
+            TestUtils.sleepAndIgnoreException(30); // takes about 15s to render the whole Welcome page including the Open button on Mac.
+            UIBotTestUtils.validateProjectFrameClosed(remoteRobot);
         }
     }
 }
