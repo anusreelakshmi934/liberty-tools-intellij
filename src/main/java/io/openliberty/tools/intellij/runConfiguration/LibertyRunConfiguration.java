@@ -15,6 +15,7 @@ import com.intellij.execution.configurations.*;
 import com.intellij.execution.executors.DefaultDebugExecutor;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.ex.ActionUtil;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.options.SettingsEditor;
@@ -149,8 +150,7 @@ public class LibertyRunConfiguration extends ModuleBasedConfiguration<RunConfigu
             return null;
         };
 
-        AnActionEvent event = new AnActionEvent(null, dataCtx, ActionPlaces.UNKNOWN, new Presentation(), ActionManager.getInstance(), 0);
-        action.actionPerformed(event);
+        ActionUtil.performActionDumbAwareWithCallbacks(action, AnActionEvent.createEvent(dataCtx, new Presentation(), ActionPlaces.UNKNOWN, ActionUiKind.NONE, null));
 
         // return null because we are not plugging into "Run" tool window in IntelliJ, just terminal and Debug
         return null;
