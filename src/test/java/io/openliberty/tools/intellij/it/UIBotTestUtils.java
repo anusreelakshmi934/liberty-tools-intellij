@@ -2201,42 +2201,14 @@ public class UIBotTestUtils {
     public static void selectConfigUsingToolbar(RemoteRobot remoteRobot, String cfgName) {
         ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
         ComponentFixture cfgSelectBox = projectFrame.getRunConfigurationsComboBoxButton();
-
-        // Click on the Liberty toolbar to give it focus.
-        ComponentFixture libertyTWBar = projectFrame.getBaseLabel("Liberty", "10");
-        libertyTWBar.click();
-
-        boolean configFound = false;
-        int retryCount = 0;
-        int maxRetries = 5;
-
-        while (!configFound && retryCount < maxRetries) {
-            cfgSelectBox.click();
-
-            ComponentFixture cfgSelectPaneList = projectFrame.getMyList();
-            List<RemoteText> configs = cfgSelectPaneList.getData().getAll();
-
-            if (configs != null && !configs.isEmpty()) {
-                for (RemoteText cfg : configs) {
-                    if (cfg.getText().equals(cfgName)) {
-                        cfg.click();
-                        configFound = true;
-                        break;
-                    }
-                }
+        cfgSelectBox.click();
+        ComponentFixture cfgSelectPaneList = projectFrame.getMyList();
+        List<RemoteText> configs = cfgSelectPaneList.getData().getAll();
+        for (RemoteText cfg : configs) {
+            if (cfg.getText().equals(cfgName)) {
+                cfg.click();
+                break;
             }
-            if (!configFound) {
-                retryCount++;
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new RuntimeException("Thread interrupted while waiting for configuration list", e);
-                }
-            }
-        }
-        if (!configFound) {
-            throw new RuntimeException("Configuration '" + cfgName + "' not found after " + maxRetries + " attempts.");
         }
     }
 
