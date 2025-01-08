@@ -2203,7 +2203,7 @@ public class UIBotTestUtils {
 
         // Click on the Liberty toolbar to give it focus.
         ComponentFixture libertyTWBar = projectFrame.getBaseLabel("Liberty", "10");
-        libertyTWBar.click();
+        libertyTWBar.doubleClick();
 
         ComponentFixture cfgSelectBox = projectFrame.getRunConfigurationsComboBoxButton();
         cfgSelectBox.click();
