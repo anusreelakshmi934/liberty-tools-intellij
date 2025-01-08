@@ -2200,6 +2200,11 @@ public class UIBotTestUtils {
      */
     public static void selectConfigUsingToolbar(RemoteRobot remoteRobot, String cfgName) {
         ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
+
+        // Click on the Liberty toolbar to give it focus.
+        ComponentFixture libertyTWBar = projectFrame.getBaseLabel("Liberty", "10");
+        libertyTWBar.click();
+
         ComponentFixture cfgSelectBox = projectFrame.getRunConfigurationsComboBoxButton();
         cfgSelectBox.click();
         ComponentFixture cfgSelectPaneList = projectFrame.getMyList();
