@@ -917,8 +917,6 @@ public abstract class SingleModMPProjectTestCommon {
         String cfgPrjBldPath2 = projectBldFilePath;
         UIBotTestUtils.createLibertyConfiguration(remoteRobot, configName2);
 
-        TestUtils.sleepAndIgnoreException(5);
-
         try {
             // Find newly created config 1 in the config selection box on the toolbar of the project frame.
             UIBotTestUtils.selectConfigUsingToolbar(remoteRobot, configName1);
@@ -1146,6 +1144,8 @@ public abstract class SingleModMPProjectTestCommon {
         // IntelliJ does not start building and indexing until the Project View is open
         UIBotTestUtils.waitForIndexing(remoteRobot);
         UIBotTestUtils.openAndValidateLibertyToolWindow(remoteRobot, projectName);
+        // Refresh the Liberty tool window using the refresh icon on the toolbar.
+        UIBotTestUtils.refreshLibertyToolWindow(remoteRobot);
         UIBotTestUtils.expandLibertyToolWindowProjectTree(remoteRobot, projectName);
 
         // Close all open editors.
