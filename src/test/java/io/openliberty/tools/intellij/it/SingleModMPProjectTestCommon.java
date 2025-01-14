@@ -1144,6 +1144,8 @@ public abstract class SingleModMPProjectTestCommon {
         // IntelliJ does not start building and indexing until the Project View is open
         UIBotTestUtils.waitForIndexing(remoteRobot);
         UIBotTestUtils.openAndValidateLibertyToolWindow(remoteRobot, projectName);
+        // Refresh the Liberty tool window using the refresh icon on the toolbar.
+        UIBotTestUtils.refreshLibertyToolWindow(remoteRobot);
         UIBotTestUtils.expandLibertyToolWindowProjectTree(remoteRobot, projectName);
 
         // Close all open editors.
