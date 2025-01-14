@@ -265,6 +265,8 @@ public abstract class SingleModMPProjectTestCommon {
     @BeforeEach
     public void beforeEach(TestInfo info) {
         TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, this.getClass().getSimpleName() + "." + info.getDisplayName() + ". Entry");
+        UIBotTestUtils.refreshLibertyToolWindow(remoteRobot);
+        UIBotTestUtils.expandLibertyToolWindowProjectTree(remoteRobot, getSmMPProjectName());
     }
 
     /**
