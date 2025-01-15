@@ -949,6 +949,9 @@ public abstract class SingleModMPProjectTestCommon {
             String activeCfgParams2 = cfgEntries2.get(UIBotTestUtils.ConfigEntries.PARAMS.toString());
             Assertions.assertEquals("", activeCfgParams2, "The active config params " + activeCfgParams2 + " does not match expected params of blank");
 
+            UIBotTestUtils.refreshLibertyToolWindow(remoteRobot);
+            UIBotTestUtils.expandLibertyToolWindowProjectTree(remoteRobot, getSmMPProjectName());
+
             // Edit configuration 1
             UIBotTestUtils.selectConfigUsingToolbar(remoteRobot, configName1);
             String cfgUID11 = "mCfgHist11";
@@ -964,6 +967,9 @@ public abstract class SingleModMPProjectTestCommon {
             String newCfgProjBldPath2 = projectBldFilePath;
             String newCfgStartParams2 = getStartParams() + " " + cfgUID22;
             UIBotTestUtils.editLibertyConfigUsingEditConfigDialog(remoteRobot, newCfgName2, newCfgStartParams2);
+
+            UIBotTestUtils.refreshLibertyToolWindow(remoteRobot);
+            UIBotTestUtils.expandLibertyToolWindowProjectTree(remoteRobot, getSmMPProjectName());
 
             // Find newly created config 1 in the config selection box on the toolbar of the project frame.
             UIBotTestUtils.selectConfigUsingToolbar(remoteRobot, newCfgName1);
@@ -1144,8 +1150,6 @@ public abstract class SingleModMPProjectTestCommon {
         // IntelliJ does not start building and indexing until the Project View is open
         UIBotTestUtils.waitForIndexing(remoteRobot);
         UIBotTestUtils.openAndValidateLibertyToolWindow(remoteRobot, projectName);
-        // Refresh the Liberty tool window using the refresh icon on the toolbar.
-        UIBotTestUtils.refreshLibertyToolWindow(remoteRobot);
         UIBotTestUtils.expandLibertyToolWindowProjectTree(remoteRobot, projectName);
 
         // Close all open editors.
