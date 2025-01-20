@@ -917,6 +917,9 @@ public abstract class SingleModMPProjectTestCommon {
         String cfgPrjBldPath2 = projectBldFilePath;
         UIBotTestUtils.createLibertyConfiguration(remoteRobot, configName2);
 
+        UIBotTestUtils.refreshLibertyToolWindow(remoteRobot);
+        UIBotTestUtils.expandLibertyToolWindowProjectTree(remoteRobot, getSmMPProjectName());
+
         try {
             // Find newly created config 1 in the config selection box on the toolbar of the project frame.
             UIBotTestUtils.selectConfigUsingToolbar(remoteRobot, configName1);
