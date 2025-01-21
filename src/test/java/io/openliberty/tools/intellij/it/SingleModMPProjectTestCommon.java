@@ -963,6 +963,8 @@ public abstract class SingleModMPProjectTestCommon {
             String newCfgProjBldPath1 = projectBldFilePath;
             UIBotTestUtils.editLibertyConfigUsingEditConfigDialog(remoteRobot, newCfgName1, newCfgStartParams1);
 
+            UIBotTestUtils.clickOnToolbar(remoteRobot);
+
             // Edit configuration 2
             UIBotTestUtils.selectConfigUsingToolbar(remoteRobot, configName2);
             String cfgUID22 = "mCfgHist22";
