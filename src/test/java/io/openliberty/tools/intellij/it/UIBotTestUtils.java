@@ -2664,17 +2664,6 @@ public class UIBotTestUtils {
         }
     }
 
-    /**
-     * Clicks on the main toolabr.
-     *
-     * @param remoteRobot The RemoteRobot instance.
-     */
-    public static void clickOnToolbar(RemoteRobot remoteRobot) {
-        ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
-        String xPath = "//div[@class='MainToolbar']";
-        ComponentFixture actionButton = projectFrame.getActionButton(xPath, "10");
-        actionButton.click();
-    }
 
     /**
      * Clicks on the main menu button.

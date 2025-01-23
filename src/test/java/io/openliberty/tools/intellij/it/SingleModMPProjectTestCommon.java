@@ -917,7 +917,6 @@ public abstract class SingleModMPProjectTestCommon {
         String cfgPrjBldPath2 = projectBldFilePath;
         UIBotTestUtils.createLibertyConfiguration(remoteRobot, configName2);
 
-        UIBotTestUtils.clickOnToolbar(remoteRobot);
 
         try {
             // Find newly created config 1 in the config selection box on the toolbar of the project frame.
@@ -937,7 +936,6 @@ public abstract class SingleModMPProjectTestCommon {
             String activeCfgParams1 = cfgEntries1.get(UIBotTestUtils.ConfigEntries.PARAMS.toString());
             Assertions.assertEquals("", activeCfgParams1, "The active config params " + activeCfgParams1 + " does not match expected params of blank");
 
-            UIBotTestUtils.clickOnToolbar(remoteRobot);
 
             // Find newly created config 2 in the config selection box on the toolbar of the project frame.
             UIBotTestUtils.selectConfigUsingToolbar(remoteRobot, configName2);
@@ -953,7 +951,6 @@ public abstract class SingleModMPProjectTestCommon {
             String activeCfgParams2 = cfgEntries2.get(UIBotTestUtils.ConfigEntries.PARAMS.toString());
             Assertions.assertEquals("", activeCfgParams2, "The active config params " + activeCfgParams2 + " does not match expected params of blank");
 
-            UIBotTestUtils.clickOnToolbar(remoteRobot);
 
             // Edit configuration 1
             UIBotTestUtils.selectConfigUsingToolbar(remoteRobot, configName1);
@@ -963,7 +960,6 @@ public abstract class SingleModMPProjectTestCommon {
             String newCfgProjBldPath1 = projectBldFilePath;
             UIBotTestUtils.editLibertyConfigUsingEditConfigDialog(remoteRobot, newCfgName1, newCfgStartParams1);
 
-            UIBotTestUtils.clickOnToolbar(remoteRobot);
 
             // Edit configuration 2
             UIBotTestUtils.selectConfigUsingToolbar(remoteRobot, configName2);
@@ -973,7 +969,6 @@ public abstract class SingleModMPProjectTestCommon {
             String newCfgStartParams2 = getStartParams() + " " + cfgUID22;
             UIBotTestUtils.editLibertyConfigUsingEditConfigDialog(remoteRobot, newCfgName2, newCfgStartParams2);
 
-            UIBotTestUtils.clickOnToolbar(remoteRobot);
 
             // Find newly created config 1 in the config selection box on the toolbar of the project frame.
             UIBotTestUtils.selectConfigUsingToolbar(remoteRobot, newCfgName1);
@@ -989,7 +984,6 @@ public abstract class SingleModMPProjectTestCommon {
             String newActiveCfgParams1 = newCfgEntries1.get(UIBotTestUtils.ConfigEntries.PARAMS.toString());
             Assertions.assertEquals(newCfgStartParams1, newActiveCfgParams1, "The active config params " + newActiveCfgParams1 + " does not match expected params of " + newCfgStartParams1);
 
-            UIBotTestUtils.clickOnToolbar(remoteRobot);
 
             // Find newly created config 2 in the config selection box on the toolbar of the project frame.
             UIBotTestUtils.selectConfigUsingToolbar(remoteRobot, newCfgName2);
