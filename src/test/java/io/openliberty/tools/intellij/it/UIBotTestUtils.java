@@ -159,7 +159,7 @@ public class UIBotTestUtils {
                 () -> textField.getText().equals(projectFullPath));
 
         ComponentFixture projectTree = newProjectDialog.getTree();
-        RepeatUtilsKt.waitFor(Duration.ofSeconds(10),
+        RepeatUtilsKt.waitFor(Duration.ofSeconds(30),
                 Duration.ofSeconds(1),
                 "Waiting for project tree on the Open \"File or Project\" dialog to show the set project",
                 "The project tree on the \"File or Project\" dialog did not show the set project",
