@@ -135,6 +135,10 @@ public class UIBotTestUtils {
             }
         }
 
+        // click on the refresh button
+        ComponentFixture refreshButton = remoteRobot.find(ComponentFixture.class, byXpath("//div[@class='ActionButton' and @accessiblename='Refresh']"), Duration.ofSeconds(10));
+        refreshButton.click();
+
         // Specify the project's path. The text field is pre-populated by default.
         DialogFixture newProjectDialog = commonFixture.find(DialogFixture.class, DialogFixture.byTitle("Open File or Project"), Duration.ofSeconds(10));
         JTextFieldFixture textField = newProjectDialog.getBorderLessTextField();
