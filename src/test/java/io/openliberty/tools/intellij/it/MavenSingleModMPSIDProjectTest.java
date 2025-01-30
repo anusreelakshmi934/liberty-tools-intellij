@@ -37,7 +37,7 @@ public class MavenSingleModMPSIDProjectTest extends SingleModMPProjectTestCommon
     /**
      * The path to the folder containing the test projects, including directories with spaces.
      */
-    private static final String PROJECTS_PATH_NEW = Paths.get("src", "test", "resources", "projects", "maven sample").toAbsolutePath().toString();
+    private static final String PROJECTS_PATH_NEW = Paths.get("src", "test", "resources", "projects", "maven2 sample").toAbsolutePath().toString();
 
     /**
      * The paths to the integration test reports. The first is used when maven-surefire-report-plugin 3.4 is used and the second when version 3.5 is used.

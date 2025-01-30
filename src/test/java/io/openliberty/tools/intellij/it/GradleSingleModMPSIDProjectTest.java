@@ -42,7 +42,7 @@ public class GradleSingleModMPSIDProjectTest extends SingleModMPProjectTestCommo
     /**
      * The path to the folder containing the test projects, including directories with spaces.
      */
-    private static final String PROJECTS_PATH_NEW = Paths.get("src", "test", "resources", "projects", "gradle sample").toAbsolutePath().toString();
+    private static final String PROJECTS_PATH_NEW = Paths.get("src", "test", "resources", "projects", "gradle2 sample").toAbsolutePath().toString();
 
     /**
      * Prepares the environment for test execution.
