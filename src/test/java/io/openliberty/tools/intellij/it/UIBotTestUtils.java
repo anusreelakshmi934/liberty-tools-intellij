@@ -105,7 +105,7 @@ public class UIBotTestUtils {
      * @param projectName  The name of the project to be imported.
      */
     public static void importProject(RemoteRobot remoteRobot, String projectsPath, String projectName) {
-        String projectFullPath = Paths.get(projectsPath, projectName).toAbsolutePath().toString().replace("\\", "\\\\");
+        String projectFullPath = Paths.get(projectsPath, projectName).toAbsolutePath().toString().replace("\\", "/");
 
         remoteRobot.runJs("""
                 importClass(com.intellij.openapi.application.ApplicationManager);
