@@ -9,10 +9,7 @@
 #
 # SPDX-License-Identifier: EPL-2.0
 ############################################################################
-set -euxo pipefail
-
-export PS4='+ $(date "+%Y-%m-%d %H:%M:%S")\011 '
-
+set -Ex
 
 # Current time.
 currentTime=(date +"%Y/%m/%d-%H:%M:%S:%3N")
@@ -34,7 +31,7 @@ prefetchDependencies() {
     cd "$workingDir"
 
     # Build the product to prime for product dependencies.
-    ./gradlew build -x test --info --stacktrace
+    ./gradlew build -x test
 
     # Run through dev mode server install/create and feature installation for the Maven app.
     cd "src/test/resources/projects/maven/singleModMavenMP"
