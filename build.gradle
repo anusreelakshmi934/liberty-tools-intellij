@@ -450,3 +450,11 @@ intellijPlatform {
         version project.version
     }
 }
+
+tasks.withType(Test) {
+    doFirst {
+        println "=== Test JVM Max Memory ==="
+        println "Max memory: ${Runtime.getRuntime().maxMemory() / (1024 * 1024)} MB"
+        println "JVM args: ${this.jvmArgs}"
+    }
+}
