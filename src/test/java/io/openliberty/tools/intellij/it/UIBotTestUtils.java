@@ -2069,6 +2069,11 @@ public class UIBotTestUtils {
             ActionButtonFixture addCfgButton = addProjectDialog.actionButton(addButtonLocator);
             addCfgButton.click();
 
+            // Click on the Collapse All button.
+            Locator collapseButtonLocator = byXpath("//div[@accessiblename='Collapse All']");
+            ActionButtonFixture collapseButton = addProjectDialog.actionButton(collapseButtonLocator);
+            collapseButton.click();
+
             // Look for the Liberty entry in the Add New configuration window and  create a new configuration.
             ComponentFixture pluginCfgTree = addProjectDialog.getMyTree();
             RepeatUtilsKt.waitFor(Duration.ofSeconds(10),
