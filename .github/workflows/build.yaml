@@ -161,6 +161,10 @@ jobs:
             ./**/libs/*liberty-tools-intellij*.jar
           if-no-files-found: warn
           retention-days: 7
+          
+      - name: Show Gradle JVM args
+        run: gradle --status
+
       - name: 'Run UI integration tests'
         id: run_tests
         working-directory: ./liberty-tools-intellij
