@@ -2405,7 +2405,7 @@ public class UIBotTestUtils {
     public static void runConfigUsingIconOnToolbar(RemoteRobot remoteRobot, ExecMode execMode) {
         ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
 
-        Locator locator = byXpath("//div[@class='ActionButton' and @myaction='Run (Run selected configuration)']");
+        Locator locator = byXpath("//div[@class='ActionButton' and @myaction='Run (Run the selected configuration)']");
         if (execMode == ExecMode.DEBUG) {
             locator = byXpath("//div[@class='ActionButton' and @myicon='debug.svg']");
         }
