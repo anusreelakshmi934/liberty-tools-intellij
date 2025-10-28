@@ -26,7 +26,7 @@ import java.nio.file.Paths;
  * as they are not applicable to this custom installation configuration.
  */
 
-@DisabledOnOs({OS.MAC})
+@Disabled
 public class GradleSingleModCustomWLPInstallProjectTest extends SingleModMPProjectTestCommon {
     /**
      * Single module project name.

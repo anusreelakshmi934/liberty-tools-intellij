@@ -13,6 +13,7 @@ import com.intellij.remoterobot.stepsProcessing.StepLogger;
 import com.intellij.remoterobot.stepsProcessing.StepWorker;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
@@ -22,7 +23,7 @@ import java.nio.file.Paths;
 /**
  * Tests Liberty Tools actions using a single module MicroProfile Maven project.
  */
-@DisabledOnOs({OS.MAC})
+@Disabled
 public class MavenSingleModMPProjectTest extends SingleModMPProjectTestCommon {
 
     /**

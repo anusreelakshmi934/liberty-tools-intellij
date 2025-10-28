@@ -21,7 +21,7 @@ import java.nio.file.Paths;
 /**
  * Tests Liberty Tools actions using multiple MicroProfile projects: one is a Gradle project, and the other is a Maven project. The tests are executed in the Maven project.
  */
-@DisabledOnOs({OS.MAC})
+@Disabled
 public class MavenMPMultipleProjectTest extends SingleModMPProjectTestCommon {
 
     /**

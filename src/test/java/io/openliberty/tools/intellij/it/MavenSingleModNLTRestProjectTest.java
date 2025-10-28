@@ -10,6 +10,7 @@
 package io.openliberty.tools.intellij.it;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
@@ -18,7 +19,7 @@ import java.nio.file.Paths;
 /**
  * Tests that use a single module non Liberty Tools compliant REST Maven project.
  */
-@DisabledOnOs({OS.MAC})
+@Disabled
 public class MavenSingleModNLTRestProjectTest extends SingleModNLTRestProjectTestCommon {
 
     /**

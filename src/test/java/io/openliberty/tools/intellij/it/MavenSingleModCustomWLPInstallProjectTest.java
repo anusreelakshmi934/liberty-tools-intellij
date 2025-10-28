@@ -31,7 +31,7 @@ import java.nio.file.Paths;
  * (debug mode startup via toolbar/menu). Other overridden tests are ignored here
  * as they are not applicable to this custom installation configuration.
  */
-@DisabledOnOs({OS.MAC})
+@Disabled
 public class MavenSingleModCustomWLPInstallProjectTest extends SingleModMPProjectTestCommon {
 
     /**

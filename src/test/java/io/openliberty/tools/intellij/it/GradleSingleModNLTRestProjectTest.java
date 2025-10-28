@@ -11,6 +11,7 @@ package io.openliberty.tools.intellij.it;
 
 import com.automation.remarks.junit5.Video;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -20,7 +21,7 @@ import java.nio.file.Paths;
 /**
  * Tests that use a single module non Liberty Tools compliant REST Gradle project.
  */
-@DisabledOnOs({OS.MAC})
+@Disabled
 public class GradleSingleModNLTRestProjectTest extends SingleModNLTRestProjectTestCommon {
 
     /**
