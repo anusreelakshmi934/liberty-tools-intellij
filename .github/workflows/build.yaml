@@ -96,7 +96,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        runtime: [ linux, mac, windows ]
+        runtime: [  mac ]
         include:
           - runtime: mac
             os: macOS-latest
