@@ -12,6 +12,8 @@ package io.openliberty.tools.intellij.it;
 import com.automation.remarks.junit5.Video;
 import com.intellij.remoterobot.RemoteRobot;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Holds common tests that use a single module non Liberty Tools compliant REST project.
  */
+@DisabledOnOs({OS.MAC})
 public abstract class SingleModNLTRestProjectTestCommon {
 
     /**

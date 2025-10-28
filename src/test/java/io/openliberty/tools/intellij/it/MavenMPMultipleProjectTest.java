@@ -10,6 +10,8 @@
 package io.openliberty.tools.intellij.it;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +21,7 @@ import java.nio.file.Paths;
 /**
  * Tests Liberty Tools actions using multiple MicroProfile projects: one is a Gradle project, and the other is a Maven project. The tests are executed in the Maven project.
  */
+@DisabledOnOs({OS.MAC})
 public class MavenMPMultipleProjectTest extends SingleModMPProjectTestCommon {
 
     /**

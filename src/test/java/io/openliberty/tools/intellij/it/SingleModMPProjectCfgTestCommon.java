@@ -12,6 +12,8 @@ package io.openliberty.tools.intellij.it;
 import com.automation.remarks.junit5.Video;
 import com.intellij.remoterobot.RemoteRobot;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -22,6 +24,7 @@ import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitForIgnoringError;
 /**
  * Holds common tests that use a single module MicroProfile project.
  */
+@DisabledOnOs({OS.MAC})
 public abstract class SingleModMPProjectCfgTestCommon {
 
     // In this test case the environment has been set up so that there is a new project

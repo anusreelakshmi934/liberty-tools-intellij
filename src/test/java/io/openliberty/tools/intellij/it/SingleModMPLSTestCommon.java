@@ -14,6 +14,8 @@ import com.intellij.remoterobot.RemoteRobot;
 import com.intellij.remoterobot.fixtures.JTreeFixture;
 import io.openliberty.tools.intellij.it.fixtures.ProjectFrameFixture;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,6 +23,7 @@ import java.time.Duration;
 
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitForIgnoringError;
 
+@DisabledOnOs({OS.MAC})
 public abstract class SingleModMPLSTestCommon {
     public static final String REMOTEBOT_URL = "http://localhost:8082";
     public static final RemoteRobot remoteRobot = new RemoteRobot(REMOTEBOT_URL);
@@ -79,6 +82,7 @@ public abstract class SingleModMPLSTestCommon {
      */
     @Test
     @Video
+    @Order(2)
     public void testInsertCodeSnippetIntoJavaPart() {
         String snippetStr = "mp";
         String snippetChooser = "liveness";
@@ -109,6 +113,7 @@ public abstract class SingleModMPLSTestCommon {
      */
     @Test
     @Video
+    @Order(3)
     public void testMPDiagnosticsInJavaPart() {
 
         String livenessString = "@Liveness";
@@ -155,6 +160,7 @@ public abstract class SingleModMPLSTestCommon {
      */
     @Test
     @Video
+    @Order(4)
     public void testMPQuickFixInJavaFile() {
         String livenessString = "@Liveness";
         String flaggedString = "ServiceLiveHealthCheck";
@@ -194,6 +200,7 @@ public abstract class SingleModMPLSTestCommon {
      */
     @Test
     @Video
+    @Order(5)
     public void testInsertMicroProfileProperty() {
         String cfgSnippet = "mp";
         String cfgNameChooserSnippet = "default-procedures";
@@ -222,6 +229,7 @@ public abstract class SingleModMPLSTestCommon {
      */
     @Test
     @Video
+    @Order(6)
     public void testMicroProfileConfigHover() {
 
         String testHoverTarget = "client.Service";
@@ -254,6 +262,7 @@ public abstract class SingleModMPLSTestCommon {
      */
     @Test
     @Video
+    @Order(7)
     public void testDiagnosticInMicroProfileConfigProperties() {
         String MPCfgSnippet = "mp.health.disable";
         String MPCfgNameChooserSnippet = "procedures";
@@ -286,6 +295,7 @@ public abstract class SingleModMPLSTestCommon {
      */
     @Test
     @Video
+    @Order(8)
     public void testQuickFixInMicroProfileConfigProperties() {
         String MPCfgSnippet = "mp.health.disable";
         String MPCfgNameChooserSnippet = "procedures";

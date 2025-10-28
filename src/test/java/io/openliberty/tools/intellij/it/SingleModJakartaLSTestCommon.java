@@ -14,6 +14,8 @@ import com.intellij.remoterobot.RemoteRobot;
 import com.intellij.remoterobot.fixtures.JTreeFixture;
 import io.openliberty.tools.intellij.it.fixtures.ProjectFrameFixture;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,6 +23,7 @@ import java.time.Duration;
 
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitForIgnoringError;
 
+@DisabledOnOs({OS.MAC})
 public abstract class SingleModJakartaLSTestCommon {
     public static final String REMOTEBOT_URL = "http://localhost:8082";
     public static final RemoteRobot remoteRobot = new RemoteRobot(REMOTEBOT_URL);

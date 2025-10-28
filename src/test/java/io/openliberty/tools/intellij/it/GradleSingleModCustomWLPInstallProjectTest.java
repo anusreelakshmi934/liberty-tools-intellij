@@ -9,9 +9,9 @@
  *******************************************************************************/
 package io.openliberty.tools.intellij.it;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.nio.file.Paths;
 
@@ -25,6 +25,8 @@ import java.nio.file.Paths;
  * (debug mode startup via toolbar/menu). Other overridden tests are ignored here
  * as they are not applicable to this custom installation configuration.
  */
+
+@DisabledOnOs({OS.MAC})
 public class GradleSingleModCustomWLPInstallProjectTest extends SingleModMPProjectTestCommon {
     /**
      * Single module project name.

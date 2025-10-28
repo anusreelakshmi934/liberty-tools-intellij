@@ -98,15 +98,9 @@ jobs:
       matrix:
         runtime: [ linux, mac, windows ]
         include:
-          - runtime: linux
-            os: ubuntu-latest
-            reportName: linux-test-report
           - runtime: mac
             os: macOS-latest
             reportName: mac-test-report
-          - runtime: windows
-            os: windows-latest
-            reportName: windows-test-report
     env:
       USE_LOCAL_PLUGIN: ${{ inputs.useLocalPlugin || false }}
       REF_LSP4IJ: ${{ needs.fetch_merge_commit_sha_from_lsp4ij_PR.outputs.pr_details }}

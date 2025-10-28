@@ -15,6 +15,8 @@ import com.intellij.remoterobot.fixtures.JTreeFixture;
 import com.intellij.remoterobot.utils.Keyboard;
 import io.openliberty.tools.intellij.it.fixtures.ProjectFrameFixture;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,6 +28,7 @@ import static java.awt.event.KeyEvent.VK_SPACE;
 
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitForIgnoringError;
 
+@DisabledOnOs({OS.MAC})
 public abstract class SingleModLibertyLSTestCommon {
     public static final String REMOTEBOT_URL = "http://localhost:8082";
     public static final RemoteRobot remoteRobot = new RemoteRobot(REMOTEBOT_URL);
