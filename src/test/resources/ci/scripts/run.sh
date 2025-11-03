@@ -174,7 +174,7 @@ startIDE() {
     callLivenessEndpoint=(curl -s http://localhost:8082)
     count=1
     while ! ${callLivenessEndpoint[@]} | grep -qF 'div'; do # search for any amount of html from the IDE
-        if [ $count -eq 24 ]; then
+        if [ $count -eq 50 ]; then
             echo -e "\n$(${currentTime[@]}): ERROR: Timed out waiting for the Intellij IDE to start. Output:"
             gatherDebugData $(pwd)
             cleanupCustomWLPDir
