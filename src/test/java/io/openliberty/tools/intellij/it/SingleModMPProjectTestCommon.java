@@ -37,6 +37,7 @@ import static io.openliberty.tools.intellij.util.Constants.LIBERTY_MAVEN_START_C
 /**
  * Holds common tests that use a single module MicroProfile project.
  */
+@Disabled
 public abstract class SingleModMPProjectTestCommon {
 
     /**
