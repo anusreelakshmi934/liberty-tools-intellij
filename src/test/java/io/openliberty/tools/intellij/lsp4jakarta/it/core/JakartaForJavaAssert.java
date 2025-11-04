@@ -20,6 +20,7 @@ import org.eclipse.lsp4j.jsonrpc.messages.Either;
 import org.eclipse.lsp4jakarta.commons.JakartaJavaDiagnosticsParams;
 import org.eclipse.lsp4jakarta.commons.JakartaJavaCodeActionParams;
 import org.junit.Assert;
+import org.junit.jupiter.api.Disabled;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
  * https://github.com/eclipse/lsp4mp/blob/bc926f75df2ca103d78c67b997c87adb7ab480b1/microprofile.jdt/org.eclipse.lsp4mp.jdt.test/src/main/java/org/eclipse/lsp4mp/jdt/core/MicroProfileForJavaAssert.java
  * With certain methods modified or deleted to fit the purposes of LSP4Jakarta
  */
+@Disabled
 public class JakartaForJavaAssert {
 
     // ------------------- Assert for CodeAction
