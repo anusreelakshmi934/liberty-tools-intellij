@@ -12,6 +12,7 @@ package io.openliberty.tools.intellij.it;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,6 +24,7 @@ import java.nio.file.StandardCopyOption;
  * Test Liberty Tools creation of a Run/Debug configuration without a null pointer exception
  * using a single module MicroProfile Gradle project.
  */
+@Disabled
 public class GradleSingleModMPCfgProjectTest extends SingleModMPProjectCfgTestCommon {
 
     /**

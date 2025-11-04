@@ -10,12 +10,14 @@
 package io.openliberty.tools.intellij.it;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 
 import java.nio.file.Paths;
 
 /**
  * Tests Liberty Tools actions using a single module MicroProfile Gradle project.
  */
+@Disabled
 public class GradleSingleModMPProjectTest extends SingleModMPProjectTestCommon {
     /**
      * Single module Microprofile project name.

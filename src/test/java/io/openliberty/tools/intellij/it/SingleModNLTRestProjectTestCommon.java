@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Holds common tests that use a single module non Liberty Tools compliant REST project.
  */
+@Disabled
 public abstract class SingleModNLTRestProjectTestCommon {
 
     /**

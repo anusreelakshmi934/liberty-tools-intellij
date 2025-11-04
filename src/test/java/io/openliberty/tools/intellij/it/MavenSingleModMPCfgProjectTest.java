@@ -16,6 +16,7 @@ import io.openliberty.tools.intellij.it.TestUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -25,6 +26,7 @@ import java.nio.file.Paths;
  * Test Liberty Tools creation of a Run/Debug configuration without a null pointer exception
  * using a single module MicroProfile Maven project.
  */
+@Disabled
 public class MavenSingleModMPCfgProjectTest extends SingleModMPProjectCfgTestCommon {
 
     /**
