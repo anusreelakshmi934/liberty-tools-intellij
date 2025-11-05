@@ -84,6 +84,7 @@ public abstract class SingleModMPLSTestCommon {
      * Tests MicroProfile Language Server code snippet support in a Java source file
      */
     @Test
+    @Video
     @Order(2)
     public void testInsertCodeSnippetIntoJavaPart() {
         String snippetStr = "mp";
