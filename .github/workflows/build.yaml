@@ -161,6 +161,16 @@ jobs:
             ./**/libs/*liberty-tools-intellij*.jar
           if-no-files-found: warn
           retention-days: 7
+
+      - name: Install prerequisites
+        run: |
+          brew install tccutil || echo "tccutil already installed"
+
+      - name: Grant Screen Recording permission to bash
+        run: |
+          sudo /opt/homebrew/bin/tccutil -s kTCCServiceScreenCapture --insert /bin/bash
+          sudo /opt/homebrew/bin/tccutil -s kTCCServiceScreenCapture --insert /usr/bin/bash || true
+
       - name: 'Run UI integration tests'
         id: run_tests
         working-directory: ./liberty-tools-intellij
