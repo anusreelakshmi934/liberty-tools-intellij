@@ -11,13 +11,18 @@ package io.openliberty.tools.intellij.it;
 
 import com.automation.remarks.junit5.Video;
 import com.intellij.remoterobot.RemoteRobot;
+import com.intellij.remoterobot.fixtures.JButtonFixture;
 import com.intellij.remoterobot.fixtures.JTreeFixture;
+import com.intellij.remoterobot.utils.RepeatUtilsKt;
+import com.intellij.remoterobot.utils.WaitForConditionTimeoutException;
+import io.openliberty.tools.intellij.it.fixtures.DialogFixture;
 import io.openliberty.tools.intellij.it.fixtures.ProjectFrameFixture;
 import org.junit.jupiter.api.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.List;
 
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitForIgnoringError;
 
@@ -336,6 +341,33 @@ public abstract class SingleModMPLSTestCommon {
     public static void prepareEnv(String projectPath, String projectName) {
         waitForIgnoringError(Duration.ofMinutes(4), Duration.ofSeconds(5), "Wait for IDE to start", "IDE did not start", () -> remoteRobot.callJs("true"));
         UIBotTestUtils.findWelcomeFrame(remoteRobot);
+
+// Handle macOS "bash is requesting..." popup if it appears
+        if (remoteRobot.isMac()) {
+            try {
+                DialogFixture dialog = remoteRobot.find(DialogFixture.class, Duration.ofSeconds(5));
+                JButtonFixture allowButton = dialog.getButton("Allow");
+
+                if (allowButton != null) {
+                    System.out.println("Detected system permission popup — clicking 'Allow'");
+                    try {
+                        RepeatUtilsKt.waitFor(
+                                Duration.ofSeconds(5),
+                                Duration.ofSeconds(1),
+                                "Waiting for the 'Allow' button to be enabled",
+                                "The 'Allow' button did not enable in time",
+                                allowButton::isEnabled
+                        );
+                        allowButton.click();
+                        Thread.sleep(1000); // allow dialog to close
+                    } catch (WaitForConditionTimeoutException wfcte) {
+                        System.out.println("'Allow' button not clickable or already handled");
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("No 'Allow' dialog found or unable to interact: " + e.getMessage());
+            }
+        }
 
         UIBotTestUtils.importProject(remoteRobot, projectPath, projectName);
         UIBotTestUtils.openProjectView(remoteRobot);
