@@ -161,8 +161,6 @@ jobs:
             ./**/libs/*liberty-tools-intellij*.jar
           if-no-files-found: warn
           retention-days: 7
-      - name: Handle macOS permission popup
-        run: bash ./src/test/resources/ci/scripts/allow-screen-recording.sh
 
       - name: 'Run UI integration tests'
         id: run_tests
