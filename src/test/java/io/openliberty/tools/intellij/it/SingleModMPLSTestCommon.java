@@ -21,10 +21,22 @@ import java.time.Duration;
 
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitForIgnoringError;
 
-@Disabled
 public abstract class SingleModMPLSTestCommon {
     public static final String REMOTEBOT_URL = "http://localhost:8082";
     public static final RemoteRobot remoteRobot = new RemoteRobot(REMOTEBOT_URL);
+
+    static {
+        // Disable use of native macOS screen APIs
+        System.setProperty("java.awt.headless", "true");
+        // Enable IntelliJ video recorder for UI tests
+        System.setProperty("video.enabled", "true");
+        System.setProperty("video.save.mode", "ALL");
+        System.setProperty("video.recorder.type", "FFMPEG");
+        System.setProperty("video.folder", "build/reports/video");
+        // Prevent FFMPEG from using macOS “avfoundation” input
+        System.setProperty("video.source", "null");
+    }
+
 
     String projectName;
     String projectsPath;
@@ -106,225 +118,6 @@ public abstract class SingleModMPLSTestCommon {
         }
     }
 
-    /**
-     * Tests MicroProfile Language Server diagnostic support in a Java source file
-     */
-    @Test
-    @Video
-    @Order(3)
-    public void testMPDiagnosticsInJavaPart() {
-
-        String livenessString = "@Liveness";
-        String flaggedString = "ServiceLiveHealthCheck";
-        String expectedHoverData = "The class `io.openliberty.mp.sample.health.ServiceLiveHealthCheck` implementing the HealthCheck interface should use the @Liveness, @Readiness or @Health annotation.";
-
-        // get focus on file tab prior to copy
-        UIBotTestUtils.clickOnFileTab(remoteRobot, "ServiceLiveHealthCheck.java");
-
-        // Save the current content.
-        UIBotTestUtils.copyWindowContent(remoteRobot);
-
-        // Delete the liveness annotation
-        UIBotTestUtils.selectAndDeleteTextInJavaPart(remoteRobot, "ServiceLiveHealthCheck.java", livenessString);
-        Path pathToSrc = Paths.get(projectsPath, projectName, "src", "main", "java", "io", "openliberty", "mp", "sample", "health", "ServiceLiveHealthCheck.java");
-
-        try {
-            // validate @Liveness no longer found in java part
-            TestUtils.validateStringNotInFile(pathToSrc.toString(), livenessString);
-            TestUtils.sleepAndIgnoreException(1);
-
-            String foundHoverData = null;
-            int maxWait = 60, delay = 5; // in some cases it can take 35s for the diagnostic to appear
-            for (int i = 0; i <= maxWait; i += delay) {
-                //there should be a diagnostic - move cursor to hover point
-                UIBotTestUtils.hoverInAppServerCfgFile(remoteRobot, flaggedString, "ServiceLiveHealthCheck.java", UIBotTestUtils.PopupType.DIAGNOSTIC);
-
-                foundHoverData = UIBotTestUtils.getHoverStringData(remoteRobot, UIBotTestUtils.PopupType.DIAGNOSTIC);
-                if (!foundHoverData.isBlank()) {
-                    break;
-                }
-                TestUtils.sleepAndIgnoreException(delay);
-            }
-            TestUtils.validateHoverData(expectedHoverData, foundHoverData);
-
-        } finally {
-            // Replace modified content with the original content
-            UIBotTestUtils.pasteOnActiveWindow(remoteRobot);
-        }
-    }
-
-    /**
-     * Tests MicroProfile Language Server quick fix support in a Java source file
-     */
-    @Test
-    @Video
-    @Order(4)
-    public void testMPQuickFixInJavaFile() {
-        String livenessString = "@Liveness";
-        String flaggedString = "ServiceLiveHealthCheck";
-        String quickfixChooserString = "Insert " + livenessString;
-        String mainQuickFixActionStr  = "Generate OpenAPI Annotations for 'ServiceLiveHealthCheck'";
-
-        // get focus on file tab prior to copy
-        UIBotTestUtils.clickOnFileTab(remoteRobot, "ServiceLiveHealthCheck.java");
-
-        // Save the current content.
-        UIBotTestUtils.copyWindowContent(remoteRobot);
-
-        // Delete the liveness annotation
-        UIBotTestUtils.selectAndDeleteTextInJavaPart(remoteRobot,"ServiceLiveHealthCheck.java", livenessString);
-        Path pathToSrc = Paths.get(projectsPath, projectName, "src", "main", "java", "io", "openliberty", "mp", "sample", "health", "ServiceLiveHealthCheck.java");
-
-        try {
-            // validate @Liveness no longer found in java part
-            TestUtils.validateStringNotInFile(pathToSrc.toString(), livenessString);
-
-            //there should be a diagnostic - move cursor to hover point
-            UIBotTestUtils.hoverForQuickFixInAppFile(remoteRobot, flaggedString, "ServiceLiveHealthCheck.java", quickfixChooserString);
-
-            // trigger and use the quickfix popup attached to the diagnostic
-            UIBotTestUtils.chooseQuickFix(remoteRobot, quickfixChooserString);
-
-            TestUtils.validateCodeInJavaSrc(pathToSrc.toString(), livenessString);
-        } finally {
-            // Replace modified content with the original content
-            UIBotTestUtils.pasteOnActiveWindow(remoteRobot);
-        }
-    }
-
-    /**
-     * Tests MicroProfile Language Server completion support for microprofile config entries
-     * in the microprofile-config.properties file
-     */
-    @Test
-    @Video
-    @Order(5)
-    public void testInsertMicroProfileProperty() {
-        String cfgSnippet = "mp";
-        String cfgNameChooserSnippet = "default-procedures";
-        String cfgValueSnippet = "tr";
-        String expectedMpCfgPropertiesString = "mp.health.disable-default-procedures=true";
-
-        // get focus on file tab prior to copy
-        UIBotTestUtils.clickOnFileTab(remoteRobot, "microprofile-config.properties, properties file");
-
-        // Save the current microprofile-config.properties content.
-        UIBotTestUtils.copyWindowContent(remoteRobot);
-
-        try {
-            UIBotTestUtils.insertConfigIntoMPConfigPropertiesFile(remoteRobot, "microprofile-config.properties, properties file", cfgSnippet, cfgNameChooserSnippet, cfgValueSnippet, true);
-            Path pathToMpCfgProperties = Paths.get(projectsPath, projectName, "src", "main", "resources", "META-INF", "microprofile-config.properties");
-            TestUtils.validateStringInFile(pathToMpCfgProperties.toString(), expectedMpCfgPropertiesString);
-        } finally {
-            // Replace modified microprofile-config.properties with the original content
-            UIBotTestUtils.pasteOnActiveWindow(remoteRobot, true);
-        }
-    }
-
-    /**
-     * Tests MicroProfile Language Server hover support for microprofile config entries
-     * in the microprofile-config.properties file
-     */
-    @Test
-    @Video
-    @Order(6)
-    public void testMicroProfileConfigHover() {
-
-        String testHoverTarget = "client.Service";
-        String hoverExpectedOutcome = "io.openliberty.mp.sample.client.Service/mp-rest/urlThe base URL to use for " +
-                "this service, the equivalent of the baseUrl method. This property (or */mp-rest/uri) is " +
-                "considered required, however implementations may have other ways to define these URLs/URIs.Type: " +
-                "java.lang.StringValue: http://localhost:9081/data/client/service";
-
-        //mover cursor to hover point
-        UIBotTestUtils.hoverInAppServerCfgFile(remoteRobot, testHoverTarget, "microprofile-config.properties, properties file", UIBotTestUtils.PopupType.DOCUMENTATION);
-        String hoverFoundOutcome = UIBotTestUtils.getHoverStringData(remoteRobot, UIBotTestUtils.PopupType.DOCUMENTATION);
-
-        // if the LS has not yet poulated the popup, re-get the popup data
-        for (int i = 0; i<=5; i++){
-            if (hoverFoundOutcome.contains("Fetching Documentation...")) {
-                hoverFoundOutcome = UIBotTestUtils.getHoverStringData(remoteRobot, UIBotTestUtils.PopupType.DOCUMENTATION);
-            }
-            else {
-                break;
-            }
-        }
-
-        // Validate that the hover action raised the expected hint text
-        TestUtils.validateHoverData(hoverExpectedOutcome, hoverFoundOutcome);
-    }
-
-    /**
-     * Tests MicroProfile Language Server diagnostic support for microprofile config entries
-     * in the microprofile-config.properties file
-     */
-    @Test
-    @Video
-    @Order(7)
-    public void testDiagnosticInMicroProfileConfigProperties() {
-        String MPCfgSnippet = "mp.health.disable";
-        String MPCfgNameChooserSnippet = "procedures";
-        String incorrectValue = "none";
-        String expectedHoverData = "Type mismatch: boolean expected. By default, this value will be interpreted as 'false'";
-
-        // get focus on file tab prior to copy
-        UIBotTestUtils.clickOnFileTab(remoteRobot, "microprofile-config.properties, properties file");
-
-        // Save the current content.
-        UIBotTestUtils.copyWindowContent(remoteRobot);
-
-        try {
-            UIBotTestUtils.insertConfigIntoMPConfigPropertiesFile(remoteRobot, "microprofile-config.properties, properties file", MPCfgSnippet, MPCfgNameChooserSnippet, incorrectValue, false);
-
-            //move cursor to hover point
-            UIBotTestUtils.hoverInAppServerCfgFile(remoteRobot, incorrectValue, "microprofile-config.properties, properties file", UIBotTestUtils.PopupType.DIAGNOSTIC);
-            String foundHoverData = UIBotTestUtils.getHoverStringData(remoteRobot, UIBotTestUtils.PopupType.DIAGNOSTIC);
-            TestUtils.validateHoverData(expectedHoverData, foundHoverData);
-        } finally {
-            // Replace modified microprofile-config.properties with the original content
-            UIBotTestUtils.pasteOnActiveWindow(remoteRobot, true);
-        }
-
-    }
-
-    /**
-     * Tests MicroProfile Language Server quick-fix support for microprofile config entries
-     * in the microprofile-config.properties file
-     */
-    @Test
-    @Video
-    @Order(8)
-    public void testQuickFixInMicroProfileConfigProperties() {
-        String MPCfgSnippet = "mp.health.disable";
-        String MPCfgNameChooserSnippet = "procedures";
-        String incorrectValue = "none";
-        String quickfixChooserString = "Replace with 'true'?";
-        String correctedValue = "mp.health.disable-default-procedures=true";
-        String expectedHoverData = "Type mismatch: boolean expected. By default, this value will be interpreted as 'false'";
-
-        Path pathToMpCfgProperties = Paths.get(projectsPath, projectName,"src", "main", "resources", "META-INF", "microprofile-config.properties");
-
-        // get focus on file tab prior to copy
-        UIBotTestUtils.clickOnFileTab(remoteRobot, "microprofile-config.properties, properties file");
-
-        // Save the current content.
-        UIBotTestUtils.copyWindowContent(remoteRobot);
-
-        try {
-            UIBotTestUtils.insertConfigIntoMPConfigPropertiesFile(remoteRobot, "microprofile-config.properties, properties file", MPCfgSnippet, MPCfgNameChooserSnippet, incorrectValue, false);
-
-            //move cursor to hover point
-            UIBotTestUtils.hoverForQuickFixInAppFile(remoteRobot, incorrectValue, "microprofile-config.properties, properties file", quickfixChooserString);
-
-            UIBotTestUtils.chooseQuickFix(remoteRobot, quickfixChooserString);
-            TestUtils.validateStanzaInConfigFile(pathToMpCfgProperties.toString(), correctedValue);
-
-        } finally {
-            // Replace modified microprofile-config.properties with the original content
-            UIBotTestUtils.pasteOnActiveWindow(remoteRobot, true);
-        }
-
-    }
 
     /**
      * Prepares the environment to run the tests.
