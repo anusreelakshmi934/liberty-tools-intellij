@@ -179,7 +179,7 @@ jobs:
         if: always() && (runner.os == 'macOS' || runner.os == 'Linux' || runner.os == 'Windows')
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.reportName }}-LTI-${{ env.REF_LTI_TAG || 'default' }}-LSP4IJ-${{ env.LSP4IJ_BRANCH || 'default' }}
+          name: ${{ matrix.reportName }}-LTI-${{ env.REF_LTI_TAG || 'default' }}-LSP4IJ-${{ env.LSP4IJ_BRANCH || 'default' }}-video
           path: liberty-tools-intellij/build/reports/video/
 
       - name: 'Archive Test logs and reports'
