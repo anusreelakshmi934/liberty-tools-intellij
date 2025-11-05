@@ -163,34 +163,64 @@ gatherDebugData() {
 # Start the IDE and wait for it to initialize. If the IDE takes too long this routine
 # will exit the script with error code 12.
 startIDE() {
-    # Start the IDE.
     echo -e "\n$(${currentTime[@]}): INFO: Starting the IntelliJ IDE..."
-    # Have liberty tools debugger wait 480s for Maven or Gradle dev mode to start
     export LIBERTY_TOOLS_INTELLIJ_DEBUGGER_TIMEOUT=480
-    ./gradlew runIdeForUiTests -PuseLocal=$USE_LOCAL_PLUGIN --info  > remoteServer.log  2>&1 &
 
-    # Wait for the IDE to come up.
+    ./gradlew runIdeForUiTests -PuseLocal=$USE_LOCAL_PLUGIN --info > remoteServer.log 2>&1 &
+
+    # ----------------------------------------------------------------------
+    # NEW BLOCK: macOS permissions handling (tccutil + external AppleScript)
+    # ----------------------------------------------------------------------
+    if [[ "$OS" == "Darwin" ]]; then
+        echo "🔐 macOS detected: attempting to grant screen recording permission..."
+
+        # Pre-authorize using tccutil if possible
+        if command -v /opt/homebrew/bin/tccutil >/dev/null 2>&1; then
+            echo "Using Homebrew tccutil"
+            sudo /opt/homebrew/bin/tccutil -s kTCCServiceScreenCapture --insert "/Applications/IntelliJ IDEA.app" || true
+            sudo /opt/homebrew/bin/tccutil -s kTCCServiceScreenCapture --insert "/bin/bash" || true
+        elif command -v /usr/local/bin/tccutil >/dev/null 2>&1; then
+            echo "Using system tccutil"
+            sudo /usr/local/bin/tccutil -s kTCCServiceScreenCapture --insert "/Applications/IntelliJ IDEA.app" || true
+            sudo /usr/local/bin/tccutil -s kTCCServiceScreenCapture --insert "/bin/bash" || true
+        else
+            echo "⚠️ tccutil not found, skipping preauthorization"
+        fi
+
+        echo "⌛ Waiting for possible 'Allow' popup..."
+        sleep 3
+
+        # Run external AppleScript to click “Allow” if popup appears
+        if [ -f "./src/test/resources/ci/scripts/allow-screen-recording.scpt" ]; then
+            /usr/bin/osascript ./src/test/resources/ci/scripts/allow-screen-recording.scpt || true
+        else
+            echo "⚠️ AppleScript file not found!"
+        fi
+    fi
+    # ----------------------------------------------------------------------
+
     echo -e "\n$(${currentTime[@]}): INFO: Waiting for the Intellij IDE to start..."
     callLivenessEndpoint=(curl -s http://localhost:8082)
     count=1
-    while ! ${callLivenessEndpoint[@]} | grep -qF 'div'; do # search for any amount of html from the IDE
+    while ! ${callLivenessEndpoint[@]} | grep -qF 'div'; do
         if [ $count -eq 50 ]; then
             echo -e "\n$(${currentTime[@]}): ERROR: Timed out waiting for the Intellij IDE to start. Output:"
-            gatherDebugData $(pwd)
+            gatherDebugData "$(pwd)"
             cleanupCustomWLPDir
             exit 12
         fi
-        count=`expr $count + 1`
+        count=$((count + 1))
         echo -e "\n$(${currentTime[@]}): INFO: Continue waiting for the Intellij IDE to start..." && sleep 5
     done
+
     if [[ $OS == "MINGW64_NT"* ]]; then
-        # On Windows ps -ef only shows the processes for the current user (i.e. 3-4 processes)
         IDE_PID=$(ps -ef | grep -i java | awk '{print $2}')
     else
         IDE_PID=$(ps -ef | grep -i idea.main | grep -v grep | awk '{print $2}')
     fi
-    echo -e "\n$(${currentTime[@]}): INFO: the Intellij IDE pid:" + $IDE_PID
+    echo -e "\n$(${currentTime[@]}): INFO: the Intellij IDE pid: $IDE_PID"
 }
+
 
 # Runs UI tests and collects debug data.
 main() {
