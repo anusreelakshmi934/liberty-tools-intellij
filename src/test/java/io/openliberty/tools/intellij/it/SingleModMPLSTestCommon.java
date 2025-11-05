@@ -342,7 +342,9 @@ public abstract class SingleModMPLSTestCommon {
         waitForIgnoringError(Duration.ofMinutes(4), Duration.ofSeconds(5), "Wait for IDE to start", "IDE did not start", () -> remoteRobot.callJs("true"));
         UIBotTestUtils.findWelcomeFrame(remoteRobot);
 
-// Handle macOS "bash is requesting..." popup if it appears
+        TestUtils.sleepAndIgnoreException(10);
+
+        // Handle macOS "bash is requesting..." popup if it appears
         if (remoteRobot.isMac()) {
             try {
                 DialogFixture dialog = remoteRobot.find(DialogFixture.class, Duration.ofSeconds(5));
