@@ -126,6 +126,7 @@ dependencies {
 
     // Test: Video Recording.
     testImplementation 'com.automation-remarks:video-recorder-junit5:2.0'
+    testRuntimeOnly("com.automation-remarks:video-recorder-core:2.0")
 
     // define jars to grab locally (if falling back to mavenLocal() repo)
     lsp("org.eclipse.lsp4mp:org.eclipse.lsp4mp.ls:$lsp4mpVersion:uber") {
@@ -193,6 +194,11 @@ intellijPlatformTesting.runIde {
 
 test {
     useJUnitPlatform()
+
+    systemProperty "video.enabled", System.getProperty("video.enabled", "true")
+    systemProperty "video.save.mode", System.getProperty("video.save.mode", "ALL")
+    systemProperty "video.recorder.type", System.getProperty("video.recorder.type", "FFMPEG")
+    systemProperty "video.folder", System.getProperty("video.folder", "${buildDir}/reports/video")
 
     testLogging {
         showStandardStreams = true

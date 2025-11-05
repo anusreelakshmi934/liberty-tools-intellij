@@ -168,38 +168,6 @@ startIDE() {
 
     ./gradlew runIdeForUiTests -PuseLocal=$USE_LOCAL_PLUGIN --info > remoteServer.log 2>&1 &
 
-    # ----------------------------------------------------------------------
-    # NEW BLOCK: macOS permissions handling (tccutil + external AppleScript)
-    # ----------------------------------------------------------------------
-    if [[ "$OS" == "Darwin" ]]; then
-        echo "🔐 macOS detected: attempting to grant screen recording permission..."
-
-        # Pre-authorize using tccutil if possible
-        if command -v /opt/homebrew/bin/tccutil >/dev/null 2>&1; then
-            echo "Using Homebrew tccutil"
-            sudo /opt/homebrew/bin/tccutil -s kTCCServiceScreenCapture --insert "/Applications/IntelliJ IDEA.app" || true
-            sudo /opt/homebrew/bin/tccutil -s kTCCServiceScreenCapture --insert "/bin/bash" || true
-        elif command -v /usr/local/bin/tccutil >/dev/null 2>&1; then
-            echo "Using system tccutil"
-            sudo /usr/local/bin/tccutil -s kTCCServiceScreenCapture --insert "/Applications/IntelliJ IDEA.app" || true
-            sudo /usr/local/bin/tccutil -s kTCCServiceScreenCapture --insert "/bin/bash" || true
-        else
-            echo "⚠️ tccutil not found, skipping preauthorization"
-        fi
-
-        echo "⌛ Waiting for possible 'Allow' popup..."
-        if [ -f "./src/test/resources/ci/scripts/allow-screen-recording.scpt" ]; then
-            for i in {1..6}; do
-                echo "🕐 Attempt $i to detect and click 'Allow' (waiting 5s)..."
-                /usr/bin/osascript ./src/test/resources/ci/scripts/allow-screen-recording.scpt || true
-                sleep 5
-            done
-        else
-            echo "⚠️ AppleScript file not found!"
-        fi
-    fi
-    # ----------------------------------------------------------------------
-
     echo -e "\n$(${currentTime[@]}): INFO: Waiting for the Intellij IDE to start..."
     callLivenessEndpoint=(curl -s http://localhost:8082)
     count=1

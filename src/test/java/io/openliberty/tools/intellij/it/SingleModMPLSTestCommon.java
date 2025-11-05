@@ -10,6 +10,7 @@
 package io.openliberty.tools.intellij.it;
 
 import com.automation.remarks.junit5.Video;
+import com.automation.remarks.junit5.VideoExtension;
 import com.intellij.remoterobot.RemoteRobot;
 import com.intellij.remoterobot.fixtures.JButtonFixture;
 import com.intellij.remoterobot.fixtures.JTreeFixture;
@@ -18,7 +19,9 @@ import com.intellij.remoterobot.utils.WaitForConditionTimeoutException;
 import io.openliberty.tools.intellij.it.fixtures.DialogFixture;
 import io.openliberty.tools.intellij.it.fixtures.ProjectFrameFixture;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -26,13 +29,46 @@ import java.util.List;
 
 import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitForIgnoringError;
 
-@Disabled
+@ExtendWith(VideoExtension.class)
 public abstract class SingleModMPLSTestCommon {
     public static final String REMOTEBOT_URL = "http://localhost:8082";
     public static final RemoteRobot remoteRobot = new RemoteRobot(REMOTEBOT_URL);
 
     String projectName;
     String projectsPath;
+
+    // where videos will be stored relative to project root
+    private static final String VIDEO_FOLDER = "build/reports/video";
+    static {
+        // Configure video recorder early (before JUnit extensions initialize)
+        // Only set defaults if not already provided via Gradle systemProperty or CLI
+        setDefaultIfMissing("video.enabled", "true");
+        setDefaultIfMissing("video.save.mode", "ALL");
+        setDefaultIfMissing("video.recorder.type", "FFMPEG");
+        setDefaultIfMissing("video.folder", VIDEO_FOLDER);
+        // Ensure the folder exists before tests run
+        try {
+            Path path = Paths.get(VIDEO_FOLDER);
+            if (!Files.exists(path)) {
+                Files.createDirectories(path);
+            }
+        } catch (Exception e) {
+            System.err.println("Warning: unable to create video output folder: " + e.getMessage());
+        }
+
+        // Optionally: print configuration to the log so CI artifacts show the settings
+        System.out.println("Video recorder config:");
+        System.out.println("  video.enabled=" + System.getProperty("video.enabled"));
+        System.out.println("  video.save.mode=" + System.getProperty("video.save.mode"));
+        System.out.println("  video.recorder.type=" + System.getProperty("video.recorder.type"));
+        System.out.println("  video.folder=" + System.getProperty("video.folder"));
+    }
+
+    private static void setDefaultIfMissing(String key, String value) {
+        if (System.getProperty(key) == null) {
+            System.setProperty(key, value);
+        }
+    }
 
     public SingleModMPLSTestCommon(String projectName, String projectsPath) {
         this.projectName = projectName;

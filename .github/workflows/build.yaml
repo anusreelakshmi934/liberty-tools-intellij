@@ -148,6 +148,12 @@ jobs:
         run: |
           unzip -o '*.zip' -d .
 
+      - name: Install ffmpeg on mac runner
+        if: contains(matrix.os, 'mac')
+        run: |
+          brew update || true
+          brew install ffmpeg || true
+
       - name: 'Build Liberty-Tools-Intellij'
         working-directory: ./liberty-tools-intellij
         run: bash ./gradlew buildPlugin -PuseLocal=${{ env.USE_LOCAL_PLUGIN }}
@@ -164,7 +170,18 @@ jobs:
       - name: 'Run UI integration tests'
         id: run_tests
         working-directory: ./liberty-tools-intellij
-        run: bash ./src/test/resources/ci/scripts/run.sh
+        run: |
+          echo "Starting UI tests with video recording..."
+          # export Java opts (optional) in case you prefer CLI properties
+          export JAVA_TOOL_OPTIONS="$JAVA_TOOL_OPTIONS -Dvideo.enabled=true -Dvideo.save.mode=ALL -Dvideo.recorder.type=FFMPEG -Dvideo.folder=build/reports/video"
+          bash ./src/test/resources/ci/scripts/run.sh
+      - name: 'Archive Test videos'
+        if: always() && (runner.os == 'macOS' || runner.os == 'Linux' || runner.os == 'Windows')
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-test-videos
+          path: liberty-tools-intellij/build/reports/video/
+
       - name: 'Archive Test logs and reports'
         if: ${{ failure() && steps.run_tests.conclusion == 'failure' }}
         uses: actions/upload-artifact@v4.3.4
