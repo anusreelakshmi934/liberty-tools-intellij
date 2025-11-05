@@ -216,6 +216,7 @@ intellijPlatformTesting.runIde {
                         "-Dide.mac.file.chooser.native=false",
                         "-DjbScreenMenuBar.enabled=false",
                         "-Dapple.laf.useScreenMenuBar=false",
+                        "-Drobot-server.disableScreenRecording=true",
                 ]
             } as CommandLineArgumentProvider)
             systemProperty("ide.native.launcher", "true")
