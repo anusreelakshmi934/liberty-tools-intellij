@@ -163,10 +163,12 @@ jobs:
           retention-days: 7
 
       - name: Install prerequisites
+        if: contains(matrix.os, 'mac')
         run: |
           brew install tccutil || echo "tccutil already installed"
 
       - name: Grant Screen Recording permission to bash
+        if: contains(matrix.os, 'mac')
         run: |
           sudo /opt/homebrew/bin/tccutil -s kTCCServiceScreenCapture --insert /bin/bash
           sudo /opt/homebrew/bin/tccutil -s kTCCServiceScreenCapture --insert /usr/bin/bash || true
