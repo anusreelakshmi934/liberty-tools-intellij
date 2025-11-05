@@ -188,11 +188,12 @@ startIDE() {
         fi
 
         echo "⌛ Waiting for possible 'Allow' popup..."
-        sleep 3
-
-        # Run external AppleScript to click “Allow” if popup appears
         if [ -f "./src/test/resources/ci/scripts/allow-screen-recording.scpt" ]; then
-            /usr/bin/osascript ./src/test/resources/ci/scripts/allow-screen-recording.scpt || true
+            for i in {1..6}; do
+                echo "🕐 Attempt $i to detect and click 'Allow' (waiting 5s)..."
+                /usr/bin/osascript ./src/test/resources/ci/scripts/allow-screen-recording.scpt || true
+                sleep 5
+            done
         else
             echo "⚠️ AppleScript file not found!"
         fi

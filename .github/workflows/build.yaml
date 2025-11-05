@@ -151,48 +151,6 @@ jobs:
       - name: 'Build Liberty-Tools-Intellij'
         working-directory: ./liberty-tools-intellij
         run: bash ./gradlew buildPlugin -PuseLocal=${{ env.USE_LOCAL_PLUGIN }}
-
-      - name: Grant macOS screen recording permission (hybrid)
-        if: contains(matrix.os, 'mac')
-        run: |
-          echo "🔐 Checking and granting screen recording permission..."
-          
-          bash_path="/bin/bash"
-          
-          # --- 1️⃣ Pre-authorize using tccutil ---
-          if command -v /opt/homebrew/bin/tccutil >/dev/null 2>&1; then
-            echo "Using Homebrew tccutil"
-            sudo /opt/homebrew/bin/tccutil -s kTCCServiceScreenCapture --insert "$bash_path" || true
-          elif command -v /usr/local/bin/tccutil >/dev/null 2>&1; then
-            echo "Using system tccutil"
-            sudo /usr/local/bin/tccutil -s kTCCServiceScreenCapture --insert "$bash_path" || true
-          else
-            echo "⚠️ tccutil not found. Skipping direct insertion."
-          fi
-          
-          # --- 2️⃣ Fallback: AppleScript click “Allow” if dialog appears ---
-          osascript <<'EOF'
-          tell application "System Events"
-              repeat 10 times
-                  if exists (window 1 of process "SystemUIServer") then exit repeat
-                  delay 1
-              end repeat
-              try
-                  tell process "SystemUIServer"
-                      if exists (button "Allow" of window 1) then
-                          click button "Allow" of window 1
-                          delay 1
-                          return "✅ Clicked Allow button"
-                      else
-                          return "ℹ️ No Allow button found"
-                      end if
-                  end tell
-              on error errMsg
-                  return "❌ Error: " & errMsg
-              end try
-          end tell
-          EOF
-
       - name: 'Archive artifacts'
         if: ${{ runner.os == 'Linux' && !failure() }}
         uses: actions/upload-artifact@v4.3.4
