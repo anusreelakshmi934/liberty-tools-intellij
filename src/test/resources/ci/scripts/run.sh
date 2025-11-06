@@ -173,20 +173,24 @@ startIDE() {
     echo -e "\n$(${currentTime[@]}): INFO: Waiting briefly for potential macOS popups..."
     sleep 5
 
-    # --- macOS popup handling block ---
-    echo "Attempting to click 'Allow' button if present..."
-    echo "Granting Accessibility permissions for bash..."
-    sudo /opt/homebrew/bin/tccutil -s kTCCServiceAccessibility --insert "/bin/bash" || true
-    sudo /opt/homebrew/bin/tccutil -s kTCCServiceScreenCapture --insert "/bin/bash" || true
-
-
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "Running macOS 'Allow' click automation..."
     osascript <<'EOF'
+    delay 0.5
     tell application "System Events"
         repeat with proc in (every process whose visible is true)
             try
                 tell proc
                     repeat with w in windows
                         if exists (button "Allow" of w) then
+                            tell application (name of proc)
+                                activate
+                            end tell
+                            delay 0.2
+                            try
+                                perform action "AXRaise" of w
+                            end try
+                            delay 0.2
                             click button "Allow" of w
                             log "Clicked 'Allow' in " & name of proc
                             return
@@ -197,6 +201,10 @@ startIDE() {
         end repeat
     end tell
 EOF
+else
+    echo "Skipping macOS 'Allow' click — not running on macOS."
+fi
+
 
     # Wait for the IDE to come up.
     echo -e "\n$(${currentTime[@]}): INFO: Waiting for the Intellij IDE to start..."
