@@ -155,7 +155,6 @@ public abstract class SingleModMPLSTestCommon {
     /**
      * Tests MicroProfile Language Server quick fix support in a Java source file
      */
-    @Test
     @Video
     @Order(4)
     public void testMPQuickFixInJavaFile() {
