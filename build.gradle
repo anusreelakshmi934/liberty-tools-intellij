@@ -125,7 +125,7 @@ dependencies {
     testImplementation 'org.junit.vintage:junit-vintage-engine:5.9.3'
 
     // Test: Video Recording.
-    testImplementation('com.automation-remarks:video-recorder-junit5:2.0')
+    testImplementation 'com.automation-remarks:video-recorder-junit5:2.0'
 
     // define jars to grab locally (if falling back to mavenLocal() repo)
     lsp("org.eclipse.lsp4mp:org.eclipse.lsp4mp.ls:$lsp4mpVersion:uber") {
