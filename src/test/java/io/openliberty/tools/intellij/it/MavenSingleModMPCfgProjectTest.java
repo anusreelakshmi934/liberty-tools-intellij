@@ -26,6 +26,7 @@ import java.nio.file.Paths;
  * Test Liberty Tools creation of a Run/Debug configuration without a null pointer exception
  * using a single module MicroProfile Maven project.
  */
+
 public class MavenSingleModMPCfgProjectTest extends SingleModMPProjectCfgTestCommon {
 
     /**

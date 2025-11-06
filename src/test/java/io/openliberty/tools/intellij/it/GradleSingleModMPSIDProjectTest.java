@@ -23,6 +23,7 @@ import java.nio.file.StandardCopyOption;
 /**
  * Tests Liberty Tools actions using a single module MicroProfile Gradle project with space in directory and name.
  */
+
 public class GradleSingleModMPSIDProjectTest extends SingleModMPProjectTestCommon {
 
     /**
