@@ -87,7 +87,7 @@ public abstract class SingleModMPLSTestCommon {
         String insertedCode = "public class ServiceLiveHealthCheck implements HealthCheck {";
 
         // get focus on file tab prior to copy
-        UIBotTestUtils.clickOnFileTab(remoteRobot, "ServiceLiveealthCheck.java");
+        UIBotTestUtils.clickOnFileTab(remoteRobot, "ServiceLiveHealthCheck.java");
 
         // Save the current content.
         UIBotTestUtils.copyWindowContent(remoteRobot);
