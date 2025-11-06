@@ -169,6 +169,35 @@ startIDE() {
     export LIBERTY_TOOLS_INTELLIJ_DEBUGGER_TIMEOUT=480
     ./gradlew runIdeForUiTests -PuseLocal=$USE_LOCAL_PLUGIN --info  > remoteServer.log  2>&1 &
 
+    # Wait a few seconds before interacting with UI
+    echo -e "\n$(${currentTime[@]}): INFO: Waiting briefly for potential macOS popups..."
+    sleep 5
+
+    # --- macOS popup handling block ---
+    echo "Attempting to click 'Allow' button if present..."
+    echo "Granting Accessibility permissions for bash..."
+    sudo /opt/homebrew/bin/tccutil -s kTCCServiceAccessibility --insert "/bin/bash" || true
+    sudo /opt/homebrew/bin/tccutil -s kTCCServiceScreenCapture --insert "/bin/bash" || true
+
+
+    osascript <<'EOF'
+    tell application "System Events"
+        repeat with proc in (every process whose visible is true)
+            try
+                tell proc
+                    repeat with w in windows
+                        if exists (button "Allow" of w) then
+                            click button "Allow" of w
+                            log "Clicked 'Allow' in " & name of proc
+                            return
+                        end if
+                    end repeat
+                end tell
+            end try
+        end repeat
+    end tell
+EOF
+
     # Wait for the IDE to come up.
     echo -e "\n$(${currentTime[@]}): INFO: Waiting for the Intellij IDE to start..."
     callLivenessEndpoint=(curl -s http://localhost:8082)
