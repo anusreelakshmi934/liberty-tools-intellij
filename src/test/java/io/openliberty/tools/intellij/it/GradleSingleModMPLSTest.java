@@ -9,7 +9,6 @@
  *******************************************************************************/
 package io.openliberty.tools.intellij.it;
 
-import com.automation.remarks.junit5.Video;
 import org.junit.jupiter.api.*;
 
 import java.nio.file.Paths;
