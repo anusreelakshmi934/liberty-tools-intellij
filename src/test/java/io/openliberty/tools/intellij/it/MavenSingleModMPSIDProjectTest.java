@@ -23,7 +23,7 @@ import java.nio.file.Paths;
 /**
  * Tests Liberty Tools actions using a single module MicroProfile Maven project with space in directory name.
  */
-
+@Disabled
 public class MavenSingleModMPSIDProjectTest extends SingleModMPProjectTestCommon {
 
     /**

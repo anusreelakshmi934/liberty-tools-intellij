@@ -37,8 +37,10 @@ public class GradleSingleModMPLSTest extends SingleModMPLSTestCommon {
     /**
      * Prepares the environment for test execution.
      */
-    @BeforeAll
-    public static void setup() {
+    @Test
+    @Video
+    @Order(1)
+    public void setup() {
         prepareEnv(PROJECTS_PATH, PROJECT_NAME);
     }
 }
