@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Disabled;
 
 import java.nio.file.Paths;
 
-
 public class GradleSingleModJakartaLSTest extends SingleModJakartaLSTestCommon {
 
     /**

@@ -22,7 +22,6 @@ import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitForIgnoringError;
 /**
  * Holds common tests that use a single module MicroProfile project.
  */
-
 public abstract class SingleModMPProjectCfgTestCommon {
 
     // In this test case the environment has been set up so that there is a new project
