@@ -167,16 +167,7 @@ startIDE() {
     echo -e "\n$(${currentTime[@]}): INFO: Starting the IntelliJ IDE..."
     # Have liberty tools debugger wait 480s for Maven or Gradle dev mode to start
     export LIBERTY_TOOLS_INTELLIJ_DEBUGGER_TIMEOUT=480
-    ./gradlew runIdeForUiTests \
-      -PuseLocal=$USE_LOCAL_PLUGIN \
-      --info \
-      -Djava.awt.headless=true \
-      -Dvideo.enabled=true \
-      -Dvideo.save.mode=ALL \
-      -Dvideo.recorder.type=FFMPEG \
-      -Dvideo.folder=build/reports/video \
-      > remoteServer.log 2>&1 &
-
+    ./gradlew runIdeForUiTests -PuseLocal=$USE_LOCAL_PLUGIN --info  > remoteServer.log  2>&1 &
 
     # Wait for the IDE to come up.
     echo -e "\n$(${currentTime[@]}): INFO: Waiting for the Intellij IDE to start..."
