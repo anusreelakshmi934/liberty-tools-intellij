@@ -24,19 +24,7 @@ import static com.intellij.remoterobot.utils.RepeatUtilsKt.waitForIgnoringError;
 public abstract class SingleModMPLSTestCommon {
     public static final String REMOTEBOT_URL = "http://localhost:8082";
     public static final RemoteRobot remoteRobot = new RemoteRobot(REMOTEBOT_URL);
-
-    static {
-        // Disable use of native macOS screen APIs
-        System.setProperty("java.awt.headless", "true");
-        // Enable IntelliJ video recorder for UI tests
-        System.setProperty("video.enabled", "true");
-        System.setProperty("video.save.mode", "ALL");
-        System.setProperty("video.recorder.type", "FFMPEG");
-        System.setProperty("video.folder", "build/reports/video");
-        // Prevent FFMPEG from using macOS “avfoundation” input
-        System.setProperty("video.source", "null");
-    }
-
+    
 
     String projectName;
     String projectsPath;
