@@ -74,6 +74,7 @@ public abstract class SingleModJakartaLSTestCommon {
      */
     @Test
     @Video
+    @Order(2)
     public void testInsertJakartaCodeSnippetIntoJavaPart() {
         String snippetStr = "res";
         String snippetChooser = "class";
@@ -104,6 +105,7 @@ public abstract class SingleModJakartaLSTestCommon {
      */
     @Test
     @Video
+    @Order(3)
     public void testJakartaDiagnosticsInJavaPart() {
         String publicString = "public Response getProperties() {";
         String privateString = "private Response getProperties() {";
