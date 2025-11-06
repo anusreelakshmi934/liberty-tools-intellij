@@ -24,6 +24,7 @@ import java.nio.file.StandardCopyOption;
  * Test Liberty Tools creation of a Run/Debug configuration without a null pointer exception
  * using a single module MicroProfile Gradle project.
  */
+
 public class GradleSingleModMPCfgProjectTest extends SingleModMPProjectCfgTestCommon {
 
     /**

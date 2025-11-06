@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 /**
  * Tests that use a single module non Liberty Tools compliant REST Gradle project.
  */
+
 public class GradleSingleModNLTRestProjectTest extends SingleModNLTRestProjectTestCommon {
 
     /**
