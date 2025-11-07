@@ -97,7 +97,7 @@ jobs:
       fail-fast: false
       matrix:
         runtime: [ linux, mac, windows ]
-        test-group: [ maven-mp, gradle-mp, maven-custom, gradle-custom, maven-cfg, gradle-cfg, maven-sid, gradle-sid, maven-nlt, gradle-nlt, maven-ls, gradle-ls, jakarta-ls, multi-project, lsp4jakarta-unit ]
+        test-group: [ lsp4jakarta-unit, maven-mp, gradle-mp, maven-custom, gradle-custom, maven-cfg, gradle-cfg, maven-sid, gradle-sid, maven-nlt, gradle-nlt, maven-ls, gradle-ls, jakarta-ls, multi-project ]
         exclude:
           # Exclude lsp4jakarta-unit from mac and windows - only run on linux
           - runtime: mac
@@ -161,7 +161,6 @@ jobs:
           path: liberty-tools-intellij
           ref: ${{ env.REF_LTI_TAG }}
       - name: 'Install required integration test software'
-        if: matrix.test-group != 'lsp4jakarta-unit'
         working-directory: ./liberty-tools-intellij
         run: bash ./src/test/resources/ci/scripts/setup.sh
 
