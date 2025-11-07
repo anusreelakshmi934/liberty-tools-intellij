@@ -200,14 +200,7 @@ jobs:
         id: run_tests
         working-directory: ./liberty-tools-intellij
         shell: bash
-        run: |
-          if [ "${{ matrix.test-group }}" == "LSP4Jakarta-Unit" ]; then
-            # Run unit tests directly without the UI test setup
-            ./gradlew test --tests "${{ matrix.test-class }}" -PuseLocal=${{ env.USE_LOCAL_PLUGIN }}
-          else
-            # Run UI integration tests with full setup
-            bash ./src/test/resources/ci/scripts/run.sh
-          fi
+        run: bash ./src/test/resources/ci/scripts/run.sh
       - name: 'Archive Test logs and reports'
         if: ${{ failure() && steps.run_tests.conclusion == 'failure' }}
         uses: actions/upload-artifact@v4.3.4
