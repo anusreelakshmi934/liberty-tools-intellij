@@ -199,6 +199,7 @@ jobs:
       - name: 'Run tests'
         id: run_tests
         working-directory: ./liberty-tools-intellij
+        shell: bash
         run: |
           if [ "${{ matrix.test-group }}" == "LSP4Jakarta-Unit" ]; then
             # Run unit tests directly without the UI test setup
