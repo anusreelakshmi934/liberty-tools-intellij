@@ -93,7 +93,7 @@ jobs:
   Linux:
     needs: fetch_merge_commit_sha_from_lsp4ij_PR
     runs-on: ubuntu-latest
-    name: ${{ matrix.test-group }}
+    name: Linux / ${{ matrix.test-group }}
     strategy:
       fail-fast: false
       matrix:
@@ -178,7 +178,7 @@ jobs:
   Mac:
     needs: fetch_merge_commit_sha_from_lsp4ij_PR
     runs-on: macOS-14
-    name: ${{ matrix.test-group }}
+    name: Mac / ${{ matrix.test-group }}
     strategy:
       fail-fast: false
       matrix:
@@ -249,7 +249,7 @@ jobs:
   Windows:
     needs: fetch_merge_commit_sha_from_lsp4ij_PR
     runs-on: windows-latest
-    name: ${{ matrix.test-group }}
+    name: Windows / ${{ matrix.test-group }}
     strategy:
       fail-fast: false
       matrix:
