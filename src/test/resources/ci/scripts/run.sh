@@ -241,9 +241,14 @@ main() {
         startIDE
         # Run the tests
         if [ -n "$TEST_CLASS" ]; then
-            echo -e "\n$(${currentTime[@]}): INFO: Running specific test class: $TEST_CLASS"
+            echo -e "\n$(${currentTime[@]}): INFO: Running specific test classes: $TEST_CLASS"
             set -o pipefail # using tee requires we use this setting to gather the rc of gradlew
-            ./gradlew test --tests "$TEST_CLASS" -PuseLocal=$USE_LOCAL_PLUGIN | tee "$JUNIT_OUTPUT_TXT"
+            # Build the --tests arguments for multiple test classes
+            TEST_ARGS=""
+            for test in $TEST_CLASS; do
+                TEST_ARGS="$TEST_ARGS --tests $test"
+            done
+            ./gradlew test $TEST_ARGS -PuseLocal=$USE_LOCAL_PLUGIN | tee "$JUNIT_OUTPUT_TXT"
             testRC=$? # gradlew test only returns 0 or 1, not the return code from JUnit
         else
             echo -e "\n$(${currentTime[@]}): INFO: Running all tests..."
