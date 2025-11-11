@@ -2106,7 +2106,7 @@ public class UIBotTestUtils {
             }
 
             // Find the new configuration's name text field and give it a name.
-            Locator locator = byXpath("//div[@class='JTextField']");
+            Locator locator = byXpath("//div[@accessiblename='Name:' and @class='JTextField']");
 
             for (int i = 0; i < 3; i++) {
                 try {
