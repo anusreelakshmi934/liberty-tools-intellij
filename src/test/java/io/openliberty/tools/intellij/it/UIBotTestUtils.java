@@ -2069,6 +2069,11 @@ public class UIBotTestUtils {
             ActionButtonFixture addCfgButton = addProjectDialog.actionButton(addButtonLocator);
             addCfgButton.click();
 
+            // Click on the Collapse All button.
+            Locator collapseButtonLocator = byXpath("//div[@accessiblename='Collapse All']");
+            ActionButtonFixture collapseButton = addProjectDialog.actionButton(collapseButtonLocator);
+            collapseButton.click();
+
             // Look for the Liberty entry in the Add New configuration window and  create a new configuration.
             ComponentFixture pluginCfgTree = addProjectDialog.getMyTree();
             RepeatUtilsKt.waitFor(Duration.ofSeconds(10),
@@ -2101,7 +2106,7 @@ public class UIBotTestUtils {
             }
 
             // Find the new configuration's name text field and give it a name.
-            Locator locator = byXpath("//div[@class='JTextField']");
+            Locator locator = byXpath("//div[@accessiblename='Name:' and @class='JTextField']");
 
             for (int i = 0; i < 3; i++) {
                 try {
@@ -2400,7 +2405,7 @@ public class UIBotTestUtils {
     public static void runConfigUsingIconOnToolbar(RemoteRobot remoteRobot, ExecMode execMode) {
         ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
 
-        Locator locator = byXpath("//div[@class='ActionButton' and @myaction='Run (Run selected configuration)']");
+        Locator locator = byXpath("//div[@class='ActionButton' and @myaction='Run (Run the selected configuration)']");
         if (execMode == ExecMode.DEBUG) {
             locator = byXpath("//div[@class='ActionButton' and @myicon='debug.svg']");
         }
