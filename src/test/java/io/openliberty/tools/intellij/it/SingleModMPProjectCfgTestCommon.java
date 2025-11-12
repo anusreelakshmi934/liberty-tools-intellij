@@ -171,6 +171,9 @@ public abstract class SingleModMPProjectCfgTestCommon {
         }
         // IntelliJ does not start building and indexing until the Project View is open
         UIBotTestUtils.waitForIndexing(remoteRobot);
+        // Open and refresh Liberty tool window.
+        UIBotTestUtils.openAndValidateLibertyToolWindow(remoteRobot, projectName);
+        UIBotTestUtils.refreshLibertyToolWindow(remoteRobot);
         TestUtils.printTrace(TestUtils.TraceSevLevel.INFO,
                 "prepareEnv. Exit. ProjectName: " + projectName);
     }
