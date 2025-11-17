@@ -93,7 +93,7 @@ jobs:
   build:
     needs: fetch_merge_commit_sha_from_lsp4ij_PR
     runs-on: ${{ matrix.os }}
-    name: ${{ matrix.runtime }} - ${{ matrix.test-group }}
+    name: ${{ matrix.runtime }} / ${{ matrix.test-category }} / ${{ matrix.test-group }}
     strategy:
       fail-fast: false
       matrix:
@@ -112,36 +112,58 @@ jobs:
             os: macOS-14
           - runtime: windows
             os: windows-latest
+          # Unit Tests
+          - test-group: LSP4Jakarta-Unit
+            test-category: Unit Tests
+            test-class: "io.openliberty.tools.intellij.lsp4jakarta.it.*"
+          # Integration Tests - MicroProfile
           - test-group: Maven-MicroProfile
+            test-category: Integration Tests
             test-class: io.openliberty.tools.intellij.it.MavenSingleModMPProjectTest
           - test-group: Gradle-MicroProfile
+            test-category: Integration Tests
             test-class: io.openliberty.tools.intellij.it.GradleSingleModMPProjectTest
+          - test-group: Maven-Multi-Module-MP
+            test-category: Integration Tests
+            test-class: io.openliberty.tools.intellij.it.MavenMPMultipleProjectTest
+          # Integration Tests - Custom Install
           - test-group: Maven-Custom-Liberty-Install
+            test-category: Integration Tests
             test-class: io.openliberty.tools.intellij.it.MavenSingleModCustomWLPInstallProjectTest
           - test-group: Gradle-Custom-Liberty-Install
+            test-category: Integration Tests
             test-class: io.openliberty.tools.intellij.it.GradleSingleModCustomWLPInstallProjectTest
+          # Integration Tests - MP Config
           - test-group: Maven-MP-Config
+            test-category: Integration Tests
             test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest
           - test-group: Gradle-MP-Config
+            test-category: Integration Tests
             test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest
+          # Integration Tests - MP SID
           - test-group: Maven-MP-SID
+            test-category: Integration Tests
             test-class: io.openliberty.tools.intellij.it.MavenSingleModMPSIDProjectTest
           - test-group: Gradle-MP-SID
+            test-category: Integration Tests
             test-class: io.openliberty.tools.intellij.it.GradleSingleModMPSIDProjectTest
+          # Integration Tests - NLT REST
           - test-group: Maven-NLT-REST
+            test-category: Integration Tests
             test-class: io.openliberty.tools.intellij.it.MavenSingleModNLTRestProjectTest
           - test-group: Gradle-NLT-REST
+            test-category: Integration Tests
             test-class: io.openliberty.tools.intellij.it.GradleSingleModNLTRestProjectTest
+          # Language Server Tests
           - test-group: Gradle-Language-Server
+            test-category: Language Server Tests
             test-class: io.openliberty.tools.intellij.it.GradleSingleModLSTest
           - test-group: Gradle-MP-Language-Server
+            test-category: Language Server Tests
             test-class: io.openliberty.tools.intellij.it.GradleSingleModMPLSTest
           - test-group: Gradle-Jakarta-Language-Server
+            test-category: Language Server Tests
             test-class: io.openliberty.tools.intellij.it.GradleSingleModJakartaLSTest
-          - test-group: Maven-Multi-Module-MP
-            test-class: io.openliberty.tools.intellij.it.MavenMPMultipleProjectTest
-          - test-group: LSP4Jakarta-Unit
-            test-class: "io.openliberty.tools.intellij.lsp4jakarta.it.*"
     env:
       USE_LOCAL_PLUGIN: ${{ inputs.useLocalPlugin || false }}
       REF_LSP4IJ: ${{ needs.fetch_merge_commit_sha_from_lsp4ij_PR.outputs.pr_details }}
