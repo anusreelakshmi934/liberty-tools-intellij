@@ -94,7 +94,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tag: [ 'main', '25.0.8-fixBranch', '25.0.9-fixBranch' ]
+        tag: [ 'cleanUpCronJob', '25.0.8-fixBranch', '25.0.9-fixBranch' ]
         pr_details: ${{ fromJson(needs.fetch_all_pull_request_shas.outputs.pr_details) }}
     with:
       useLocalPlugin: true
@@ -111,7 +111,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tag: [ 'main', '25.0.8-fixBranch', '25.0.9-fixBranch' ]
+        tag: [ 'cleanUpCronJob', '25.0.8-fixBranch', '25.0.9-fixBranch' ]
         pr_details: ${{ fromJson(needs.fetch_all_pull_request_shas.outputs.pr_details) }}
     with:
       useLocalPlugin: true
@@ -128,7 +128,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tag: [ 'main', '25.0.8-fixBranch', '25.0.9-fixBranch' ]
+        tag: [ 'cleanUpCronJob', '25.0.8-fixBranch', '25.0.9-fixBranch' ]
         pr_details: ${{ fromJson(needs.fetch_all_pull_request_shas.outputs.pr_details) }}
     with:
       useLocalPlugin: true
@@ -143,7 +143,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tag: [ 'main', '25.0.8-fixBranch', '25.0.9-fixBranch' ]
+        tag: [ 'cleanUpCronJob', '25.0.8-fixBranch', '25.0.9-fixBranch' ]
     with:
       useLocalPlugin: true
       refLsp4ij: main
@@ -157,7 +157,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tag: [ 'main', '25.0.8-fixBranch', '25.0.9-fixBranch' ]
+        tag: [ 'cleanUpCronJob', '25.0.8-fixBranch', '25.0.9-fixBranch' ]
     with:
       useLocalPlugin: true
       refLsp4ij: main
@@ -171,7 +171,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tag: [ 'main', '25.0.8-fixBranch', '25.0.9-fixBranch' ]
+        tag: [ 'cleanUpCronJob', '25.0.8-fixBranch', '25.0.9-fixBranch' ]
     with:
       useLocalPlugin: true
       refLsp4ij: main
