@@ -274,9 +274,9 @@ installDockerOnMAC() {
         docker info
 }
 
-# Disables macOS screen recording permission prompts for CI/CD environments.
-# This is required for macOS 15+ (Sequoia) which introduced stricter TCC (Transparency, Consent, and Control) policies.
-# The function disables the TCC database to prevent permission prompts during automated testing.
+# Handles macOS screen recording permission prompts for CI/CD environments.
+# This is required for macOS 15+ (Sequoia) which introduced stricter TCC policies.
+# Since GitHub Actions runners have SIP enabled, we use automation to handle permission dialogs.
 disableMacOSScreenRecordingPrompts() {
     echo "Checking macOS version for screen recording permission handling..."
     
@@ -288,22 +288,31 @@ disableMacOSScreenRecordingPrompts() {
     
     # Only apply fix for macOS 15 and above
     if [ "$major_version" -ge 15 ]; then
-        echo "macOS 15+ detected. Disabling TCC restrictions for screen recording..."
+        echo "macOS 15+ detected. Configuring automation for screen recording permissions..."
         
-        # Disable System Integrity Protection (SIP) check for TCC
-        # Note: On GitHub Actions runners, we need to use sudo to modify system settings
+        # Grant automation permissions to Terminal and bash
+        # This allows automated clicking of permission dialogs
+        sudo tccutil reset AppleEvents 2>/dev/null || true
         
-        # Stop the TCC daemon
-        sudo launchctl unload /System/Library/LaunchDaemons/com.apple.tccd.plist 2>/dev/null || true
+        # Enable accessibility for automation (required for UI scripting)
+        sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db \
+            "INSERT or REPLACE INTO access VALUES('kTCCServiceAccessibility','com.apple.Terminal',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687535493);" 2>/dev/null || true
         
-        # Reset TCC database to clear any existing restrictions
-        sudo tccutil reset ScreenCapture 2>/dev/null || true
-        sudo tccutil reset SystemPolicyAllFiles 2>/dev/null || true
+        sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db \
+            "INSERT or REPLACE INTO access VALUES('kTCCServiceAccessibility','/bin/bash',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687535493);" 2>/dev/null || true
         
-        # Restart the TCC daemon
-        sudo launchctl load /System/Library/LaunchDaemons/com.apple.tccd.plist 2>/dev/null || true
+        # Grant screen recording permission to bash and Terminal
+        sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db \
+            "INSERT or REPLACE INTO access VALUES('kTCCServiceScreenCapture','com.apple.Terminal',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687535493);" 2>/dev/null || true
         
-        echo "TCC restrictions disabled for screen recording."
+        sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db \
+            "INSERT or REPLACE INTO access VALUES('kTCCServiceScreenCapture','/bin/bash',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687535493);" 2>/dev/null || true
+        
+        # Restart the TCC daemon to apply changes
+        sudo killall -9 tccd 2>/dev/null || true
+        sleep 2
+        
+        echo "Screen recording permissions configured for automation."
     else
         echo "macOS version is below 15. No TCC modifications needed."
     fi

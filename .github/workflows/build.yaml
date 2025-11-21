@@ -133,6 +133,42 @@ jobs:
         with:
           path: liberty-tools-intellij
           ref: ${{ env.REF_LTI_TAG }}
+      
+      # Grant screen recording permissions for macOS 15+ before running setup
+      - name: 'Grant screen recording permissions (macOS 15+)'
+        if: runner.os == 'macOS'
+        run: |
+          echo "Configuring screen recording permissions for macOS..."
+          
+          # Get macOS version
+          macos_version=$(sw_vers -productVersion)
+          major_version=$(echo "$macos_version" | cut -d '.' -f 1)
+          
+          echo "Detected macOS version: $macos_version"
+          
+          if [ "$major_version" -ge 15 ]; then
+            echo "macOS 15+ detected. Granting screen recording permissions..."
+            
+            # Grant screen recording permission to bash and Terminal using TCC database
+            sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db \
+              "INSERT or REPLACE INTO access VALUES('kTCCServiceScreenCapture','com.apple.Terminal',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687535493);" 2>/dev/null || echo "Failed to modify TCC for Terminal"
+            
+            sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db \
+              "INSERT or REPLACE INTO access VALUES('kTCCServiceScreenCapture','/bin/bash',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687535493);" 2>/dev/null || echo "Failed to modify TCC for bash"
+            
+            # Also grant to Java (IntelliJ)
+            sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db \
+              "INSERT or REPLACE INTO access VALUES('kTCCServiceScreenCapture','com.jetbrains.intellij',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687535493);" 2>/dev/null || echo "Failed to modify TCC for IntelliJ"
+            
+            # Restart TCC daemon
+            sudo killall -9 tccd 2>/dev/null || true
+            sleep 2
+            
+            echo "Screen recording permissions configured."
+          else
+            echo "macOS version is below 15. No TCC modifications needed."
+          fi
+      
       - name: 'Install required integration test software'
         working-directory: ./liberty-tools-intellij
         run: bash ./src/test/resources/ci/scripts/setup.sh
