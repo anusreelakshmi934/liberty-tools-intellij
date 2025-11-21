@@ -134,25 +134,13 @@ jobs:
           path: liberty-tools-intellij
           ref: ${{ env.REF_LTI_TAG }}
       
-      # Enable accessibility permissions for automation on macOS 15+
-      - name: 'Enable automation accessibility (macOS 15+)'
+      # Install cliclick for automated button clicking on macOS 15+
+      - name: 'Install cliclick for macOS automation'
         if: runner.os == 'macOS'
         run: |
-          echo "Enabling automation accessibility for macOS..."
-          
-          # Enable Terminal for accessibility
-          sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db \
-            "INSERT or REPLACE INTO access VALUES('kTCCServiceAccessibility','com.apple.Terminal',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687535493);" 2>/dev/null || true
-          
-          # Enable osascript (AppleScript) for accessibility
-          sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db \
-            "INSERT or REPLACE INTO access VALUES('kTCCServiceAccessibility','/usr/bin/osascript',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687535493);" 2>/dev/null || true
-          
-          # Restart TCC daemon
-          sudo killall -9 tccd 2>/dev/null || true
-          sleep 2
-          
-          echo "Automation accessibility enabled."
+          echo "Installing cliclick for automated dialog handling..."
+          brew install cliclick
+          echo "cliclick installed successfully"
       
       - name: 'Install required integration test software'
         working-directory: ./liberty-tools-intellij

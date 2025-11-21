@@ -11,50 +11,39 @@
 ############################################################################
 
 # This script runs in the background and automatically clicks "Allow" on
-# macOS permission dialogs for screen recording and accessibility.
+# macOS permission dialogs using cliclick (coordinate-based clicking).
 
-echo "Starting permission dialog auto-clicker..."
+echo "Starting permission dialog auto-clicker using cliclick..."
 
-# Function to click Allow button using AppleScript
+# Function to find and click Allow button using cliclick
 click_allow_button() {
-    osascript <<EOF
-tell application "System Events"
-    repeat
-        try
-            -- Look for permission dialog windows
-            set dialogWindows to (every window whose name contains "requesting" or name contains "access" or name contains "permission")
-            
-            repeat with dialogWindow in dialogWindows
-                -- Try to find and click the "Allow" button
-                tell dialogWindow
-                    if exists button "Allow" then
-                        click button "Allow"
-                        log "Clicked Allow button"
-                        delay 1
-                    end if
-                    
-                    -- Also try "OK" button
-                    if exists button "OK" then
-                        click button "OK"
-                        log "Clicked OK button"
-                        delay 1
-                    end if
-                end tell
-            end repeat
-        on error errMsg
-            -- Silently continue on errors
-        end try
-        
-        delay 2
-    end repeat
-end tell
-EOF
+    # Common button positions for macOS permission dialogs
+    # These are typical positions for "Allow" buttons in permission dialogs
+    # Format: x:y coordinates
+    
+    # Standard dialog "Allow" button position (right side, bottom)
+    ALLOW_POSITIONS=(
+        "393:511"   # Standard position for Allow button
+        "400:510"   # Slight variation
+        "390:505"   # Another common position
+        "350:500"   # Centered Allow button
+    )
+    
+    for pos in "${ALLOW_POSITIONS[@]}"; do
+        # Try clicking at each position
+        cliclick c:$pos 2>/dev/null
+        sleep 0.5
+    done
 }
 
 # Run the auto-clicker in a loop
 while true; do
-    click_allow_button &
-    sleep 5
+    # Check if there are any dialog windows open
+    # If a dialog is detected, try clicking the Allow button
+    click_allow_button
+    
+    # Wait before next attempt
+    sleep 3
 done
 
 # Made with Bob
