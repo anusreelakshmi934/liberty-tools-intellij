@@ -79,6 +79,7 @@ public abstract class SingleModMPLSTestCommon {
      */
     @Test
     @Video
+    @Order(2)
     public void testInsertCodeSnippetIntoJavaPart() {
         String snippetStr = "mp";
         String snippetChooser = "liveness";
@@ -109,6 +110,7 @@ public abstract class SingleModMPLSTestCommon {
      */
     @Test
     @Video
+    @Order(3)
     public void testMPDiagnosticsInJavaPart() {
 
         String livenessString = "@Liveness";
@@ -155,6 +157,7 @@ public abstract class SingleModMPLSTestCommon {
      */
     @Test
     @Video
+    @Order(4)
     public void testMPQuickFixInJavaFile() {
         String livenessString = "@Liveness";
         String flaggedString = "ServiceLiveHealthCheck";
@@ -194,6 +197,7 @@ public abstract class SingleModMPLSTestCommon {
      */
     @Test
     @Video
+    @Order(4)
     public void testInsertMicroProfileProperty() {
         String cfgSnippet = "mp";
         String cfgNameChooserSnippet = "default-procedures";
