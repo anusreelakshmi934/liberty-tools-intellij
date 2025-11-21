@@ -238,6 +238,15 @@ main() {
         metacity --sm-disable --replace 2> metacity.err &
     fi
 
+    # Start auto-clicker for macOS permission dialogs
+    if [ "$OS" = "Darwin" ]; then
+        echo -e "\n$(${currentTime[@]}): INFO: Starting permission dialog auto-clicker for macOS..."
+        chmod +x "$currentLoc/src/test/resources/ci/scripts/auto-allow-permissions.sh"
+        "$currentLoc/src/test/resources/ci/scripts/auto-allow-permissions.sh" > /dev/null 2>&1 &
+        AUTO_CLICKER_PID=$!
+        echo -e "\n$(${currentTime[@]}): INFO: Auto-clicker started with PID: $AUTO_CLICKER_PID"
+    fi
+
     # Clean the project.
     ./gradlew clean
 
@@ -296,11 +305,28 @@ main() {
         echo -e "\n$(${currentTime[@]}): ERROR: Failure while running tests. rc: ${testRC}."
         gatherDebugData "$currentLoc"
         cleanupCustomWLPDir
+        
+        # Kill auto-clicker if running
+        if [ "$OS" = "Darwin" ] && [ -n "$AUTO_CLICKER_PID" ]; then
+            echo -e "\n$(${currentTime[@]}): INFO: Stopping auto-clicker..."
+            kill -9 $AUTO_CLICKER_PID 2>/dev/null || true
+            # Also kill any orphaned osascript processes
+            pkill -f "auto-allow-permissions" 2>/dev/null || true
+        fi
+        
         exit -1
     fi
 
     # Always clean up the custom wlp directory before exiting
     cleanupCustomWLPDir
+    
+    # Kill auto-clicker if running
+    if [ "$OS" = "Darwin" ] && [ -n "$AUTO_CLICKER_PID" ]; then
+        echo -e "\n$(${currentTime[@]}): INFO: Stopping auto-clicker..."
+        kill -9 $AUTO_CLICKER_PID 2>/dev/null || true
+        # Also kill any orphaned osascript processes
+        pkill -f "auto-allow-permissions" 2>/dev/null || true
+    fi
 }
 
 main "$@"
