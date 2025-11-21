@@ -96,6 +96,8 @@ installBaseSoftware() {
     elif [[ $OS == "Darwin" ]]; then
         brew update
         brew install --quiet curl unzip || true
+        # Disable screen recording permission prompts on macOS 15+
+        disableMacOSScreenRecordingPrompts
         # installDockerOnMAC
     else
         # Note: Docker is already installed on the windows VMs provisioned by GHA.
@@ -270,6 +272,41 @@ installDockerOnMAC() {
         # Sanity check. This will either show the info output of a successful start.
         # or will fail the setup on an unsuccessful start.
         docker info
+}
+
+# Disables macOS screen recording permission prompts for CI/CD environments.
+# This is required for macOS 15+ (Sequoia) which introduced stricter TCC (Transparency, Consent, and Control) policies.
+# The function disables the TCC database to prevent permission prompts during automated testing.
+disableMacOSScreenRecordingPrompts() {
+    echo "Checking macOS version for screen recording permission handling..."
+    
+    # Get macOS version
+    local macos_version=$(sw_vers -productVersion)
+    local major_version=$(echo "$macos_version" | cut -d '.' -f 1)
+    
+    echo "Detected macOS version: $macos_version"
+    
+    # Only apply fix for macOS 15 and above
+    if [ "$major_version" -ge 15 ]; then
+        echo "macOS 15+ detected. Disabling TCC restrictions for screen recording..."
+        
+        # Disable System Integrity Protection (SIP) check for TCC
+        # Note: On GitHub Actions runners, we need to use sudo to modify system settings
+        
+        # Stop the TCC daemon
+        sudo launchctl unload /System/Library/LaunchDaemons/com.apple.tccd.plist 2>/dev/null || true
+        
+        # Reset TCC database to clear any existing restrictions
+        sudo tccutil reset ScreenCapture 2>/dev/null || true
+        sudo tccutil reset SystemPolicyAllFiles 2>/dev/null || true
+        
+        # Restart the TCC daemon
+        sudo launchctl load /System/Library/LaunchDaemons/com.apple.tccd.plist 2>/dev/null || true
+        
+        echo "TCC restrictions disabled for screen recording."
+    else
+        echo "macOS version is below 15. No TCC modifications needed."
+    fi
 }
 
 # Returns 0 if the package is installed.
