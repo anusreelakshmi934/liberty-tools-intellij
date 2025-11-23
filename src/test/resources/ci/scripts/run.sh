@@ -238,6 +238,14 @@ main() {
         metacity --sm-disable --replace 2> metacity.err &
     fi
 
+    # Start auto-allow monitor for macOS screen recording popup
+    if [ "$OS" = "Darwin" ]; then
+        echo -e "\n$(${currentTime[@]}): INFO: Starting auto-allow screen recording monitor for macOS..."
+        bash "$currentLoc/src/test/resources/ci/scripts/auto-allow-screen-recording.sh" &
+        AUTO_ALLOW_PID=$!
+        echo -e "$(${currentTime[@]}): INFO: Auto-allow monitor started with PID: $AUTO_ALLOW_PID"
+    fi
+
     # Clean the project.
     ./gradlew clean
 
@@ -290,6 +298,18 @@ main() {
             break;
         fi
     done
+
+    # Stop the auto-allow monitor if it's running
+    if [ "$OS" = "Darwin" ] && [ -n "$AUTO_ALLOW_PID" ]; then
+        echo -e "\n$(${currentTime[@]}): INFO: Stopping auto-allow screen recording monitor..."
+        kill $AUTO_ALLOW_PID 2>/dev/null || true
+        # Also kill any child processes
+        if [ -f /tmp/auto_allow_screen_recording.pid ]; then
+            APPLESCRIPT_PID=$(cat /tmp/auto_allow_screen_recording.pid)
+            kill $APPLESCRIPT_PID 2>/dev/null || true
+            rm -f /tmp/auto_allow_screen_recording.pid
+        fi
+    fi
 
     # If there were any errors, gather some debug data before exiting.
     if [ "$testRC" -ne 0 ]; then
