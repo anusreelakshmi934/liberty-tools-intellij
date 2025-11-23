@@ -151,6 +151,7 @@ public abstract class SingleModNLTRestProjectTestCommon {
      */
     @Test
     @Video
+    @Order(2)
     public void testManualProjectAddRemoveActionUsingSearch() {
         // Validate that the Liberty tool window project tree is not showing. No projects are expected.
         UIBotTestUtils.waitForLTWNoProjectDetectedMsg(remoteRobot, 10);
@@ -189,6 +190,7 @@ public abstract class SingleModNLTRestProjectTestCommon {
      */
     @Test
     @Video
+    @Order(3)
     public void testsRefreshProjectWithServerXmlOnly() {
         // Validate that the Liberty tool window project tree is not showing. No projects are expected.
         UIBotTestUtils.waitForLTWNoProjectDetectedMsg(remoteRobot, 10);
@@ -232,6 +234,7 @@ public abstract class SingleModNLTRestProjectTestCommon {
      */
     @Test
     @Video
+    @Order(4)
     public void testsRefreshProjectWithLTBuildCfgOnlyWithBldScriptBlock() {
         testsRefreshProjectWithLTBuildCfgOnly(getBuildFileName());
     }
