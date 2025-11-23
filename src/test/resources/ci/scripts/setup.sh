@@ -96,6 +96,8 @@ installBaseSoftware() {
     elif [[ $OS == "Darwin" ]]; then
         brew update
         brew install --quiet curl unzip || true
+        # Grant screen recording permissions for macOS 15+ if needed
+        grantScreenRecordingPermissionsOnMac
         # installDockerOnMAC
     else
         # Note: Docker is already installed on the windows VMs provisioned by GHA.
@@ -275,6 +277,37 @@ installDockerOnMAC() {
 # Returns 0 if the package is installed.
 isPkgInstalled() {
   dpkg --status "$1" &> /dev/null
+}
+
+# grantScreenRecordingPermissionsOnMac grants screen recording permissions on macOS 15+
+# This prevents the privacy popup that blocks automated UI tests
+grantScreenRecordingPermissionsOnMac() {
+    # Only run on macOS 15+
+    local macOSVersion=$(sw_vers -productVersion | cut -d. -f1)
+    if [[ "$macOSVersion" -lt 15 ]]; then
+        echo "macOS version is $macOSVersion (< 15), skipping screen recording permission grant"
+        return 0
+    fi
+
+    echo "Detected macOS $macOSVersion - Granting screen recording permissions..."
+
+    # Get the TCC database path
+    local TCC_DB="/Library/Application Support/com.apple.TCC/TCC.db"
+
+    # Grant screen recording permission to bash
+    sudo sqlite3 "$TCC_DB" "INSERT OR REPLACE INTO access VALUES('kTCCServiceScreenCapture','com.apple.bash',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687910000);" 2>/dev/null || echo "Warning: Could not grant permission to bash"
+
+    # Grant screen recording permission to Java (adjust path as needed)
+    local JAVA_PATH=$(which java 2>/dev/null)
+    if [ -n "$JAVA_PATH" ]; then
+        sudo sqlite3 "$TCC_DB" "INSERT OR REPLACE INTO access VALUES('kTCCServiceScreenCapture','$JAVA_PATH',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687910000);" 2>/dev/null || echo "Warning: Could not grant permission to Java"
+    fi
+
+    # Restart the TCC daemon to apply changes
+    sudo killall -9 tccd 2>/dev/null || true
+    sleep 2
+
+    echo "Screen recording permissions granted successfully"
 }
 
 main "$@"
