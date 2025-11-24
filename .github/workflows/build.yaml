@@ -137,9 +137,15 @@ jobs:
         with:
           path: liberty-tools-intellij
           ref: ${{ env.REF_LTI_TAG }}
+      - name: 'Grant screen recording permission to bash (macOS only)'
+        if: runner.os == 'macOS'
+        run: |
+          # Grant screen recording permission to bash
+          sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "INSERT OR REPLACE INTO access VALUES('kTCCServiceScreenCapture','/bin/bash',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687272715);" 2>/dev/null || true
+          sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "INSERT OR REPLACE INTO access VALUES('kTCCServiceListenEvent','/bin/bash',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687272715);" 2>/dev/null || true
       - name: 'Install required integration test software'
         working-directory: ./liberty-tools-intellij
-        run: ./src/test/resources/ci/scripts/setup.sh
+        run: bash ./src/test/resources/ci/scripts/setup.sh
 
       # Checkout and build lsp4ij only if USE_LOCAL_PLUGIN is true
       - name: 'Checkout lsp4ij'
