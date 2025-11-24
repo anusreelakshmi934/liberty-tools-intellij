@@ -13,8 +13,6 @@ import com.automation.remarks.junit5.Video;
 import org.junit.jupiter.api.*;
 import java.nio.file.Paths;
 
-import java.nio.file.Paths;
-
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class GradleSingleModLSTest extends SingleModLibertyLSTestCommon {
 
@@ -27,6 +25,11 @@ public class GradleSingleModLSTest extends SingleModLibertyLSTestCommon {
      * The path to the folder containing the test projects.
      */
     public static String PROJECTS_PATH = Paths.get("src", "test", "resources", "projects", "gradle").toAbsolutePath().toString();
+
+    /**
+     * Flag to track if AppleScript has been executed
+     */
+    private static boolean appleScriptExecuted = false;
 
     /**
      * Application resoruce URL.
@@ -43,16 +46,29 @@ public class GradleSingleModLSTest extends SingleModLibertyLSTestCommon {
     @Order(1)
     public void setup() {
         prepareEnv(PROJECTS_PATH, PROJECT_NAME);
-        
-        // Click on server.xml to bring the permission popup into focus
-        UIBotTestUtils.clickOnFileTab(remoteRobot, "server.xml");
-        
-        // Wait for 10-15 seconds to allow the popup to appear
-        TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Waiting for permission popup to appear...");
-        TestUtils.sleepAndIgnoreException(12);
-        
-        // Execute AppleScript to click the "Allow" button on macOS
-        if (remoteRobot.isMac()) {
+    }
+
+    /**
+     * Tests Liberty Lemminx Extension Hover support in server.xml for a
+     * Liberty Server Feature - This is the first test with @Video annotation
+     * where screen recording permission popup appears
+     */
+    @Test
+    @Video
+    @Order(2)
+    public void testServerXMLFeatureHover() {
+        // Handle permission popup on first video test (only on macOS and only once)
+        if (remoteRobot.isMac() && !appleScriptExecuted) {
+            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "First @Video test - handling permission popup...");
+            
+            // Click on server.xml to ensure the window is in focus
+            UIBotTestUtils.clickOnFileTab(remoteRobot, "server.xml");
+            
+            // Wait for the permission popup to appear (10-15 seconds)
+            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Waiting for permission popup to appear...");
+            TestUtils.sleepAndIgnoreException(12);
+            
+            // Execute AppleScript to click the "Allow" button
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Attempting to click 'Allow' button via AppleScript...");
             try {
                 String appleScript = "tell application \"System Events\"\n" +
@@ -84,12 +100,22 @@ public class GradleSingleModLSTest extends SingleModLibertyLSTestCommon {
                 
                 // Wait a moment for the click to take effect
                 TestUtils.sleepAndIgnoreException(2);
+                appleScriptExecuted = true;
             } catch (Exception e) {
                 TestUtils.printTrace(TestUtils.TraceSevLevel.ERROR, "Failed to execute AppleScript: " + e.getMessage());
                 e.printStackTrace();
             }
-        } else {
-            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Not running on macOS, skipping AppleScript execution.");
         }
+        
+        // Now run the actual test
+        String testHoverTarget = "mpHealth-4.0";
+        String hoverExpectedOutcome = "This feature provides support for the MicroProfile Health specification.";
+
+        //mover cursor to hover point
+        UIBotTestUtils.hoverInAppServerCfgFile(remoteRobot, testHoverTarget, "server.xml", UIBotTestUtils.PopupType.DOCUMENTATION);
+        String hoverFoundOutcome = UIBotTestUtils.getHoverStringData(remoteRobot, UIBotTestUtils.PopupType.DOCUMENTATION);
+
+        // Validate that the hover action raised the expected hint text
+        TestUtils.validateHoverData(hoverExpectedOutcome, hoverFoundOutcome);
     }
 }
