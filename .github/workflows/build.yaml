@@ -94,9 +94,6 @@ jobs:
     needs: fetch_merge_commit_sha_from_lsp4ij_PR
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.runtime }} - ${{ matrix.test-group }}
-    defaults:
-      run:
-        shell: ${{ matrix.runtime == 'mac' && 'zsh -l {0}' || 'bash' }}
     strategy:
       fail-fast: false
       matrix:
@@ -168,7 +165,7 @@ jobs:
       - name: 'Build Lsp4ij'
         if: ${{ inputs.useLocalPlugin == true }}
         working-directory: ./lsp4ij
-        run: ./gradlew buildPlugin
+        run: bash ./gradlew buildPlugin
       # This step is retained to support the 24.0.9 tag running in the cron job, as it requires an unzipped LSP4IJ.
       - name: 'Unzip lsp4ij file'
         if: ${{ inputs.useLocalPlugin == true }}
@@ -178,7 +175,7 @@ jobs:
 
       - name: 'Build Liberty-Tools-Intellij'
         working-directory: ./liberty-tools-intellij
-        run: ./gradlew buildPlugin -PuseLocal=${{ env.USE_LOCAL_PLUGIN }}
+        run: bash ./gradlew buildPlugin -PuseLocal=${{ env.USE_LOCAL_PLUGIN }}
       - name: 'Archive artifacts'
         if: ${{ runner.os == 'Linux' && matrix.test-group == 'LSP4Jakarta-Unit' && !failure() }}
         uses: actions/upload-artifact@v4.3.4
@@ -192,7 +189,7 @@ jobs:
       - name: 'Run tests'
         id: run_tests
         working-directory: ./liberty-tools-intellij
-        run: ./src/test/resources/ci/scripts/run.sh
+        run: bash ./src/test/resources/ci/scripts/run.sh
       - name: 'Archive Test logs and reports'
         if: ${{ failure() && steps.run_tests.conclusion == 'failure' }}
         uses: actions/upload-artifact@v4.3.4

@@ -219,19 +219,11 @@ main() {
     echo -e "\n$(${currentTime[@]}): INFO: Starting integration test run..."
     local currentLoc=$(pwd)
 
-    # Add some env properties to shell config. This prevents cases (i.e. MAC) in which the IDE's
+    # Add some env properties to .bashrc. This prevents cases (i.e. MAC) in which the IDE's
     # terminal does not recognize the JAVA_HOME environment variable set prior to the IDE starting.
-    if [[ "$OS" == Darwin* ]]; then
-        # On macOS, use .zshrc (default shell is zsh)
-        echo "export JAVA_HOME=$JAVA_HOME" >> $HOME/.zshrc
-        echo "export PATH=$PATH:\$PATH" >> $HOME/.zshrc
-        cat $HOME/.zshrc
-    else
-        # On Linux/Windows, use .bashrc
-        echo "export JAVA_HOME=$JAVA_HOME" >> $HOME/.bashrc
-        echo "export PATH=$PATH:\$PATH" >> $HOME/.bashrc
-        cat $HOME/.bashrc
-    fi
+    echo "export JAVA_HOME=$JAVA_HOME" >> $HOME/.bashrc
+    echo "export PATH=$PATH:\$PATH" >> $HOME/.bashrc
+    cat $HOME/.bashrc
 
     # Tell the terminal session to use display port 77.
     export DISPLAY=:77.0
