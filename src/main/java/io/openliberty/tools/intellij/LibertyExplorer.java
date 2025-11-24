@@ -11,6 +11,7 @@ package io.openliberty.tools.intellij;
 
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.ex.ActionUtil;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
@@ -284,10 +285,10 @@ public class LibertyExplorer extends SimpleToolWindowPanel {
             }
             LibertyGeneralAction action = (LibertyGeneralAction) am.getAction(actionId);
             if (action != null) {
-                action.actionPerformed(new AnActionEvent(null,
-                        DataManager.getInstance().getDataContext(tree),
-                        ActionPlaces.UNKNOWN, new Presentation(),
-                        am, 0));
+                AnActionEvent event = new AnActionEvent(DataManager.getInstance().getDataContext(tree),
+                        new Presentation(), ActionPlaces.UNKNOWN, ActionUiKind.NONE, null,
+                        0, am);
+                ActionUtil.performActionDumbAwareWithCallbacks(action, event);
             }
         }
     }
