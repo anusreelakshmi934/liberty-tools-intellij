@@ -29,6 +29,11 @@ public class GradleSingleModLSTest extends SingleModLibertyLSTestCommon {
     public static String PROJECTS_PATH = Paths.get("src", "test", "resources", "projects", "gradle").toAbsolutePath().toString();
 
     /**
+     * Flag to track if AppleScript has been executed
+     */
+    private static boolean appleScriptExecuted = false;
+
+    /**
      * Application resoruce URL.
      */
     public GradleSingleModLSTest() {
@@ -43,10 +48,20 @@ public class GradleSingleModLSTest extends SingleModLibertyLSTestCommon {
     @Order(1)
     public void setup() {
         prepareEnv(PROJECTS_PATH, PROJECT_NAME);
-        
-        // Handle permission popup for screen recording (only on macOS)
-        if (remoteRobot.isMac()) {
-            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Setup - handling permission popup...");
+    }
+
+    /**
+     * Tests Liberty Lemminx Extension Hover support in server.xml for a
+     * Liberty Server Feature - This is the first test with @Video annotation
+     * where screen recording permission popup appears
+     */
+    @Test
+    @Video
+    @Order(2)
+    public void testServerXMLFeatureHover() {
+        // Handle permission popup on first video test (only on macOS and only once)
+        if (remoteRobot.isMac() && !appleScriptExecuted) {
+            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "First @Video test - handling permission popup...");
             
             // Click on server.xml to ensure the window is in focus
             UIBotTestUtils.clickOnFileTab(remoteRobot, "server.xml");
@@ -58,7 +73,7 @@ public class GradleSingleModLSTest extends SingleModLibertyLSTestCommon {
             // Execute AppleScript to click the "Allow" button
             TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Attempting to click 'Allow' button via AppleScript...");
             try {
-                // Comprehensive AppleScript that tries multiple approaches
+                // More comprehensive AppleScript that tries multiple approaches
                 String appleScript = 
                     "tell application \"System Events\"\n" +
                     "    set dialogFound to false\n" +
@@ -116,10 +131,24 @@ public class GradleSingleModLSTest extends SingleModLibertyLSTestCommon {
                 
                 // Wait a moment for the click to take effect
                 TestUtils.sleepAndIgnoreException(2);
+                appleScriptExecuted = true;
             } catch (Exception e) {
                 TestUtils.printTrace(TestUtils.TraceSevLevel.ERROR, "Failed to execute AppleScript: " + e.getMessage());
                 e.printStackTrace();
             }
         }
+        
+        // Now run the actual test
+        String testHoverTarget = "mpHealth-4.0";
+        String hoverExpectedOutcome = "This feature provides support for the MicroProfile Health specification.";
+
+        //mover cursor to hover point
+        UIBotTestUtils.hoverInAppServerCfgFile(remoteRobot, testHoverTarget, "server.xml", UIBotTestUtils.PopupType.DOCUMENTATION);
+        String hoverFoundOutcome = UIBotTestUtils.getHoverStringData(remoteRobot, UIBotTestUtils.PopupType.DOCUMENTATION);
+
+        // Validate that the hover action raised the expected hint text
+        TestUtils.validateHoverData(hoverExpectedOutcome, hoverFoundOutcome);
     }
 }
+
+// Made with Bob
