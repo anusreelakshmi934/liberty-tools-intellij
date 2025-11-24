@@ -9,6 +9,7 @@
  *******************************************************************************/
 package io.openliberty.tools.intellij.it;
 
+import com.automation.remarks.junit5.Video;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,7 @@ public class GradleSingleModCustomWLPInstallProjectTest extends SingleModMPProje
      * Prepares the environment for test execution.
      */
     @BeforeAll
+    @Video
     public static void setup() {
         prepareEnv(PROJECTS_PATH, SM_MP_PROJECT_NAME);
     }

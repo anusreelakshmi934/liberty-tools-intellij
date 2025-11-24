@@ -303,6 +303,18 @@ public abstract class SingleModNLTRestProjectTestCommon {
         UIBotTestUtils.openProjectView(remoteRobot);
         if (!remoteRobot.isMac()) {
             UIBotTestUtils.runActionFromSearchEverywherePanel(remoteRobot, "Compact Mode", 3);
+        } else {
+            // Handle permission popup for screen recording (only on macOS)
+            // Try build.gradle first, then fall back to pom.xml if not found
+            try {
+                UIBotTestUtils.handleMacOSPermissionPopup(remoteRobot, "build.gradle");
+            } catch (Exception e) {
+                try {
+                    UIBotTestUtils.handleMacOSPermissionPopup(remoteRobot, "pom.xml");
+                } catch (Exception ex) {
+                    TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Could not find build.gradle or pom.xml for permission popup handling");
+                }
+            }
         }
         // IntelliJ does not start building and indexing until the Project View is open
         UIBotTestUtils.waitForIndexing(remoteRobot);

@@ -9,6 +9,7 @@
  *******************************************************************************/
 package io.openliberty.tools.intellij.it;
 
+import com.automation.remarks.junit5.Video;
 import com.intellij.remoterobot.stepsProcessing.StepLogger;
 import com.intellij.remoterobot.stepsProcessing.StepWorker;
 import org.junit.jupiter.api.Assertions;
@@ -48,6 +49,7 @@ public class MavenSingleModMPProjectTest extends SingleModMPProjectTestCommon {
      * Prepares the environment for test execution.
      */
     @BeforeAll
+    @Video
     public static void setup() {
         StepWorker.registerProcessor(new StepLogger());
         prepareEnv(PROJECTS_PATH, SM_MP_PROJECT_NAME);

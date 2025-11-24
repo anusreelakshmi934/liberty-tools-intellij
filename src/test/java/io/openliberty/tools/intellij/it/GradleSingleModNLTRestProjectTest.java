@@ -34,6 +34,7 @@ public class GradleSingleModNLTRestProjectTest extends SingleModNLTRestProjectTe
      * Prepares the environment for test execution.
      */
     @BeforeAll
+    @Video
     public static void setup() {
         prepareEnv(PROJECTS_PATH, SM_NLT_REST_PROJECT_NAME);
     }

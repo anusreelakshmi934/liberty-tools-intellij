@@ -9,6 +9,7 @@
  *******************************************************************************/
 package io.openliberty.tools.intellij.it;
 
+import com.automation.remarks.junit5.Video;
 import org.junit.jupiter.api.BeforeAll;
 
 import java.nio.file.Paths;
@@ -31,6 +32,7 @@ public class GradleSingleModMPProjectTest extends SingleModMPProjectTestCommon {
      * Prepares the environment for test execution.
      */
     @BeforeAll
+    @Video
     public static void setup() {
         prepareEnv(PROJECTS_PATH, SM_MP_PROJECT_NAME);
     }

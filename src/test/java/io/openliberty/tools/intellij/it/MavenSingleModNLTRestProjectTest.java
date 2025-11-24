@@ -9,6 +9,7 @@
  *******************************************************************************/
 package io.openliberty.tools.intellij.it;
 
+import com.automation.remarks.junit5.Video;
 import org.junit.jupiter.api.BeforeAll;
 
 import java.nio.file.Paths;
@@ -32,6 +33,7 @@ public class MavenSingleModNLTRestProjectTest extends SingleModNLTRestProjectTes
      * Prepares the environment for test execution.
      */
     @BeforeAll
+    @Video
     public static void setup() {
         prepareEnv(PROJECTS_PATH, SM_NLT_REST_PROJECT_NAME);
     }

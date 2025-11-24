@@ -9,6 +9,7 @@
  *******************************************************************************/
 package io.openliberty.tools.intellij.it;
 
+import com.automation.remarks.junit5.Video;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -48,6 +49,7 @@ public class GradleSingleModMPSIDProjectTest extends SingleModMPProjectTestCommo
      * Prepares the environment for test execution.
      */
     @BeforeAll
+    @Video
     public static void setup() {
         try {
             // Copy the directory to allow renaming.

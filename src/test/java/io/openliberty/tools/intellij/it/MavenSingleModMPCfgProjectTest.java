@@ -9,6 +9,7 @@
  *******************************************************************************/
 package io.openliberty.tools.intellij.it;
 
+import com.automation.remarks.junit5.Video;
 import com.intellij.remoterobot.stepsProcessing.StepLogger;
 import com.intellij.remoterobot.stepsProcessing.StepWorker;
 import io.openliberty.tools.intellij.it.SingleModMPProjectTestCommon;
@@ -46,6 +47,7 @@ public class MavenSingleModMPCfgProjectTest extends SingleModMPProjectCfgTestCom
      * Prepares the environment for test execution.
      */
     @BeforeAll
+    @Video
     public static void setup() {
         try {
             StepWorker.registerProcessor(new StepLogger());
