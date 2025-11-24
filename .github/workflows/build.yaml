@@ -94,6 +94,9 @@ jobs:
     needs: fetch_merge_commit_sha_from_lsp4ij_PR
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.runtime }} - ${{ matrix.test-group }}
+    defaults:
+      run:
+        shell: ${{ matrix.runtime == 'mac' && 'zsh -l {0}' || 'bash' }}
     strategy:
       fail-fast: false
       matrix:
@@ -109,7 +112,7 @@ jobs:
           - runtime: linux
             os: ubuntu-latest
           - runtime: mac
-            os: macOS-14
+            os: macOS-latest
           - runtime: windows
             os: windows-latest
           - test-group: Gradle-Language-Server
