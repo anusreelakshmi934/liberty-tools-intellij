@@ -139,7 +139,7 @@ jobs:
           ref: ${{ env.REF_LTI_TAG }}
       - name: 'Install required integration test software'
         working-directory: ./liberty-tools-intellij
-        run: bash ./src/test/resources/ci/scripts/setup.sh
+        run: ./src/test/resources/ci/scripts/setup.sh
 
       # Checkout and build lsp4ij only if USE_LOCAL_PLUGIN is true
       - name: 'Checkout lsp4ij'
@@ -152,7 +152,7 @@ jobs:
       - name: 'Build Lsp4ij'
         if: ${{ inputs.useLocalPlugin == true }}
         working-directory: ./lsp4ij
-        run: bash ./gradlew buildPlugin
+        run: ./gradlew buildPlugin
       # This step is retained to support the 24.0.9 tag running in the cron job, as it requires an unzipped LSP4IJ.
       - name: 'Unzip lsp4ij file'
         if: ${{ inputs.useLocalPlugin == true }}
@@ -162,7 +162,7 @@ jobs:
 
       - name: 'Build Liberty-Tools-Intellij'
         working-directory: ./liberty-tools-intellij
-        run: bash ./gradlew buildPlugin -PuseLocal=${{ env.USE_LOCAL_PLUGIN }}
+        run: ./gradlew buildPlugin -PuseLocal=${{ env.USE_LOCAL_PLUGIN }}
       - name: 'Archive artifacts'
         if: ${{ runner.os == 'Linux' && matrix.test-group == 'LSP4Jakarta-Unit' && !failure() }}
         uses: actions/upload-artifact@v4.3.4
@@ -176,7 +176,7 @@ jobs:
       - name: 'Run tests'
         id: run_tests
         working-directory: ./liberty-tools-intellij
-        run: bash ./src/test/resources/ci/scripts/run.sh
+        run: ./src/test/resources/ci/scripts/run.sh
       - name: 'Archive Test logs and reports'
         if: ${{ failure() && steps.run_tests.conclusion == 'failure' }}
         uses: actions/upload-artifact@v4.3.4
