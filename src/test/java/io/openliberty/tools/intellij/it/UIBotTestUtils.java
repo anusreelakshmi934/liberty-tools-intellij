@@ -2939,4 +2939,49 @@ public class UIBotTestUtils {
 
         TestUtils.sleepAndIgnoreException(5);
     }
+
+    /**
+     * Handles macOS permission popup for screen recording by clicking the "Allow" button.
+     * This method should be called after opening a file tab to ensure the window is in focus.
+     *
+     * @param remoteRobot The RemoteRobot instance.
+     * @param fileTabName The name of the file tab to click on for focus (e.g., "server.xml").
+     */
+    public static void handleMacOSPermissionPopup(RemoteRobot remoteRobot, String fileTabName) {
+        if (!remoteRobot.isMac()) {
+            return; // Only applicable to macOS
+        }
+
+        TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Handling macOS permission popup...");
+
+        // Click on the specified file tab to ensure the window is in focus
+        clickOnFileTab(remoteRobot, fileTabName);
+
+        // Wait for the permission popup to appear
+        TestUtils.sleepAndIgnoreException(12);
+
+        // Execute AppleScript to click the "Allow" button
+        try {
+            String appleScript =
+                "tell application \"System Events\"\n" +
+                "    repeat with proc in (every process whose visible is true)\n" +
+                "        try\n" +
+                "            if exists (button \"Allow\" of window 1 of proc) then\n" +
+                "                click button \"Allow\" of window 1 of proc\n" +
+                "                return true\n" +
+                "            end if\n" +
+                "        end try\n" +
+                "    end repeat\n" +
+                "    return false\n" +
+                "end tell";
+
+            new ProcessBuilder("osascript", "-e", appleScript).start();
+
+            // Wait for the click to take effect
+            TestUtils.sleepAndIgnoreException(2);
+            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Permission popup handling completed.");
+        } catch (Exception e) {
+            TestUtils.printTrace(TestUtils.TraceSevLevel.ERROR, "Failed to execute AppleScript: " + e.getMessage());
+        }
+    }
 }

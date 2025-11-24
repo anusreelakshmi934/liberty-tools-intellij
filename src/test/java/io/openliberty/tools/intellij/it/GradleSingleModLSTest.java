@@ -45,60 +45,6 @@ public class GradleSingleModLSTest extends SingleModLibertyLSTestCommon {
         prepareEnv(PROJECTS_PATH, PROJECT_NAME);
         
         // Handle permission popup for screen recording (only on macOS)
-        if (remoteRobot.isMac()) {
-            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Setup - handling permission popup...");
-            
-            // Click on server.xml to ensure the window is in focus
-            UIBotTestUtils.clickOnFileTab(remoteRobot, "server.xml");
-            
-            // Wait for the permission popup to appear (10-15 seconds)
-            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Waiting for permission popup to appear...");
-            TestUtils.sleepAndIgnoreException(12);
-            
-            // Execute AppleScript to click the "Allow" button
-            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Attempting to click 'Allow' button via AppleScript...");
-            try {
-                // Comprehensive AppleScript that tries multiple approaches
-                String appleScript = 
-                    "tell application \"System Events\"\n" +
-                    "    set dialogFound to false\n" +
-                    "    \n" +
-                    "    -- Try to find and click Allow button in various processes\n" +
-                    "    repeat with proc in (every process whose visible is true)\n" +
-                    "        try\n" +
-                    "            tell proc\n" +
-                    "                if exists (button \"Allow\" of window 1) then\n" +
-                    "                    click button \"Allow\" of window 1\n" +
-                    "                    set dialogFound to true\n" +
-                    "                    exit repeat\n" +
-                    "                end if\n" +
-                    "            end tell\n" +
-                    "        end try\n" +
-                    "    end repeat\n" +
-                    "    \n" +
-                    "    -- If not found, try specific processes\n" +
-                    "    if not dialogFound then\n" +
-                    "        try\n" +
-                    "            tell process \"UserNotificationCenter\"\n" +
-                    "                if exists button \"Allow\" of window 1 then\n" +
-                    "                    click button \"Allow\" of window 1\n" +
-                    "                    set dialogFound to true\n" +
-                    "                end if\n" +
-                    "            end tell\n" +
-                    "        end try\n" +
-                    "    end if\n" +
-                    "    \n" +
-                    "    return dialogFound\n" +
-                    "end tell";
-
-                new ProcessBuilder("osascript", "-e", appleScript).start();
-
-                // Wait a moment for the click to take effect
-                TestUtils.sleepAndIgnoreException(2);
-            } catch (Exception e) {
-                TestUtils.printTrace(TestUtils.TraceSevLevel.ERROR, "Failed to execute AppleScript: " + e.getMessage());
-                e.printStackTrace();
-            }
-        }
+        UIBotTestUtils.handleMacOSPermissionPopup(remoteRobot, "server.xml");
     }
 }
