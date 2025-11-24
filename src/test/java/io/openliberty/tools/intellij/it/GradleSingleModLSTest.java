@@ -51,74 +51,35 @@ public class GradleSingleModLSTest extends SingleModLibertyLSTestCommon {
             // Click on server.xml to ensure the window is in focus
             UIBotTestUtils.clickOnFileTab(remoteRobot, "server.xml");
             
-            // Wait for the permission popup to appear (10-15 seconds)
-            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Waiting for permission popup to appear...");
+            // Wait for the permission popup to appear
             TestUtils.sleepAndIgnoreException(12);
             
             // Execute AppleScript to click the "Allow" button
-            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Attempting to click 'Allow' button via AppleScript...");
             try {
-                // Comprehensive AppleScript that tries multiple approaches
-                String appleScript = 
+                String appleScript =
                     "tell application \"System Events\"\n" +
-                    "    set dialogFound to false\n" +
-                    "    \n" +
-                    "    -- Try to find and click Allow button in various processes\n" +
                     "    repeat with proc in (every process whose visible is true)\n" +
                     "        try\n" +
-                    "            tell proc\n" +
-                    "                if exists (button \"Allow\" of window 1) then\n" +
-                    "                    click button \"Allow\" of window 1\n" +
-                    "                    set dialogFound to true\n" +
-                    "                    exit repeat\n" +
-                    "                end if\n" +
-                    "            end tell\n" +
+                    "            if exists (button \"Allow\" of window 1 of proc) then\n" +
+                    "                click button \"Allow\" of window 1 of proc\n" +
+                    "                return true\n" +
+                    "            end if\n" +
                     "        end try\n" +
                     "    end repeat\n" +
-                    "    \n" +
-                    "    -- If not found, try specific processes\n" +
-                    "    if not dialogFound then\n" +
-                    "        try\n" +
-                    "            tell process \"UserNotificationCenter\"\n" +
-                    "                if exists button \"Allow\" of window 1 then\n" +
-                    "                    click button \"Allow\" of window 1\n" +
-                    "                    set dialogFound to true\n" +
-                    "                end if\n" +
-                    "            end tell\n" +
-                    "        end try\n" +
-                    "    end if\n" +
-                    "    \n" +
-                    "    return dialogFound\n" +
+                    "    return false\n" +
                     "end tell";
                 
-                ProcessBuilder processBuilder = new ProcessBuilder("osascript", "-e", appleScript);
-                processBuilder.redirectErrorStream(true);
-                Process process = processBuilder.start();
-                
-                // Read output
+                Process process = new ProcessBuilder("osascript", "-e", appleScript).start();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                String line;
-                StringBuilder output = new StringBuilder();
-                while ((line = reader.readLine()) != null) {
-                    output.append(line).append("\n");
-                }
+                String output = reader.readLine();
+                process.waitFor();
                 
-                int exitCode = process.waitFor();
+                TestUtils.printTrace(TestUtils.TraceSevLevel.INFO,
+                    "true".equals(output) ? "Allow button clicked." : "Allow button not found.");
                 
-                TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "AppleScript output: " + output.toString().trim());
-                TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "AppleScript exit code: " + exitCode);
-                
-                if (output.toString().contains("true")) {
-                    TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Successfully found and clicked 'Allow' button.");
-                } else {
-                    TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Allow button not found or already clicked.");
-                }
-                
-                // Wait a moment for the click to take effect
                 TestUtils.sleepAndIgnoreException(2);
             } catch (Exception e) {
                 TestUtils.printTrace(TestUtils.TraceSevLevel.ERROR, "Failed to execute AppleScript: " + e.getMessage());
-                e.printStackTrace();
             }
         }
     }
