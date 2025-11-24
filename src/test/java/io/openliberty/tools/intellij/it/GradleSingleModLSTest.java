@@ -90,30 +90,9 @@ public class GradleSingleModLSTest extends SingleModLibertyLSTestCommon {
                     "    \n" +
                     "    return dialogFound\n" +
                     "end tell";
-                
-                ProcessBuilder processBuilder = new ProcessBuilder("osascript", "-e", appleScript);
-                processBuilder.redirectErrorStream(true);
-                Process process = processBuilder.start();
-                
-                // Read output
-                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                String line;
-                StringBuilder output = new StringBuilder();
-                while ((line = reader.readLine()) != null) {
-                    output.append(line).append("\n");
-                }
-                
-                int exitCode = process.waitFor();
-                
-                TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "AppleScript output: " + output.toString().trim());
-                TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "AppleScript exit code: " + exitCode);
-                
-                if (output.toString().contains("true")) {
-                    TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Successfully found and clicked 'Allow' button.");
-                } else {
-                    TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Allow button not found or already clicked.");
-                }
-                
+
+                new ProcessBuilder("osascript", "-e", appleScript).start();
+
                 // Wait a moment for the click to take effect
                 TestUtils.sleepAndIgnoreException(2);
             } catch (Exception e) {
