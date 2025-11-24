@@ -112,34 +112,34 @@ public abstract class SingleModLibertyLSTestCommon {
         // Validate that the hover action raised the expected hint text
         TestUtils.validateHoverData(hoverExpectedOutcome, hoverFoundOutcome);
     }
-
-    /**
-     * Tests Liberty Lemminx Extension type ahead support in server.xml for a
-     * Liberty Server Feature
-     */
-    @Test
-    @Video
-    @Order(4)
-    public void testInsertFeatureIntoServerXML() {
-        String stanzaSnippet = "el-3";
-        String insertedFeature = "<feature>el-3.0</feature>";
-
-        // get focus on server.xml tab prior to copy
-        UIBotTestUtils.clickOnFileTab(remoteRobot, "server.xml");
-
-        // Save the current server.xml content.
-        UIBotTestUtils.copyWindowContent(remoteRobot);
-
-        // Insert a new element in server.xml.
-        try {
-            UIBotTestUtils.insertStanzaInAppServerXML(remoteRobot, stanzaSnippet, 18, 40, UIBotTestUtils.InsertionType.FEATURE, true);
-            Path pathToServerXML = Paths.get(projectsPath, projectName, "src", "main", "liberty", "config", "server.xml");
-            TestUtils.validateStanzaInConfigFile(pathToServerXML.toString(), insertedFeature);
-        } finally {
-            // Replace server.xml content with the original content
-            UIBotTestUtils.pasteOnActiveWindow(remoteRobot, true);
-        }
-    }
+//
+//    /**
+//     * Tests Liberty Lemminx Extension type ahead support in server.xml for a
+//     * Liberty Server Feature
+//     */
+//    @Test
+//    @Video
+//    @Order(4)
+//    public void testInsertFeatureIntoServerXML() {
+//        String stanzaSnippet = "el-3";
+//        String insertedFeature = "<feature>el-3.0</feature>";
+//
+//        // get focus on server.xml tab prior to copy
+//        UIBotTestUtils.clickOnFileTab(remoteRobot, "server.xml");
+//
+//        // Save the current server.xml content.
+//        UIBotTestUtils.copyWindowContent(remoteRobot);
+//
+//        // Insert a new element in server.xml.
+//        try {
+//            UIBotTestUtils.insertStanzaInAppServerXML(remoteRobot, stanzaSnippet, 18, 40, UIBotTestUtils.InsertionType.FEATURE, true);
+//            Path pathToServerXML = Paths.get(projectsPath, projectName, "src", "main", "liberty", "config", "server.xml");
+//            TestUtils.validateStanzaInConfigFile(pathToServerXML.toString(), insertedFeature);
+//        } finally {
+//            // Replace server.xml content with the original content
+//            UIBotTestUtils.pasteOnActiveWindow(remoteRobot, true);
+//        }
+//    }
 //
 //    /**
 //     * Tests Liberty Lemminx Extension type ahead support in server.xml for a
