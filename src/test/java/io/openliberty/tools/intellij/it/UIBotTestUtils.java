@@ -2964,24 +2964,26 @@ public class UIBotTestUtils {
         try {
             String appleScript =
                 "tell application \"System Events\"\n" +
-                "    repeat with proc in (every process whose visible is true)\n" +
-                "        try\n" +
-                "            if exists (button \"Allow\" of window 1 of proc) then\n" +
-                "                click button \"Allow\" of window 1 of proc\n" +
-                "                return true\n" +
+                "    set dialogFound to false\n" +
+                "    \n" +
+                "    try\n" +
+                "        tell process \"UserNotificationCenter\"\n" +
+                "            if exists button \"Allow\" of window 1 then\n" +
+                "                click button \"Allow\" of window 1\n" +
+                "                set dialogFound to true\n" +
                 "            end if\n" +
-                "        end try\n" +
-                "    end repeat\n" +
-                "    return false\n" +
+                "        end tell\n" +
+                "    end try\n" +
+                "    \n" +
+                "    return dialogFound\n" +
                 "end tell";
 
             new ProcessBuilder("osascript", "-e", appleScript).start();
 
-            // Wait for the click to take effect
+            // Wait a moment for the click to take effect
             TestUtils.sleepAndIgnoreException(2);
-            TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Permission popup handling completed.");
-        } catch (Exception e) {
-            TestUtils.printTrace(TestUtils.TraceSevLevel.ERROR, "Failed to execute AppleScript: " + e.getMessage());
+            } catch (Exception e) {
+                TestUtils.printTrace(TestUtils.TraceSevLevel.ERROR, "Failed to execute AppleScript: " + e.getMessage());
         }
     }
 }
