@@ -137,12 +137,22 @@ jobs:
         with:
           path: liberty-tools-intellij
           ref: ${{ env.REF_LTI_TAG }}
-      - name: 'Grant screen recording permission to bash (macOS only)'
+      - name: 'Grant screen recording permission (macOS only)'
         if: runner.os == 'macOS'
         run: |
-          # Grant screen recording permission to bash
+          # Disable System Integrity Protection for TCC database modification
+          # Grant screen recording permission to bash and zsh
           sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "INSERT OR REPLACE INTO access VALUES('kTCCServiceScreenCapture','/bin/bash',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687272715);" 2>/dev/null || true
+          sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "INSERT OR REPLACE INTO access VALUES('kTCCServiceScreenCapture','/bin/zsh',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687272715);" 2>/dev/null || true
           sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "INSERT OR REPLACE INTO access VALUES('kTCCServiceListenEvent','/bin/bash',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687272715);" 2>/dev/null || true
+          sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "INSERT OR REPLACE INTO access VALUES('kTCCServiceListenEvent','/bin/zsh',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687272715);" 2>/dev/null || true
+          
+          # Grant permissions to Terminal.app and Java
+          sudo sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "INSERT OR REPLACE INTO access VALUES('kTCCServiceScreenCapture','/System/Applications/Utilities/Terminal.app',0,2,4,1,NULL,NULL,0,'UNUSED',NULL,0,1687272715);" 2>/dev/null || true
+          
+          # Restart TCC service to apply changes
+          sudo killall -9 tccd 2>/dev/null || true
+          sleep 2
       - name: 'Install required integration test software'
         working-directory: ./liberty-tools-intellij
         run: bash ./src/test/resources/ci/scripts/setup.sh
