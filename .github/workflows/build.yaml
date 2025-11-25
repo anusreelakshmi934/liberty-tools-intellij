@@ -93,26 +93,77 @@ jobs:
   build:
     needs: fetch_merge_commit_sha_from_lsp4ij_PR
     runs-on: ${{ matrix.os }}
-    name: ${{ matrix.runtime }} - ${{ matrix.test-group }} - Run ${{ matrix.run-number }}
+    name: ${{ matrix.name }}
     strategy:
       fail-fast: false
       matrix:
-        runtime: [ linux, mac, windows ]
-        test-group: [ Maven-MP-Config, Gradle-MP-Config ]
-        run-number: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
         include:
-          - runtime: linux
-            os: ubuntu-latest
-          - runtime: mac
-            os: macOS-14
-          - runtime: windows
-            os: windows-latest
-          - test-group: Gradle-Custom-Liberty-Install
-            test-class: io.openliberty.tools.intellij.it.GradleSingleModCustomWLPInstallProjectTest
-          - test-group: Maven-MP-Config
-            test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest
-          - test-group: Gradle-MP-Config
-            test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest
+          # Maven-MP-Config - Linux - 10 runs
+          - { os: ubuntu-latest, name: "linux - Maven-MP-Config - Run 1", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Maven-MP-Config - Run 2", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Maven-MP-Config - Run 3", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Maven-MP-Config - Run 4", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Maven-MP-Config - Run 5", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Maven-MP-Config - Run 6", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Maven-MP-Config - Run 7", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Maven-MP-Config - Run 8", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Maven-MP-Config - Run 9", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Maven-MP-Config - Run 10", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          # Maven-MP-Config - Mac - 10 runs
+          - { os: macOS-14, name: "mac - Maven-MP-Config - Run 1", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Maven-MP-Config - Run 2", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Maven-MP-Config - Run 3", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Maven-MP-Config - Run 4", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Maven-MP-Config - Run 5", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Maven-MP-Config - Run 6", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Maven-MP-Config - Run 7", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Maven-MP-Config - Run 8", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Maven-MP-Config - Run 9", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Maven-MP-Config - Run 10", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          # Maven-MP-Config - Windows - 10 runs
+          - { os: windows-latest, name: "windows - Maven-MP-Config - Run 1", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Maven-MP-Config - Run 2", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Maven-MP-Config - Run 3", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Maven-MP-Config - Run 4", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Maven-MP-Config - Run 5", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Maven-MP-Config - Run 6", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Maven-MP-Config - Run 7", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Maven-MP-Config - Run 8", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Maven-MP-Config - Run 9", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Maven-MP-Config - Run 10", test-class: io.openliberty.tools.intellij.it.MavenSingleModMPCfgProjectTest }
+          # Gradle-MP-Config - Linux - 10 runs
+          - { os: ubuntu-latest, name: "linux - Gradle-MP-Config - Run 1", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Gradle-MP-Config - Run 2", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Gradle-MP-Config - Run 3", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Gradle-MP-Config - Run 4", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Gradle-MP-Config - Run 5", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Gradle-MP-Config - Run 6", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Gradle-MP-Config - Run 7", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Gradle-MP-Config - Run 8", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Gradle-MP-Config - Run 9", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: ubuntu-latest, name: "linux - Gradle-MP-Config - Run 10", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          # Gradle-MP-Config - Mac - 10 runs
+          - { os: macOS-14, name: "mac - Gradle-MP-Config - Run 1", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Gradle-MP-Config - Run 2", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Gradle-MP-Config - Run 3", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Gradle-MP-Config - Run 4", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Gradle-MP-Config - Run 5", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Gradle-MP-Config - Run 6", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Gradle-MP-Config - Run 7", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Gradle-MP-Config - Run 8", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Gradle-MP-Config - Run 9", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: macOS-14, name: "mac - Gradle-MP-Config - Run 10", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          # Gradle-MP-Config - Windows - 10 runs
+          - { os: windows-latest, name: "windows - Gradle-MP-Config - Run 1", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Gradle-MP-Config - Run 2", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Gradle-MP-Config - Run 3", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Gradle-MP-Config - Run 4", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Gradle-MP-Config - Run 5", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Gradle-MP-Config - Run 6", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Gradle-MP-Config - Run 7", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Gradle-MP-Config - Run 8", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Gradle-MP-Config - Run 9", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
+          - { os: windows-latest, name: "windows - Gradle-MP-Config - Run 10", test-class: io.openliberty.tools.intellij.it.GradleSingleModMPCfgProjectTest }
     env:
       USE_LOCAL_PLUGIN: ${{ inputs.useLocalPlugin || false }}
       REF_LSP4IJ: ${{ needs.fetch_merge_commit_sha_from_lsp4ij_PR.outputs.pr_details }}
