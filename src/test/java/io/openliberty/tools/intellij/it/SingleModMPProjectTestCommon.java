@@ -352,6 +352,7 @@ public abstract class SingleModMPProjectTestCommon {
     @Order(1)
     @Test
     @Video
+    @EnabledOnOs({OS.MAC})
     public void AllowPopupTest() {
         // Determine the build file action based on the build file name
         boolean isGradle = getBuildFileName().equals("build.gradle");

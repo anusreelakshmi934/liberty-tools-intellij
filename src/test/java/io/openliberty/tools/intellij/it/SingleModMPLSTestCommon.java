@@ -14,6 +14,8 @@ import com.intellij.remoterobot.RemoteRobot;
 import com.intellij.remoterobot.fixtures.JTreeFixture;
 import io.openliberty.tools.intellij.it.fixtures.ProjectFrameFixture;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -81,6 +83,7 @@ public abstract class SingleModMPLSTestCommon {
     @Order(1)
     @Test
     @Video
+    @EnabledOnOs({OS.MAC})
     public void AllowPopupTest() {
         // Handle macOS permission popup if it appears
         UIBotTestUtils.handleMacOSPermissionPopup(remoteRobot, "ServiceLiveHealthCheck");

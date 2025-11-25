@@ -12,6 +12,8 @@ package io.openliberty.tools.intellij.it;
 import com.automation.remarks.junit5.Video;
 import com.intellij.remoterobot.RemoteRobot;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -141,6 +143,7 @@ public abstract class SingleModMPProjectCfgTestCommon {
     @Order(1)
     @Test
     @Video
+    @EnabledOnOs({OS.MAC})
     public void AllowPopupTest() {
         // Determine the build file name and action based on the project type
         boolean isGradle = getSmMPProjectName().equals("singleMod GradleMP");

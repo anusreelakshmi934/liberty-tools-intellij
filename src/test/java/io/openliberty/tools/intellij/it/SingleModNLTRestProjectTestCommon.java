@@ -12,6 +12,8 @@ package io.openliberty.tools.intellij.it;
 import com.automation.remarks.junit5.Video;
 import com.intellij.remoterobot.RemoteRobot;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -149,6 +151,7 @@ public abstract class SingleModNLTRestProjectTestCommon {
     @Order(1)
     @Test
     @Video
+    @EnabledOnOs({OS.MAC})
     public void AllowPopupTest() {
         // Determine the build file action based on the build file name
         boolean isGradle = getBuildFileName().equals("build.gradle");
