@@ -198,3 +198,5 @@ jobs:
           name: ${{ matrix.runtime }}-${{ matrix.test-group }}-test-report-LTI-${{ env.REF_LTI_TAG || 'default' }}-LSP4IJ-${{ env.LSP4IJ_BRANCH || 'default' }}
           path: |
             liberty-tools-intellij/build/reports/
+          if-no-files-found: warn
+          retention-days: 7

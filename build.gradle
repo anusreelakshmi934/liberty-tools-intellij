@@ -202,6 +202,8 @@ test {
     // Configure video recording to capture all tests (success and failure)
     systemProperty 'video.enabled', 'true'
     systemProperty 'video.mode', 'ALL'
+    systemProperty 'video.save.mode', 'ALL'
+    systemProperty 'video.keep', 'true'
     systemProperty 'recorder.mode', 'ALL'
 }
 
