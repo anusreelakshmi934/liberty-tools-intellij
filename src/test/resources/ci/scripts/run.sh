@@ -291,13 +291,10 @@ main() {
         fi
     done
 
-    # Always gather debug data (including videos) regardless of test outcome
-    echo -e "\n$(${currentTime[@]}): INFO: Gathering debug data and videos..."
-    gatherDebugData "$currentLoc"
-
-    # If there were any errors, report them and exit with error code
+    # If there were any errors, gather some debug data before exiting.
     if [ "$testRC" -ne 0 ]; then
         echo -e "\n$(${currentTime[@]}): ERROR: Failure while running tests. rc: ${testRC}."
+        gatherDebugData "$currentLoc"
         cleanupCustomWLPDir
         exit -1
     fi
