@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Holds common tests that use a single module non Liberty Tools compliant REST project.
  */
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public abstract class SingleModNLTRestProjectTestCommon {
 
     /**
@@ -143,6 +144,27 @@ public abstract class SingleModNLTRestProjectTestCommon {
     }
     public void setBuildFileName(String name) {
         buildFileName = name;
+    }
+
+    @Order(1)
+    @Test
+    @Video
+    public void AllowPopupTest() {
+        // Determine the build file action based on the build file name
+        boolean isGradle = getBuildFileName().equals("build.gradle");
+        String buildFileAction = isGradle ? "Liberty: View Gradle config" : "Liberty: View pom.xml";
+
+        // Open Liberty tool window
+        UIBotTestUtils.openLibertyToolWindow(remoteRobot);
+        // Refresh the Liberty tool window using the refresh icon on the toolbar.
+        UIBotTestUtils.refreshLibertyToolWindow(remoteRobot);
+        // Expand the Liberty tool window project tree
+        UIBotTestUtils.expandLibertyToolWindowProjectTree(remoteRobot, getSmNLTRestProjectName());
+        // Right-click on project and open build file
+        UIBotTestUtils.runActionLTWPopupMenu(remoteRobot, getSmNLTRestProjectName(), buildFileAction, 3);
+
+        // Handle macOS permission popup if it appears
+        UIBotTestUtils.handleMacOSPermissionPopup(remoteRobot, getBuildFileName());
     }
 
     /**
