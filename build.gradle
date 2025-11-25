@@ -198,6 +198,11 @@ test {
         showStandardStreams = true
         exceptionFormat = 'full'
     }
+
+    // Configure video recording to capture all tests (success and failure)
+    systemProperty 'video.enabled', 'true'
+    systemProperty 'video.mode', 'ALL'
+    systemProperty 'recorder.mode', 'ALL'
 }
 
 intellijPlatformTesting.runIde {
