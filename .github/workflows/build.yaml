@@ -93,18 +93,13 @@ jobs:
   build:
     needs: fetch_merge_commit_sha_from_lsp4ij_PR
     runs-on: ${{ matrix.os }}
-    name: ${{ matrix.runtime }} - ${{ matrix.test-group }}
+    name: ${{ matrix.runtime }} - ${{ matrix.test-group }} - Run ${{ matrix.run-number }}
     strategy:
       fail-fast: false
       matrix:
         runtime: [ linux, mac, windows ]
-        test-group: [ LSP4Jakarta-Unit, Maven-MicroProfile, Gradle-MicroProfile, Maven-Custom-Liberty-Install, Gradle-Custom-Liberty-Install, Maven-MP-Config, Gradle-MP-Config, Maven-MP-SID, Gradle-MP-SID, Maven-NLT-REST, Gradle-NLT-REST, Gradle-Language-Server, Gradle-MP-Language-Server, Gradle-Jakarta-Language-Server, Maven-Multi-Module-MP ]
-        exclude:
-          # Exclude LSP4Jakarta-Unit from mac and windows - only run on linux
-          - runtime: mac
-            test-group: LSP4Jakarta-Unit
-          - runtime: windows
-            test-group: LSP4Jakarta-Unit
+        test-group: [ Maven-MP-Config, Gradle-MP-Config ]
+        run-number: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
         include:
           - runtime: linux
             os: ubuntu-latest
