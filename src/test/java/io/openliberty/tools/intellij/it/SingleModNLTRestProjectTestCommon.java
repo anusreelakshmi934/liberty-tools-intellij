@@ -153,19 +153,9 @@ public abstract class SingleModNLTRestProjectTestCommon {
     @Video
     @EnabledOnOs({OS.MAC})
     public void AllowPopupTest() {
-        // Determine the build file action based on the build file name
-        boolean isGradle = getBuildFileName().equals("build.gradle");
-        String buildFileAction = isGradle ? "Liberty: View Gradle config" : "Liberty: View pom.xml";
 
-        // Open Liberty tool window
-        UIBotTestUtils.openLibertyToolWindow(remoteRobot);
-        // Refresh the Liberty tool window using the refresh icon on the toolbar.
-        UIBotTestUtils.refreshLibertyToolWindow(remoteRobot);
-        // Expand the Liberty tool window project tree
-        UIBotTestUtils.expandLibertyToolWindowProjectTree(remoteRobot, getSmNLTRestProjectName());
-        // Right-click on project and open build file
-        UIBotTestUtils.runActionLTWPopupMenu(remoteRobot, getSmNLTRestProjectName(), buildFileAction, 3);
-
+        // Open the build file
+        UIBotTestUtils.openFile(remoteRobot, smNLTRestProjectName, getBuildFileName(), smNLTRestProjectName);
         // Handle macOS permission popup if it appears
         UIBotTestUtils.handleMacOSPermissionPopup(remoteRobot, getBuildFileName());
     }
