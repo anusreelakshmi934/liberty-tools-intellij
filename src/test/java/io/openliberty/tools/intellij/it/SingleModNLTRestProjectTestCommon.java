@@ -153,7 +153,6 @@ public abstract class SingleModNLTRestProjectTestCommon {
     @Video
     @EnabledOnOs({OS.MAC})
     public void AllowPopupTest() {
-
         // Open the build file
         UIBotTestUtils.openFile(remoteRobot, smNLTRestProjectName, getBuildFileName(), smNLTRestProjectName);
         // Handle macOS permission popup if it appears

@@ -354,18 +354,8 @@ public abstract class SingleModMPProjectTestCommon {
     @Video
     @EnabledOnOs({OS.MAC})
     public void AllowPopupTest() {
-        // Determine the build file action based on the build file name
-        boolean isGradle = getBuildFileName().equals("build.gradle");
-        String buildFileAction = isGradle ? "Liberty: View Gradle config" : "Liberty: View pom.xml";
-
-        // Open Liberty tool window
-        UIBotTestUtils.openLibertyToolWindow(remoteRobot);
-        // Expand the Liberty tool window project tree
-        UIBotTestUtils.expandLibertyToolWindowProjectTree(remoteRobot, getSmMPProjectName());
-
-        // Right-click on project and open build file
-        UIBotTestUtils.runActionLTWPopupMenu(remoteRobot, getSmMPProjectName(), buildFileAction, 3);
-
+        // Open the build file
+        UIBotTestUtils.openFile(remoteRobot, smMpProjectName, getBuildFileName(), smMpProjectName);
         // Handle macOS permission popup if it appears
         UIBotTestUtils.handleMacOSPermissionPopup(remoteRobot, getBuildFileName());
     }
