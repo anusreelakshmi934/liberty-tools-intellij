@@ -2998,7 +2998,7 @@ public class UIBotTestUtils {
             // Wait a moment for the click to take effect
             TestUtils.sleepAndIgnoreException(2);
 
-            UIBotTestUtils.closeAllEditorTabs(remoteRobot);
+            UIBotTestUtils.closeFileEditorTab(remoteRobot, fileTabName, "3");
         } catch (Exception e) {
             TestUtils.printTrace(TestUtils.TraceSevLevel.ERROR, "Failed to execute AppleScript: " + e.getMessage());
         }
