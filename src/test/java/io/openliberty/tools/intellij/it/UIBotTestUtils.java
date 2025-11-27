@@ -2944,21 +2944,15 @@ public class UIBotTestUtils {
      * Handles macOS permission popup for screen recording by clicking the "Allow" button.
      *
      * @param remoteRobot The RemoteRobot instance.
-     * @param fileTabName The name of the file tab to click on for focus (e.g., "server.xml").
      */
-    public static void handleMacOSPermissionPopup(RemoteRobot remoteRobot, String fileTabName) {
+    public static void handleMacOSPermissionPopup(RemoteRobot remoteRobot) {
         if (!remoteRobot.isMac()) {
             return; // Only applicable to macOS
         }
-
         TestUtils.printTrace(TestUtils.TraceSevLevel.INFO, "Handling macOS permission popup...");
 
-//        // Click on the specified file tab to ensure the window is in focus
-//        clickOnFileTab(remoteRobot, fileTabName);
-
         // Wait for the permission popup to appear
-        TestUtils.sleepAndIgnoreException(12);
-
+        TestUtils.sleepAndIgnoreException(10);
         // Execute AppleScript to click the "Allow" button
         try {
             String appleScript =
@@ -2982,7 +2976,6 @@ public class UIBotTestUtils {
             // Wait a moment for the click to take effect
             TestUtils.sleepAndIgnoreException(5);
 
-//            UIBotTestUtils.closeFileEditorTab(remoteRobot, fileTabName, "8");
         } catch (Exception e) {
             TestUtils.printTrace(TestUtils.TraceSevLevel.ERROR, "Failed to execute AppleScript: " + e.getMessage());
         }
