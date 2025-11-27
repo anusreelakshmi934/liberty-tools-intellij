@@ -2996,9 +2996,9 @@ public class UIBotTestUtils {
             new ProcessBuilder("osascript", "-e", appleScript).start();
 
             // Wait a moment for the click to take effect
-            TestUtils.sleepAndIgnoreException(2);
+            TestUtils.sleepAndIgnoreException(5);
 
-            UIBotTestUtils.closeFileEditorTab(remoteRobot, fileTabName, "3");
+            UIBotTestUtils.closeFileEditorTab(remoteRobot, fileTabName, "8");
         } catch (Exception e) {
             TestUtils.printTrace(TestUtils.TraceSevLevel.ERROR, "Failed to execute AppleScript: " + e.getMessage());
         }
