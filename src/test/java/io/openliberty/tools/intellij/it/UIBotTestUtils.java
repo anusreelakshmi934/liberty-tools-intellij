@@ -2961,7 +2961,14 @@ public class UIBotTestUtils {
                             "        if exists window 1 then\n" +
                             "            try\n" +
                             "                set dialogText to value of static text 1 of window 1\n" +
+                            "                -- Handle bash screen and audio permission\n" +
                             "                if dialogText contains \"bash\" and dialogText contains \"screen and audio\" then\n" +
+                            "                    if exists button \"Allow\" of window 1 then\n" +
+                            "                        click button \"Allow\" of window 1\n" +
+                            "                    end if\n" +
+                            "                end if\n" +
+                            "                -- Handle net.java.openjdk.java screen and audio permission\n" +
+                            "                if dialogText contains \"net.java.openjdk.java\" and dialogText contains \"screen and audio\" then\n" +
                             "                    if exists button \"Allow\" of window 1 then\n" +
                             "                        click button \"Allow\" of window 1\n" +
                             "                    end if\n" +
