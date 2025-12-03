@@ -100,20 +100,12 @@ jobs:
         runtime: [  mac ]
         test-group: [  Maven-Custom-Liberty-Install, Gradle-Custom-Liberty-Install, Maven-NLT-REST, Gradle-NLT-REST ]
         include:
-          - runtime: linux
-            os: ubuntu-latest
           - runtime: mac
             os: macOS-latest
-          - runtime: windows
-            os: windows-latest
-          - test-group: Maven-Custom-Liberty-Install
-            test-class: io.openliberty.tools.intellij.it.MavenSingleModCustomWLPInstallProjectTest
-          - test-group: Gradle-Custom-Liberty-Install
-            test-class: io.openliberty.tools.intellij.it.GradleSingleModCustomWLPInstallProjectTest
-          - test-group: Maven-NLT-REST
-            test-class: io.openliberty.tools.intellij.it.MavenSingleModNLTRestProjectTest
-          - test-group: Gradle-NLT-REST
-            test-class: io.openliberty.tools.intellij.it.GradleSingleModNLTRestProjectTest
+          - test-group: Gradle-Language-Server
+            test-class: io.openliberty.tools.intellij.it.GradleSingleModLSTest
+          - test-group: Maven-Multi-Module-MP
+            test-class: io.openliberty.tools.intellij.it.MavenMPMultipleProjectTest
     env:
       USE_LOCAL_PLUGIN: ${{ inputs.useLocalPlugin || false }}
       REF_LSP4IJ: ${{ needs.fetch_merge_commit_sha_from_lsp4ij_PR.outputs.pr_details }}
