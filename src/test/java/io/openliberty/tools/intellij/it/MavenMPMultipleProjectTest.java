@@ -26,8 +26,6 @@ public class MavenMPMultipleProjectTest extends SingleModMPProjectTestCommon {
      */
     private static final String MP_PROJECT_NAME = "singleModMavenMP";
 
-    public static final String DO_NOT_SUGGEST_AGAIN = "Don't suggest again";
-
     /**
      * The path of the folder containing two projects.
      */
@@ -91,8 +89,6 @@ public class MavenMPMultipleProjectTest extends SingleModMPProjectTestCommon {
 
             // Prepare the environment with the new project path and name
             prepareEnv(MULTIPLE_PROJECTS_PATH_PARENT, MP_PROJECT_NAME, true);
-
-            UIBotTestUtils.clickNotificationActionIfExists(remoteRobot, DO_NOT_SUGGEST_AGAIN);
 
         } catch (IOException e) {
             System.err.println("Setup failed: " + e.getMessage());
