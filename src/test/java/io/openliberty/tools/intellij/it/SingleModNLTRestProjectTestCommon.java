@@ -197,7 +197,7 @@ public abstract class SingleModNLTRestProjectTestCommon extends BaseOSUtilities 
 
         // Copy a valid server.xml file to this project's src/main/liberty/config directory.
         Path validServerXml = Paths.get(getHelperFilesDirPath(), "server.xml");
-        Path destination = Paths.get(getProjectsDirPath(), getSmNLTRestProjectName(), "sr", "main", "liberty", "config", "server.xml");
+        Path destination = Paths.get(getProjectsDirPath(), getSmNLTRestProjectName(), "src", "main", "liberty", "config", "server.xml");
 
         try {
             Files.copy(validServerXml, destination, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);

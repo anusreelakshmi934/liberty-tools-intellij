@@ -688,7 +688,7 @@ public abstract class SingleModMPProjectTestCommon extends BaseOSUtilities {
         deleteTestReports();
 
         // Start dev mode.
-        UIBotTestUtils.runActionLTWPopupMenu(remoteRobot, getSmMPProjectName(), "Liberty: Stat", 3);
+        UIBotTestUtils.runActionLTWPopupMenu(remoteRobot, getSmMPProjectName(), "Liberty: Start", 3);
 
         try {
             // Validate that the application started.
