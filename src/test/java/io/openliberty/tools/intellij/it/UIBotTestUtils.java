@@ -2991,4 +2991,27 @@ public class UIBotTestUtils {
             TestUtils.printTrace(TestUtils.TraceSevLevel.ERROR, "Failed to execute AppleScript: " + e.getMessage());
         }
     }
+
+    /**
+     * Clicks a notification action button if it exists.
+     *
+     * @param remoteRobot    the RemoteRobot instance
+     * @param accessibleName the accessible name of the notification action button to click
+     */
+    public static void clickNotificationActionIfExists(RemoteRobot remoteRobot, String accessibleName) {
+        ProjectFrameFixture projectFrame = remoteRobot.find(ProjectFrameFixture.class, Duration.ofSeconds(10));
+        String xPath = String.format(
+                "//div[@class='NotificationActionPanel']//div[@class='LinkLabel' and @accessiblename=\"%s\"]",
+                accessibleName
+        );
+
+        // Adding the code below in a try-catch block because if the action was already clicked previously,
+        // the notification might not appear again and should not cause a test failure.
+        try {
+            ComponentFixture actionButton = projectFrame.getActionButton(xPath, "10");
+            actionButton.click();
+        } catch (Exception e) {
+            // No matching notification action button is present, so nothing to do here.
+        }
+    }
 }
