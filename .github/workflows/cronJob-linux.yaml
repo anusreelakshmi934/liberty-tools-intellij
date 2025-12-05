@@ -1,6 +1,7 @@
 name: Cron Job - Linux
 
 on:
+  push:
   workflow_dispatch:
   schedule:
     # The job runs at 9:30 AM UTC on Monday and Thursday, which is 3:00 PM IST and 4:30 AM EST.
