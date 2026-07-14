@@ -304,6 +304,15 @@ public abstract class SingleModMPProjectTestCommon {
     }
 
     /**
+     * Prepares the environment for test execution. Subclasses must implement this method
+     * with the setup logic previously held in @BeforeAll, so that it runs as a recorded test.
+     */
+    @Test
+    @Video
+    @Order(0)
+    public abstract void testSetup();
+
+    /**
      * Processes actions before each test.
      *
      * @param info Test information.
@@ -356,7 +365,7 @@ public abstract class SingleModMPProjectTestCommon {
      */
     @Test
     @Video
-    @Order(2)
+    @Order(3)
     public void testOpenBuildFileActionUsingPopUpMenu() {
         shouldCleanupTerminal = false;
         String editorTabName = getBuildFileName() + " (" + getSmMPProjectName() + ")";
@@ -381,7 +390,7 @@ public abstract class SingleModMPProjectTestCommon {
      */
     @Test
     @Video
-    @Order(3)
+    @Order(4)
     public void testStartWithParamsActionUsingDropDownMenu() {
         String testName = "testStartWithParamsActionUsingDropDownMenu";
         String absoluteWLPPath = getAbsoluteWLPPath();

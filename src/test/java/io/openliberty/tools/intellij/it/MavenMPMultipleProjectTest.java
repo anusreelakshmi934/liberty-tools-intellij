@@ -9,6 +9,7 @@
  *******************************************************************************/
 package io.openliberty.tools.intellij.it;
 
+import com.automation.remarks.junit5.Video;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
@@ -73,8 +74,11 @@ public class MavenMPMultipleProjectTest extends SingleModMPProjectTestCommon {
     /**
      * Prepares the environment for test execution.
      */
-    @BeforeAll
-    public static void setup() {
+    @Override
+    @Test
+    @Video
+    @Order(0)
+    public void testSetup() {
         try {
             File theDir = new File(MULTIPLE_PROJECTS_PATH);
             if (theDir.exists()){

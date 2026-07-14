@@ -9,11 +9,12 @@
  *******************************************************************************/
 package io.openliberty.tools.intellij.it;
 
+import com.automation.remarks.junit5.Video;
 import com.intellij.remoterobot.stepsProcessing.StepLogger;
 import com.intellij.remoterobot.stepsProcessing.StepWorker;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
@@ -56,8 +57,11 @@ public class MavenSingleModCustomWLPInstallProjectTest extends SingleModMPProjec
     /**
      * Prepares the environment for test execution.
      */
-    @BeforeAll
-    public static void setup() {
+    @Override
+    @Test
+    @Video
+    @Order(0)
+    public void testSetup() {
         StepWorker.registerProcessor(new StepLogger());
         prepareEnv(PROJECTS_PATH, SM_MP_PROJECT_NAME);
     }
