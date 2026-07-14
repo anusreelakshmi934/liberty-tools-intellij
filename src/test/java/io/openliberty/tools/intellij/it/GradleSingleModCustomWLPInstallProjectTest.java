@@ -61,121 +61,121 @@ public class GradleSingleModCustomWLPInstallProjectTest extends SingleModMPProje
         setAbsoluteWLPPath(Paths.get(System.getProperty("user.home"), "customInstallDir").toString());
     }
 
-    /**
-     * Verifies that the Liberty server starts correctly in debug mode
-     * using the toolbar-based run configuration.
-     */
-    @Override
-    @Test
-    public void testStartWithConfigInDebugModeUsingToolbar() {
-        super.testStartWithConfigInDebugModeUsingToolbar();
-    }
-
-    /**
-     * Verifies that the Liberty server starts correctly in debug mode
-     * using the menu-based run configuration.
-     */
-    @Override
-    @Test
-    public void testStartWithConfigInDebugModeUsingMenu() {
-        super.testStartWithConfigInDebugModeUsingMenu();
-    }
-
-    /**
-     * These tests are temporarily disabled due to
-     * timeout issues in GitHub Actions builds.
-     * See issue: https://github.com/OpenLiberty/ci.common/issues/1308
-     * Re-enable once resolved
-     */
-
-    @Disabled("Temporarily disabled due to GHA timeout issues")
-    @Override
-    @Test
-    public void testCustomStartParametersClearedOnConfigRemoval() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues")
-    @Override
-    @Test
-    public void testMultipleConfigEditHistory() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues")
-    @Override
-    @Test
-    public void testOpenBuildFileActionUsingPopUpMenu() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues")
-    @Override
-    @Test
-    public void testRunTestsActionUsingDropDownMenu() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues")
-    @Override
-    @Test
-    public void testRunTestsActionUsingPlayToolbarButton() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues")
-    @Override
-    @Test
-    public void testRunTestsActionUsingPopUpMenu() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues")
-    @Override
-    @Test
-    public void testRunTestsActionUsingSearch() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues. It requires further investigation as part of the container test")
-    @Override
-    @Test
-    public void testStartInContainerActionUsingDropDownMenu() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues. It requires further investigation as part of the container test")
-    @Override
-    @Test
-    public void testStartInContainerActionUsingPlayToolbarButton() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues. It requires further investigation as part of the container test")
-    @Override
-    @Test
-    public void testStartInContainerActionUsingPopUpMenu() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues. It requires further investigation as part of the container test")
-    @Override
-    @Test
-    public void testStartInContainerActionUsingSearch() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues. It requires further investigation as part of the container test")
-    @Override
-    @Test
-    public void testStartInContainerParamClearedOnConfigRemoval() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues")
-    @Override
-    @Test
-    public void testStartWithConfigInRunModeUsingMenu() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues")
-    @Override
-    @Test
-    public void testStartWithConfigInRunModeUsingToolbar() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues")
-    @Override
-    @Test
-    public void testStartWithParamsActionUsingDropDownMenu() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues")
-    @Override
-    @Test
-    public void testStartWithParamsActionUsingPlayToolbarButton() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues")
-    @Override
-    @Test
-    public void testStartWithParamsActionUsingPopUpMenu() {}
-
-    @Disabled("Temporarily disabled due to GHA timeout issues")
-    @Override
-    @Test
-    public void testStartWithParamsActionUsingSearch() {}
+//    /**
+//     * Verifies that the Liberty server starts correctly in debug mode
+//     * using the toolbar-based run configuration.
+//     */
+//    @Override
+//    @Test
+//    public void testStartWithConfigInDebugModeUsingToolbar() {
+//        super.testStartWithConfigInDebugModeUsingToolbar();
+//    }
+//
+//    /**
+//     * Verifies that the Liberty server starts correctly in debug mode
+//     * using the menu-based run configuration.
+//     */
+//    @Override
+//    @Test
+//    public void testStartWithConfigInDebugModeUsingMenu() {
+//        super.testStartWithConfigInDebugModeUsingMenu();
+//    }
+//
+//    /**
+//     * These tests are temporarily disabled due to
+//     * timeout issues in GitHub Actions builds.
+//     * See issue: https://github.com/OpenLiberty/ci.common/issues/1308
+//     * Re-enable once resolved
+//     */
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues")
+//    @Override
+//    @Test
+//    public void testCustomStartParametersClearedOnConfigRemoval() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues")
+//    @Override
+//    @Test
+//    public void testMultipleConfigEditHistory() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues")
+//    @Override
+//    @Test
+//    public void testOpenBuildFileActionUsingPopUpMenu() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues")
+//    @Override
+//    @Test
+//    public void testRunTestsActionUsingDropDownMenu() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues")
+//    @Override
+//    @Test
+//    public void testRunTestsActionUsingPlayToolbarButton() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues")
+//    @Override
+//    @Test
+//    public void testRunTestsActionUsingPopUpMenu() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues")
+//    @Override
+//    @Test
+//    public void testRunTestsActionUsingSearch() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues. It requires further investigation as part of the container test")
+//    @Override
+//    @Test
+//    public void testStartInContainerActionUsingDropDownMenu() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues. It requires further investigation as part of the container test")
+//    @Override
+//    @Test
+//    public void testStartInContainerActionUsingPlayToolbarButton() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues. It requires further investigation as part of the container test")
+//    @Override
+//    @Test
+//    public void testStartInContainerActionUsingPopUpMenu() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues. It requires further investigation as part of the container test")
+//    @Override
+//    @Test
+//    public void testStartInContainerActionUsingSearch() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues. It requires further investigation as part of the container test")
+//    @Override
+//    @Test
+//    public void testStartInContainerParamClearedOnConfigRemoval() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues")
+//    @Override
+//    @Test
+//    public void testStartWithConfigInRunModeUsingMenu() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues")
+//    @Override
+//    @Test
+//    public void testStartWithConfigInRunModeUsingToolbar() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues")
+//    @Override
+//    @Test
+//    public void testStartWithParamsActionUsingDropDownMenu() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues")
+//    @Override
+//    @Test
+//    public void testStartWithParamsActionUsingPlayToolbarButton() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues")
+//    @Override
+//    @Test
+//    public void testStartWithParamsActionUsingPopUpMenu() {}
+//
+//    @Disabled("Temporarily disabled due to GHA timeout issues")
+//    @Override
+//    @Test
+//    public void testStartWithParamsActionUsingSearch() {}
 
 }
