@@ -1678,9 +1678,21 @@ public class UIBotTestUtils {
                     searchFixture.click();
                 }
 
-                // Click on the Actions tab
-                ComponentFixture actionsTabFixture = projectFrame.getSETabLabel("Actions");
-                actionsTabFixture.click();
+                // Click on the Actions tab. The Search Everywhere dialog may still be initializing
+                // ("Analyzing project..."), causing the Actions JLabel to exist in the component tree
+                // but not yet be visible on screen. Poll until the click succeeds.
+                RepeatUtilsKt.waitFor(Duration.ofSeconds(30),
+                        Duration.ofSeconds(1),
+                        "Waiting for the Actions tab to become visible in the Search Everywhere dialog",
+                        "The Actions tab did not become visible in the Search Everywhere dialog",
+                        () -> {
+                            try {
+                                projectFrame.getSETabLabel("Actions").click();
+                                return true;
+                            } catch (Exception e) {
+                                return false;
+                            }
+                        });
 
                 // Type the search string in the search dialog box.
                 JTextFieldFixture searchField = projectFrame.textField(JTextFieldFixture.Companion.byType(), Duration.ofSeconds(10));
