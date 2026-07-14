@@ -168,11 +168,11 @@ public abstract class SingleModMPProjectCfgTestCommon {
         UIBotTestUtils.findWelcomeFrame(remoteRobot);
         UIBotTestUtils.importProject(remoteRobot, projectPath, projectName);
         UIBotTestUtils.openProjectView(remoteRobot);
-        // IntelliJ does not start building and indexing until the Project View is open
-        UIBotTestUtils.waitForIndexing(remoteRobot);
         if (!remoteRobot.isMac()) {
             UIBotTestUtils.runActionFromSearchEverywherePanel(remoteRobot, "Compact Mode", 3);
         }
+        // IntelliJ does not start building and indexing until the Project View is open
+        UIBotTestUtils.waitForIndexing(remoteRobot);
         TestUtils.printTrace(TestUtils.TraceSevLevel.INFO,
                 "prepareEnv. Exit. ProjectName: " + projectName);
     }

@@ -301,11 +301,11 @@ public abstract class SingleModNLTRestProjectTestCommon {
         UIBotTestUtils.findWelcomeFrame(remoteRobot);
         UIBotTestUtils.importProject(remoteRobot, projectPath, projectName);
         UIBotTestUtils.openProjectView(remoteRobot);
-        // IntelliJ does not start building and indexing until the Project View is open
-        UIBotTestUtils.waitForIndexing(remoteRobot);
         if (!remoteRobot.isMac()) {
             UIBotTestUtils.runActionFromSearchEverywherePanel(remoteRobot, "Compact Mode", 3);
         }
+        // IntelliJ does not start building and indexing until the Project View is open
+        UIBotTestUtils.waitForIndexing(remoteRobot);
         UIBotTestUtils.openLibertyToolWindow(remoteRobot);
 
         // Wait for indexing to complete. Once indexing completes and Liberty Tools to take control
