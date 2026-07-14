@@ -1374,11 +1374,11 @@ public abstract class SingleModMPProjectTestCommon {
             UIBotTestUtils.importProject(remoteRobot, projectPath, projectName);
         }
         UIBotTestUtils.openProjectView(remoteRobot);
+        // IntelliJ does not start building and indexing until the Project View is open
+        UIBotTestUtils.waitForIndexing(remoteRobot);
         if (!remoteRobot.isMac()) {
             UIBotTestUtils.runActionFromSearchEverywherePanel(remoteRobot, "Compact Mode", 3);
         }
-        // IntelliJ does not start building and indexing until the Project View is open
-        UIBotTestUtils.waitForIndexing(remoteRobot);
         UIBotTestUtils.openAndValidateLibertyToolWindow(remoteRobot, projectName);
         UIBotTestUtils.expandLibertyToolWindowProjectTree(remoteRobot, projectName);
 
