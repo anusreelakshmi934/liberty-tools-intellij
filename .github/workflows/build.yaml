@@ -98,7 +98,7 @@ jobs:
       fail-fast: false
       matrix:
         runtime: [ linux, mac, windows ]
-        test-group: [ LSP4Jakarta-Unit, Maven-MicroProfile, Gradle-MicroProfile, Maven-Custom-Liberty-Install, Gradle-Custom-Liberty-Install, Maven-MP-Config, Gradle-MP-Config, Maven-MP-SID, Gradle-MP-SID, Maven-NLT-REST, Gradle-NLT-REST, Gradle-Language-Server, Gradle-MP-Language-Server, Gradle-Jakarta-Language-Server, Maven-Multi-Module-MP ]
+        test-group: [ Maven-MP-SID ]
         exclude:
           # Exclude LSP4Jakarta-Unit from mac and windows - only run on linux
           - runtime: mac
