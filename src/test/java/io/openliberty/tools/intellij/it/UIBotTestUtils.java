@@ -2339,8 +2339,6 @@ public class UIBotTestUtils {
                 }
             } catch (WaitForConditionTimeoutException e) {
                 // popup did not appear — retry
-            } catch (NoSuchElementException e) {
-                // config name not found in list — retry
             }
             if (!configFound) {
                 retryCount++;
