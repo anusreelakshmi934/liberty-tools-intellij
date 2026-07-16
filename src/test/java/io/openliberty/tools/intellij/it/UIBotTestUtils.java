@@ -2322,17 +2322,19 @@ public class UIBotTestUtils {
         while (!configFound && retryCount < maxRetries) {
             cfgSelectBox.click();
 
-            ComponentFixture cfgSelectPaneList = projectFrame.getMyList();
-            List<RemoteText> configs = cfgSelectPaneList.getData().getAll();
-
-            if (configs != null && !configs.isEmpty()) {
-                for (RemoteText cfg : configs) {
-                    if (cfg.getText().equals(cfgName)) {
-                        cfg.click();
-                        configFound = true;
-                        break;
-                    }
-                }
+            try {
+                // The popup may truncate long config names with an ellipsis in the display text,
+                // so an exact match or full-string contains() will not find the item. Use the
+                // first segment of the config name (before the first '-') as a unique prefix to
+                // match against the truncated display text.
+                String cfgNamePrefix = cfgName.contains("-") ? cfgName.substring(0, cfgName.indexOf('-')) : cfgName;
+                ContainerFixture cfgSelectPaneList = projectFrame.getMyList();
+                cfgSelectPaneList.findText(contains(cfgNamePrefix)).click();
+                configFound = true;
+            } catch (WaitForConditionTimeoutException e) {
+                // popup did not appear — retry
+            } catch (NoSuchElementException e) {
+                // config name not found in list — retry
             }
             if (!configFound) {
                 retryCount++;
