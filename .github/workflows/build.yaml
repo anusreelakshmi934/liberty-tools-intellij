@@ -45,7 +45,8 @@ on:
         required: false
         default: main
   push:
-    branches: '**'
+    # Restricted to main to avoid triggering workflows on forks.
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
