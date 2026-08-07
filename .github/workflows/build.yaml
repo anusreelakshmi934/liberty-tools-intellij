@@ -48,10 +48,13 @@ on:
     # Restricted to main to avoid triggering workflows on forks.
     branches: [ main ]
   pull_request:
+    types: [ labeled ]
     branches: [ main ]
 
 jobs:
   fetch_merge_commit_sha_from_lsp4ij_PR:
+    # Only run when the 'run-ci' label is applied to the PR; ignored for push and workflow_call/workflow_dispatch triggers.
+    if: github.event_name != 'pull_request' || github.event.label.name == 'run-ci'
     runs-on: ubuntu-latest
     outputs:
       pr_details: ${{ steps.extract.outputs.pr_details }}
