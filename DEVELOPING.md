@@ -3,6 +3,7 @@
 > Note: Starting with the [0.0.8 early release](https://github.com/OpenLiberty/liberty-tools-intellij/releases/tag/0.0.8), Java 17 (bundled with IntelliJ IDEA version 2022.2+) and a minimum version of IntelliJ IDEA version 2022.2 are required to run Liberty Tools for IntelliJ IDEA.
 
 - [Building Liberty Tools for IntelliJ IDEA](#building-liberty-tools-for-intellij-idea)
+- [Running CI on a Pull Request](#running-ci-on-a-pull-request)
 - [Language Servers](#language-servers)
   - [Build Liberty Config Language Server locally](#build-liberty-config-language-server-locally)
     - [Debugging LemMinX langauge server with the Liberty LemMinX extension](#debugging-lemminx-language-server-with-the-liberty-lemminx-extension)
@@ -25,6 +26,26 @@ This extension is built using the [gradle-intellij-plugin](https://github.com/Je
    OR  
 
    Run `./gradlew buildPlugin` to build an installable zip in `build/distributions/liberty-tools-intellij-xxx.zip`. You can install this zip in IntelliJ IDEA through **Preferences > Plugins > Gear icon > Install Plugin from Disk...** and select the `liberty-tools-intellij-xxx.zip`.
+
+## Running CI on a Pull Request
+
+CI does not run automatically on every push to a PR branch. This prevents wasting runner minutes while a PR is still being worked on. Instead, CI is triggered manually by applying the `run-ci` label to the PR.
+
+**To trigger CI on a PR:**
+
+1. Open your PR and push all commits until the PR is ready for a CI run.
+2. On the PR page, click the **⚙ gear icon** next to **Labels** in the right sidebar.
+3. Search for and select the **`run-ci`** label. CI starts automatically once the label is applied.
+
+**To re-trigger CI after new commits:**
+
+The `run-ci` label must be toggled — GitHub only fires the trigger on the transition from unlabelled to labelled, not while the label is already present.
+
+1. Click the **⚙ gear icon** next to **Labels**.
+2. **Uncheck** `run-ci` to remove it.
+3. **Check** `run-ci` again to re-apply it. A new CI run starts.
+
+> **Note:** Only users with repository write access can apply labels. For PRs from external contributors, a maintainer must apply the `run-ci` label on their behalf.
 
 ## Language Servers
 
