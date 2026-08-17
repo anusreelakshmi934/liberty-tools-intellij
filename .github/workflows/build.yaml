@@ -55,8 +55,8 @@ on:
 
 jobs:
   fetch_merge_commit_sha_from_lsp4ij_PR:
-    # Only run when the 'run-ci' or 'run-lsp4jakarta-it' label is applied to the PR; ignored for push and workflow_call/workflow_dispatch triggers.
-    if: github.event_name != 'pull_request' || github.event.label.name == 'run-ci' || github.event.label.name == 'run-lsp4jakarta-it'
+    # Only run when triggered via workflow_dispatch, workflow_call, or when the 'run-ci' or 'run-lsp4jakarta-it' label is applied to the PR.
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call' || github.event.label.name == 'run-ci' || github.event.label.name == 'run-lsp4jakarta-it'
     runs-on: ubuntu-latest
     outputs:
       pr_details: ${{ steps.extract.outputs.pr_details }}
@@ -98,8 +98,8 @@ jobs:
 
   build:
     needs: fetch_merge_commit_sha_from_lsp4ij_PR
-    # Run for all test-groups when 'run-ci' label is applied.
-    if: github.event_name != 'pull_request' || github.event.label.name == 'run-ci'
+    # Run for all test-groups when triggered via workflow_dispatch, workflow_call, or when 'run-ci' label is applied.
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call' || github.event.label.name == 'run-ci'
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.runtime }} - ${{ matrix.test-group }}
     strategy:
