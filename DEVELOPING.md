@@ -4,8 +4,6 @@
 
 - [Building Liberty Tools for IntelliJ IDEA](#building-liberty-tools-for-intellij-idea)
 - [Running CI on a Pull Request](#running-ci-on-a-pull-request)
-  - [run-ci label](#run-ci-label)
-  - [run-lsp4jakarta-it label](#run-lsp4jakarta-it-label)
 - [Language Servers](#language-servers)
   - [Build Liberty Config Language Server locally](#build-liberty-config-language-server-locally)
     - [Debugging LemMinX langauge server with the Liberty LemMinX extension](#debugging-lemminx-language-server-with-the-liberty-lemminx-extension)
@@ -36,23 +34,15 @@ CI does not run automatically on every push to a PR branch. This prevents wastin
 | Label | What it runs |
 |---|---|
 | `run-ci` | Full build — all test-groups across all runtimes (linux, mac, windows). |
-| `run-lsp4jakarta-it` | Jakarta-only build — a subset of test-groups relevant to Jakarta PRs (see [below](#run-lsp4jakarta-it-label)). |
+| `run-lsp4jakarta-it` | Jakarta-only build — subset of test-groups relevant to Jakarta PRs (see [below](#run-lsp4jakarta-it-label)). |
 
-### run-ci label
-
-**To trigger CI on a PR:**
+**To apply a label:**
 
 1. Open your PR and push all commits until the PR is ready for a CI run.
 2. On the PR page, click the **⚙ gear icon** next to **Labels** in the right sidebar.
-3. Search for and select the **`run-ci`** label. CI starts automatically once the label is applied.
+3. Search for and select the desired label. CI starts automatically once it is applied.
 
-**To re-trigger CI after new commits:**
-
-The `run-ci` label must be toggled — GitHub only fires the trigger on the transition from unlabelled to labelled, not while the label is already present.
-
-1. Click the **⚙ gear icon** next to **Labels**.
-2. **Uncheck** `run-ci` to remove it.
-3. **Check** `run-ci` again to re-apply it. A new CI run starts.
+**To re-trigger CI after new commits:** the label must be toggled — GitHub only fires the trigger on the transition from unlabelled to labelled, not while the label is already present. Remove the label and re-add it to start a new run.
 
 > **Note:** Only users with repository write access can apply labels. For PRs from external contributors, a maintainer must apply the label on their behalf.
 
@@ -64,14 +54,6 @@ The `run-lsp4jakarta-it` label is intended for PRs that target the Jakarta langu
 - `Gradle-Language-Server`
 - `Gradle-MP-Language-Server`
 - `Gradle-Jakarta-Language-Server`
-
-**To trigger the Jakarta-only CI run:**
-
-1. Open your PR and push all commits until the PR is ready for a CI run.
-2. On the PR page, click the **⚙ gear icon** next to **Labels** in the right sidebar.
-3. Search for and select the **`run-lsp4jakarta-it`** label. CI starts automatically once the label is applied.
-
-**To re-trigger after new commits**, remove and re-add the label (same toggle process as `run-ci`).
 
 ## Language Servers
 
