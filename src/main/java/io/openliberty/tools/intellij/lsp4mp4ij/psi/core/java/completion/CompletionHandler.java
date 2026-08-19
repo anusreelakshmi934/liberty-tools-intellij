@@ -139,21 +139,19 @@ public final class CompletionHandler {
             PsiElement firstClass = javaFile.getClasses()[0];
 
             if (completionOffset <= firstClass.getTextOffset()) {
-                return JavaCursorContextKind.BEFORE_CLASS;
+                return JavaCursorContextKind.BEFORE_TOP_LEVEL_CLASS;
             }
 
             return JavaCursorContextKind.NONE;
         }
 
-        if (parent instanceof PsiClass) {
-            PsiClass psiClass = (PsiClass) parent;
+        if (parent instanceof PsiClass psiClass ) {
             return getContextKindFromClass(completionOffset, psiClass, element);
         }
-        if (parent instanceof PsiAnnotation) {
-            PsiAnnotation psiAnnotation = (PsiAnnotation) parent;
+        if (parent instanceof PsiAnnotation psiAnnotation) {
             @Nullable PsiAnnotationOwner annotationOwner = psiAnnotation.getOwner();
             if (annotationOwner instanceof PsiClass) {
-                return (psiAnnotation.getStartOffsetInParent() == 0)? JavaCursorContextKind.BEFORE_CLASS:JavaCursorContextKind.IN_CLASS_ANNOTATIONS;
+                return (psiAnnotation.getStartOffsetInParent() == 0)? JavaCursorContextKind.BEFORE_INNER_CLASS:JavaCursorContextKind.IN_CLASS_ANNOTATIONS;
             }
             if (annotationOwner instanceof PsiMethod){
                 return (psiAnnotation.getStartOffsetInParent() == 0)? JavaCursorContextKind.BEFORE_METHOD:JavaCursorContextKind.IN_METHOD_ANNOTATIONS;
@@ -162,8 +160,7 @@ public final class CompletionHandler {
                 return (psiAnnotation.getStartOffsetInParent() == 0)? JavaCursorContextKind.BEFORE_FIELD:JavaCursorContextKind.IN_FIELD_ANNOTATIONS;
             }
         }
-        if (parent instanceof PsiMethod) {
-            PsiMethod psiMethod = (PsiMethod) parent;
+        if (parent instanceof PsiMethod psiMethod) {
             if (completionOffset == psiMethod.getTextRange().getStartOffset()) {
                 return JavaCursorContextKind.BEFORE_METHOD;
             }
@@ -196,14 +193,14 @@ public final class CompletionHandler {
     @NotNull
     private static JavaCursorContextKind getContextKindFromClass(int completionOffset, PsiClass psiClass, PsiElement element) {
         if (completionOffset <= psiClass.getTextRange().getStartOffset()) {
-            return JavaCursorContextKind.BEFORE_CLASS;
+            return JavaCursorContextKind.BEFORE_TOP_LEVEL_CLASS;
         }
         int classStartOffset = getClassStartOffset(psiClass);
         if (completionOffset <= classStartOffset) {
             if (psiClass.getAnnotations().length > 0) {
                 return JavaCursorContextKind.IN_CLASS_ANNOTATIONS;
             }
-            return JavaCursorContextKind.BEFORE_CLASS;
+            return JavaCursorContextKind.BEFORE_INNER_CLASS;
         }
 
         PsiElement nextElement = element.getNextSibling();
@@ -215,7 +212,7 @@ public final class CompletionHandler {
             return JavaCursorContextKind.BEFORE_METHOD;
         }
         if (nextElement instanceof  PsiClass) {
-            return JavaCursorContextKind.BEFORE_CLASS;
+            return JavaCursorContextKind.BEFORE_INNER_CLASS;
         }
 
         return JavaCursorContextKind.IN_CLASS;
